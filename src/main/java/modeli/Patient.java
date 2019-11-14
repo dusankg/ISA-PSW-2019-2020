@@ -1,18 +1,64 @@
 package modeli;
 
-public class Patient {
+import java.util.HashSet;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+
+import org.springframework.data.annotation.Id;
+
+public class Patient {
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
+	@Column(name = "name", unique = true, nullable = false)
 	private String name;
+	@Column(name = "surname", nullable = false)
 	private String surname;
+	@Column(name = "email", nullable = false)
 	private String email;
+	@Column(name = "password", nullable = false)
 	private String password;
+	@Column(name = "adress", nullable = false)
 	private String adress;
+	@Column(name = "city", nullable = false)
 	private String city;
+	@Column(name = "state", nullable = false)
 	private String state;
+	@Column(name = "phone", nullable = false)
 	private int phone;
+	@Column(name = "lbo", nullable = false)
 	private int lbo; // Licni broj osiguranika
 	
+	
+	
+	@OneToMany(mappedBy = "patient", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private Set<Prescription> prescriptions = new HashSet<Prescription>();
+	
+	
+	@OneToMany(mappedBy = "patient", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private Set<MedicalRecord> medicalRecords = new HashSet<MedicalRecord>();
+	
+	@OneToMany(mappedBy = "patient", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private Set<Examination> examinations = new HashSet<Examination>();
+	
+	//@ManyToMany
+	//@JoinTable(name = "diagnosed", joinColumns = @JoinColumn(name = "diagnosis_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "patient_id", referencedColumnName = "id"))
+	//private Set<Diagnosis> diagnosiss = new HashSet<Diagnosis>();
+	//Need to be added after all of the classes have been done correctly
+	
+	
+	public Patient(){
+		
+	}
 	
 	// Konstruktor, ali bez zato sto bi on morao sam da se generise
 	public Patient(String name, String surname, String email, String password, String adress, String city, String state,
