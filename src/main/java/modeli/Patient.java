@@ -1,54 +1,48 @@
 package modeli;
 
+
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
+import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
-import org.springframework.data.annotation.Id;
 
+@Entity
 public class Patient {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long id;
-	@Column(name = "name", unique = true, nullable = false)
+	private Long id;
+	@Column(name = "name", unique = true, nullable = true)
 	private String name;
-	@Column(name = "surname", nullable = false)
+	@Column(name = "surname", nullable = true)
 	private String surname;
-	@Column(name = "email", nullable = false)
+	@Column(name = "email", nullable = true)
 	private String email;
-	@Column(name = "password", nullable = false)
+	@Column(name = "password", nullable = true)
 	private String password;
-	@Column(name = "adress", nullable = false)
+	@Column(name = "adress", nullable = true)
 	private String adress;
-	@Column(name = "city", nullable = false)
+	@Column(name = "city", nullable = true)
 	private String city;
-	@Column(name = "state", nullable = false)
+	@Column(name = "state", nullable = true)
 	private String state;
-	@Column(name = "phone", nullable = false)
+	@Column(name = "phone", nullable = true)
 	private int phone;
-	@Column(name = "lbo", nullable = false)
+	@Column(name = "lbo", nullable = true)
 	private int lbo; // Licni broj osiguranika
 	
 	
 	
-	@OneToMany(mappedBy = "patient", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	private Set<Prescription> prescriptions = new HashSet<Prescription>();
 	
-	
-	@OneToMany(mappedBy = "patient", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	private Set<MedicalRecord> medicalRecords = new HashSet<MedicalRecord>();
-	
-	@OneToMany(mappedBy = "patient", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	private Set<Examination> examinations = new HashSet<Examination>();
 	
 	//@ManyToMany
 	//@JoinTable(name = "diagnosed", joinColumns = @JoinColumn(name = "diagnosis_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "patient_id", referencedColumnName = "id"))

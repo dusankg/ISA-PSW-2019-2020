@@ -1,6 +1,7 @@
 package modeli;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -9,10 +10,9 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-
-import org.springframework.data.annotation.Id;
 
 @Entity
 public class Doctor {
@@ -48,11 +48,11 @@ public class Doctor {
 	@Column(name = "column")
 	private int phone;
 	
-	@OneToMany(mappedBy = "patient", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	private Set<Patient>patient=new HashSet<Patient>();
+	//@OneToMany(mappedBy = "patient", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	//private Set<Patient>patient=new HashSet<Patient>();
 	
-	@OneToMany(mappedBy = "examination", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	private Set<Examination> examinations=new HashSet<Examination>();
+	//@OneToMany(mappedBy = "examination", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	//private Set<Examination> examinations=new HashSet<Examination>();
 	
 	
 	public Doctor() {}
@@ -161,7 +161,7 @@ public class Doctor {
 	}
 
 
-	public Set<Patient> getPatient() {
+/*	public Set<Patient> getPatient() {
 		return patient;
 	}
 
@@ -177,8 +177,8 @@ public class Doctor {
 
 
 	public void setExaminations(Set<Examination> examinations) {
-		this.examinations = examinations;
-	}
+		this.examinations = examinations;*/
+	//}
 
 
 	public Clinic getClinic() {

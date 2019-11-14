@@ -1,6 +1,6 @@
 package dto;
 
-import javax.persistence.Column;
+
 
 import modeli.Patient;
 
@@ -23,21 +23,21 @@ public class PatientDTO {
 	
 	
 	public PatientDTO(long id2, String name2, String surname2, String email2, String password2, String adress2,
-			String city2, int phone2,int lbo2) {
-		this.id=id;
-		this.name=name;
-		this.surname=surname;
-		this.email=email;
-		this.password=password;
-		this.adress=adress;
-		this.city=city;
-		this.state=state;
-		this.phone=phone;
-		this.lbo=lbo;
+			String city2,String state2, int phone2,int lbo2) {
+		this.id=id2;
+		this.name=name2;
+		this.surname=surname2;
+		this.email=email2;
+		this.password=password2;
+		this.adress=adress2;
+		this.city=city2;
+		this.state=state2;
+		this.phone=phone2;
+		this.lbo=lbo2;
 	}
 	
 	public PatientDTO(Patient patient) {
-		this(patient.getId(),patient.getName(), patient.getSurname(), patient.getEmail(), patient.getPassword(),patient.getAdress(),patient.getCity(),patient.getPhone(),patient.getLbo());
+		this(patient.getId(),patient.getName(), patient.getSurname(), patient.getEmail(), patient.getPassword(),patient.getAdress(),patient.getCity(),patient.getState(),patient.getPhone(),patient.getLbo());
 	}
 
 

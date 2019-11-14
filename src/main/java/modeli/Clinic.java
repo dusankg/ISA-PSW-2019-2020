@@ -1,6 +1,7 @@
 package modeli;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -10,9 +11,6 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
 
@@ -39,19 +37,19 @@ public class Clinic {
 	@Column(name = "gradeNumber", nullable = true)
 	private int gradeNumber;
 	
-	@OneToMany(mappedBy = "clinic", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	private Set<Doctor> doctors = new HashSet<Doctor>();
+	//@OneToMany(mappedBy = "clinic", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	//private Set<Doctor> doctors = new HashSet<Doctor>();
 	
-	@OneToMany(mappedBy = "clinic", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	private Set<MedicalRoom> rooms=new HashSet<MedicalRoom>();
+	//@OneToMany(mappedBy = "clinic", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	//private Set<MedicalRoom> rooms=new HashSet<MedicalRoom>();
 	
-	@OneToMany(mappedBy = "clinic", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	private Set<Examination> examinations =new HashSet<Examination>();
+	//@OneToMany(mappedBy = "clinic", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	//private Set<Examination> examinations =new HashSet<Examination>();
 	
 	// one clinic can have many prescription, and one prescription can be in many clinics
-	@ManyToMany
+	/*@ManyToMany
 	@JoinTable(name = "prescripted", joinColumns = @JoinColumn(name = "clinic_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "prescription_id", referencedColumnName = "id"))
-	private Set<Prescription>prescriptions=new HashSet<Prescription>();
+	*/private Set<Prescription>prescriptions=new HashSet<Prescription>();
 	
 	// needs to add price book for appointments and for operations
 	// needs to have list of free terms, rooms and doctors
@@ -126,7 +124,7 @@ public class Clinic {
 		this.gradeNumber = gradeNumber;
 	}
 
-	public Set<Doctor> getDoctors() {
+/*	public Set<Doctor> getDoctors() {
 		return doctors;
 	}
 
@@ -155,8 +153,8 @@ public class Clinic {
 	}
 
 	public void setPrescriptions(Set<Prescription> prescriptions) {
-		this.prescriptions = prescriptions;
-	}
+		this.prescriptions = prescriptions;*/
+	//}
 	
 	
 }

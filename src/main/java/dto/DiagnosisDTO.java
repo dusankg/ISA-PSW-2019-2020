@@ -12,8 +12,8 @@ public class DiagnosisDTO {
 	}
 	
 	public DiagnosisDTO(long id2, String name2) {
-		this.id=id;
-		this.name=name;
+		this.id=id2;
+		this.name=name2;
 		
 	}
 	
