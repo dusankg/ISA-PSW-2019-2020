@@ -3,24 +3,59 @@ package modeli;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+
 import org.springframework.data.annotation.Id;
 
+@Entity
 public class Doctor {
 	
 	@Id
-	private long id;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 	
+	@Column(name = "name", nullable = false)
 	private String name;
+	
+	@Column(name = "surname", nullable = false)
 	private String surname;
+	
+	@Column(name = "email", nullable = false)
 	private String email;
+	
+	@Column(name = "password", nullable = false)
 	private String password;
+	
+	@Column(name = "adress")
 	private String adress;
+	
+	@Column(name = "city")
 	private String city;
+	
+	@Column(name = "state")
 	private String state;
+	
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	private Clinic clinic;
+	
+	@Column(name = "column")
 	private int phone;
+	
+	@OneToMany(mappedBy = "patient", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<Patient>patient=new HashSet<Patient>();
+	
+	@OneToMany(mappedBy = "examination", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<Examination> examinations=new HashSet<Examination>();
 	
+	
+	public Doctor() {}
 	
 	public Doctor(String name, String surname, String email, String password, String adress, String city, String state,
 			int phone) {
@@ -143,6 +178,16 @@ public class Doctor {
 
 	public void setExaminations(Set<Examination> examinations) {
 		this.examinations = examinations;
+	}
+
+
+	public Clinic getClinic() {
+		return clinic;
+	}
+
+
+	public void setClinic(Clinic clinic) {
+		this.clinic = clinic;
 	}
 
 	
