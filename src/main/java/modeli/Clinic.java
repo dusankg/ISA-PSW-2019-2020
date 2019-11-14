@@ -3,20 +3,62 @@ package modeli;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+
+
+
+@Entity
 public class Clinic {
-	public long id;
 	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	public Long id;
+	
+	@Column(name = "name", nullable = false)
 	private String name;
+	
+	@Column(name = "adress", nullable = true)
 	private String adress;
+	
+	@Column(name = "description", nullable = true)
 	private String description;
-	private double gradeSum; //Prosek je gradeSum podeljeno sa gradeNumber
+	
+	@Column(name = "gradeSum", nullable = true)
+	private double gradeSum; // average is gradeSum devided by gradeNumber
+	
+	@Column(name = "gradeNumber", nullable = true)
 	private int gradeNumber;
-	private Set<Doctor> doktori = new HashSet<Doctor>();
+	
+	@OneToMany(mappedBy = "clinic", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private Set<Doctor> doctors = new HashSet<Doctor>();
+	
+	@OneToMany(mappedBy = "clinic", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<MedicalRoom> rooms=new HashSet<MedicalRoom>();
+	
+	@OneToMany(mappedBy = "clinic", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<Examination> examinations =new HashSet<Examination>();
+	
+	// one clinic can have many prescription, and one prescription can be in many clinics
+	@ManyToMany
+	@JoinTable(name = "prescripted", joinColumns = @JoinColumn(name = "clinic_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "prescription_id", referencedColumnName = "id"))
 	private Set<Prescription>prescriptions=new HashSet<Prescription>();
-	//Cenovnik
-	// Treba da ima spiasak slobodnih termina, sala i doktora
+	
+	// needs to add price book for appointments and for operations
+	// needs to have list of free terms, rooms and doctors
+	
+	public Clinic() {
+		super();
+	}
 
 	public Clinic(String name, String adress, String description) {
 		super();
@@ -84,12 +126,12 @@ public class Clinic {
 		this.gradeNumber = gradeNumber;
 	}
 
-	public Set<Doctor> getDoktori() {
-		return doktori;
+	public Set<Doctor> getDoctors() {
+		return doctors;
 	}
 
-	public void setDoktori(Set<Doctor> doktori) {
-		this.doktori = doktori;
+	public void setDoctors(Set<Doctor> doktori) {
+		this.doctors = doktori;
 	}
 
 	public Set<MedicalRoom> getRooms() {
