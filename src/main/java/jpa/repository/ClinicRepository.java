@@ -1,11 +1,12 @@
-package repository;
+package jpa.repository;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import modeli.Clinic;
+
+import jpa.modeli.Clinic;
 
 public interface ClinicRepository extends JpaRepository<Clinic, Long>{
 

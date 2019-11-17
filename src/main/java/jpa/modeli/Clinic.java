@@ -1,4 +1,4 @@
-package modeli;
+package jpa.modeli;
 
 import java.util.HashSet;
 import java.util.Objects;
@@ -49,7 +49,7 @@ public class Clinic {
 	// one clinic can have many prescription, and one prescription can be in many clinics
 	/*@ManyToMany
 	@JoinTable(name = "prescripted", joinColumns = @JoinColumn(name = "clinic_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "prescription_id", referencedColumnName = "id"))
-	*/private Set<Prescription>prescriptions=new HashSet<Prescription>();
+	private Set<Prescription>prescriptions=new HashSet<Prescription>();*/
 	
 	// needs to add price book for appointments and for operations
 	// needs to have list of free terms, rooms and doctors

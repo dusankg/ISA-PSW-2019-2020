@@ -1,4 +1,4 @@
-package modeli;
+package jpa.modeli;
 
 public class Prescription {
 	private long id;

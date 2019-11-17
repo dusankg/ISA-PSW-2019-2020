@@ -1,4 +1,4 @@
-package modeli;
+package jpa.modeli;
 
 import java.util.HashSet;
 import java.util.Objects;
@@ -13,6 +13,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+@Entity
 public class Diagnosis {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

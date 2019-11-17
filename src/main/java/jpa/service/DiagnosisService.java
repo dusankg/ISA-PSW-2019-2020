@@ -1,4 +1,4 @@
-package service;
+package jpa.service;
 
 import java.util.List;
 
@@ -7,14 +7,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-
-
-import modeli.Diagnosis;
-import repository.DiagnosisRepository;
-
+import jpa.modeli.Diagnosis;
+import jpa.repository.DiagnosisRepository;
 
 
 
+@Service
 public class DiagnosisService {
 	@Autowired
 	private DiagnosisRepository diagnosisRepository;

@@ -1,4 +1,4 @@
-package repository;
+package jpa.repository;
 
 import java.util.List;
 
@@ -7,7 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
-import modeli.Doctor;
+import jpa.modeli.Doctor;
 
 public interface DoctorRepository extends JpaRepository<Doctor, Long>{
 

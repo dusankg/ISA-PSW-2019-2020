@@ -1,4 +1,4 @@
-package repository;
+package jpa.repository;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
@@ -6,9 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
-
-
-import modeli.Patient;
+import jpa.modeli.Patient;
 
 public interface PatientRepository extends JpaRepository<Patient, Long>{
 

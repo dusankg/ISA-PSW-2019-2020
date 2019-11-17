@@ -1,4 +1,4 @@
-package modeli;
+package jpa.modeli;
 
 import org.springframework.data.annotation.Id;
 

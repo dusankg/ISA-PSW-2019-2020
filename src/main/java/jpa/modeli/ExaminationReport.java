@@ -1,4 +1,4 @@
-package modeli;
+package jpa.modeli;
 
 public class ExaminationReport {
 	private long id;

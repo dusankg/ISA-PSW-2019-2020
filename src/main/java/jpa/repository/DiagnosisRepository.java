@@ -1,4 +1,4 @@
-package repository;
+package jpa.repository;
 
 import java.util.List;
 
@@ -6,10 +6,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
 
-import modeli.Diagnosis;
-import modeli.Patient;
-import modeli.Diagnosis;
+import jpa.modeli.Diagnosis;
+import jpa.modeli.Patient;
+
 
 public interface DiagnosisRepository extends JpaRepository<Diagnosis, Long>{
 	Diagnosis findOneByName(String name);

@@ -1,4 +1,4 @@
-package modeli;
+package jpa.modeli;
 
 import java.util.ArrayList;
 import java.util.HashSet;

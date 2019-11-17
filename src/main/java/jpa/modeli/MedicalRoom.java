@@ -1,4 +1,4 @@
-package modeli;
+package jpa.modeli;
 
 import java.util.Date;
 import java.util.HashSet;
