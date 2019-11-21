@@ -1,4 +1,4 @@
-package controller;
+package jpa.controller;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,13 +20,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-
-
-import dto.ClinicDTO;
-import modeli.Clinic;
-import service.ClinicService;
+import jpa.dto.ClinicDTO;
+import jpa.modeli.Clinic;
+import jpa.service.ClinicService;
 
 @RestController
+@CrossOrigin(origins = { "http://localhost:3000", "http://localhost:4200", "http://localhost:8080" })
 @RequestMapping(value = "api/clinics")
 public class ClinicController {
 
@@ -63,7 +63,7 @@ public class ClinicController {
 	}
 	
 	@GetMapping(value = "/{id}")
-	public ResponseEntity<ClinicDTO> getCLinic(@PathVariable Long id) {
+	public ResponseEntity<ClinicDTO> getClinic(@PathVariable Long id) {
 
 		Clinic clinic = clinicService.findOne(id);
 

@@ -1,12 +1,11 @@
-package dto;
+package jpa.dto;
 
 import java.util.HashSet;
 import java.util.Set;
 
-import modeli.Clinic;
-import modeli.Doctor;
-import modeli.Examination;
-import modeli.Patient;
+import jpa.modeli.Clinic;
+import jpa.modeli.Doctor;
+import jpa.modeli.Patient;
 
 public class DoctorDTO {
 		
@@ -21,7 +20,7 @@ public class DoctorDTO {
 	private Clinic clinic;
 	private int phone;
 	private Set<Patient>patient=new HashSet<Patient>();
-	private Set<Examination> examinations=new HashSet<Examination>();
+	// private Set<Examination> examinations=new HashSet<Examination>();
 		
 		
 	public DoctorDTO(Doctor doctor) {
@@ -141,7 +140,7 @@ public class DoctorDTO {
 			this.patient = patient;
 		}
 
-
+		/*
 		public Set<Examination> getExaminations() {
 			return examinations;
 		}
@@ -150,7 +149,7 @@ public class DoctorDTO {
 		public void setExaminations(Set<Examination> examinations) {
 			this.examinations = examinations;
 		}
-
+		 */
 		public Clinic getClinic() {
 			return clinic;
 		}

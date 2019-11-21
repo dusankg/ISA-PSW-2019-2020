@@ -123,6 +123,12 @@ public class Clinic {
 	public void setGradeNumber(int gradeNumber) {
 		this.gradeNumber = gradeNumber;
 	}
+	
+	public double getGrade() {
+		if(gradeNumber > 0) {
+			return gradeSum/gradeNumber;
+		} else return 100;
+	}
 
 /*	public Set<Doctor> getDoctors() {
 		return doctors;

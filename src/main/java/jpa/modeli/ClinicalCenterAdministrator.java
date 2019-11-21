@@ -1,4 +1,4 @@
-package modeli;
+package jpa.modeli;
 
 public class ClinicalCenterAdministrator {
 private long id;

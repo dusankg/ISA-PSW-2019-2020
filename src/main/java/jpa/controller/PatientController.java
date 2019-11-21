@@ -1,4 +1,4 @@
-package controller;
+package jpa.controller;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,11 +20,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 
-
-
-import dto.PatientDTO;
-import modeli.Patient;
-import service.PatientService;
+import jpa.dto.PatientDTO;
+import jpa.modeli.Patient;
+import jpa.service.PatientService;
 
 
 

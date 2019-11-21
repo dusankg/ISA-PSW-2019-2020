@@ -1,4 +1,4 @@
-package controller;
+package jpa.controller;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,11 +19,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-
-
-import dto.DoctorDTO;
-import modeli.Doctor;
-import service.DoctorService;
+import jpa.dto.DoctorDTO;
+import jpa.modeli.Doctor;
+import jpa.service.DoctorService;
 
 @RestController
 @RequestMapping(value = "api/doctors")

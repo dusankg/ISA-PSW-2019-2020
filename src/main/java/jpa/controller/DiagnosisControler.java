@@ -1,4 +1,4 @@
-package controller;
+package jpa.controller;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,11 +19,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-
-
-import dto.DiagnosisDTO;
-import modeli.Diagnosis;
-import service.DiagnosisService;
+import jpa.dto.DiagnosisDTO;
+import jpa.modeli.Diagnosis;
+import jpa.service.DiagnosisService;
 
 @RestController
 @RequestMapping(value = "api/diagnosis")
@@ -36,7 +34,7 @@ public class DiagnosisControler {
 
 		List<Diagnosis> diagnosis = diagnosisService.findAll();
 
-		// convert Diagnosiss to DTOs
+		// convert Diagnosis to DTOs
 		List<DiagnosisDTO> diagnosisDTO = new ArrayList<>();
 		for (Diagnosis p : diagnosis) {
 			diagnosisDTO.add(new DiagnosisDTO(p));
