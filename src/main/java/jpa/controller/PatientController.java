@@ -26,11 +26,14 @@ import jpa.modeli.Patient;
 import jpa.service.PatientService;
 
 
+import jpa.dto.PatientDTO;
+import jpa.modeli.Patient;
+import jpa.service.PatientService;
 
 
-@RestController
-@CrossOrigin(origins = { "http://localhost:3000", "http://localhost:4200", "http://localhost:8080" })
-@RequestMapping(value = "api/patients")
+	@RestController
+	@CrossOrigin(origins = { "http://localhost:3000", "http://localhost:4200", "http://localhost:8080" })
+	@RequestMapping(value = "api/patients")
 public class PatientController {
 
 		@Autowired

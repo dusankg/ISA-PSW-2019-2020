@@ -23,6 +23,11 @@ import jpa.dto.DiagnosisDTO;
 import jpa.modeli.Diagnosis;
 import jpa.service.DiagnosisService;
 
+
+import jpa.dto.DiagnosisDTO;
+import jpa.modeli.Diagnosis;
+import jpa.service.DiagnosisService;
+
 @RestController
 @RequestMapping(value = "api/diagnosis")
 public class DiagnosisControler {

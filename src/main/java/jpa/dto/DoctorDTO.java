@@ -5,6 +5,7 @@ import java.util.Set;
 
 import jpa.modeli.Clinic;
 import jpa.modeli.Doctor;
+import jpa.modeli.Examination;
 import jpa.modeli.Patient;
 
 public class DoctorDTO {

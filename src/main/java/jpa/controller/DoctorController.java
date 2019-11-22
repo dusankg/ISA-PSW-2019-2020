@@ -24,6 +24,11 @@ import jpa.dto.DoctorDTO;
 import jpa.modeli.Doctor;
 import jpa.service.DoctorService;
 
+
+import jpa.dto.DoctorDTO;
+import jpa.modeli.Doctor;
+import jpa.service.DoctorService;
+
 @RestController
 @CrossOrigin(origins = { "http://localhost:3000", "http://localhost:4200", "http://localhost:8080" })
 @RequestMapping(value = "api/doctors")
