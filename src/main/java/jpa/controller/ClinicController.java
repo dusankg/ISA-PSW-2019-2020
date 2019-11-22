@@ -79,12 +79,14 @@ public class ClinicController {
 	public ResponseEntity<ClinicDTO> saveClinic(@RequestBody ClinicDTO clinicDTO) {
 
 		Clinic clinic = new Clinic();
+		clinic.setId(222);
 		clinic.setName(clinicDTO.getName());
 		clinic.setAdress(clinicDTO.getAdress());
 		clinic.setDescription(clinicDTO.getDescription());
 		clinic.setGradeSum(clinicDTO.getGradeSum());
 		clinic.setGradeNumber(clinicDTO.getGradeNumber());
 		
+		System.out.println("********* Prosledjeni naziv klinike: " + clinicDTO.getName()+ " ***************");
 
 		clinic = clinicService.save(clinic);
 		return new ResponseEntity<>(new ClinicDTO(clinic), HttpStatus.CREATED);

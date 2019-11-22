@@ -1,5 +1,7 @@
 <template>
   <div class="container">
+    <DoctorApp />
+    <PatientApp />
     <ClinicCenterApp />
   </div>
 </template>
@@ -7,10 +9,15 @@
 <script>
 import ClinicCenterApp from './components/ClinicCenterApp.vue'
 
+import PatientApp from './components/PatientApp.vue'
+import DoctorApp from './components/DoctorApp.vue'
+//import DiagnosisApp from './components/DiagnosisApp.vue'
 export default {
-  name: 'ClinicCenter',
+  name: 'Patients',
   components: {
-    ClinicCenterApp
+    PatientApp,
+    ClinicCenterApp,
+    DoctorApp
   }
 }
 </script>
