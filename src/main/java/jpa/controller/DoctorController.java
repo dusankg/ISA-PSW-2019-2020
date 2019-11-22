@@ -40,7 +40,7 @@ public class DoctorController {
 	
 	@GetMapping(value = "/all")
 	public ResponseEntity<List<DoctorDTO>> getAllDoctors(){
-		List<Doctor> doctors = new ArrayList<>();
+		List<Doctor> doctors = doctorService.findAll();
 		
 		//convert doctors to DTOs
 		List<DoctorDTO> doctorsDTO = new ArrayList<>();
@@ -119,65 +119,15 @@ public class DoctorController {
 		}
 	}
 
-	@GetMapping(value = "/findName")
-	public ResponseEntity<DoctorDTO> getDoctorByName(@RequestParam String name) {
-
-		Doctor doctor = doctorService.findOneByName(name);
-		if (doctor == null) {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		}
-		return new ResponseEntity<>(new DoctorDTO(doctor), HttpStatus.OK);
-	}
 	
-	@GetMapping(value = "/findSurname")
-	public ResponseEntity<DoctorDTO> getDoctorBySurname(@RequestParam String surname) {
-
-		Doctor doctor = doctorService.findOneBySurname(surname);
-		if (doctor == null) {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		}
-		return new ResponseEntity<>(new DoctorDTO(doctor), HttpStatus.OK);
-	}
-
-	@GetMapping(value = "/findAllByName")
-	public ResponseEntity<List<DoctorDTO>> getByName(@RequestParam String name) {
-
-		List<Doctor> doctors = doctorService.findByName(name);
-
-		// convert doctors to DTOs
-		List<DoctorDTO> doctorsDTO = new ArrayList<>();
-		for (Doctor d : doctors) {
-			doctorsDTO.add(new DoctorDTO(d));
-		}
-		return new ResponseEntity<>(doctorsDTO, HttpStatus.OK);
-	}
-
-	@GetMapping(value = "/findAllBySurname")
-	public ResponseEntity<List<DoctorDTO>> getBySurname(@RequestParam String surname) {
-
-		List<Doctor> doctors = doctorService.findBySurname(surname);
-
-		// convert doctors to DTOs
-		List<DoctorDTO> doctorsDTO = new ArrayList<>();
-		for (Doctor d : doctors) {
-			doctorsDTO.add(new DoctorDTO(d));
-		}
-		return new ResponseEntity<>(doctorsDTO, HttpStatus.OK);
-	}
 	
-	@GetMapping(value = "/findFirstLast")
-	public ResponseEntity<List<DoctorDTO>> getDoctorsByFirstNameAndLastName(@RequestParam String name,
-			@RequestParam String surname) {
+	
 
-		List<Doctor> doctors = doctorService.findByNameAndSurname(name, surname);
+	
 
-		// convert doctors to DTOs
-		List<DoctorDTO> doctorsDTO = new ArrayList<>();
-		for (Doctor d : doctors) {
-			doctorsDTO.add(new DoctorDTO(d));
-		}
-		return new ResponseEntity<>(doctorsDTO, HttpStatus.OK);
-	}
+	
+	
+	
 
 	
 }

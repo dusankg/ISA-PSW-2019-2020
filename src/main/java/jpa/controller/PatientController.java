@@ -85,6 +85,7 @@ public class PatientController {
 		public ResponseEntity<PatientDTO> savePatient(@RequestBody PatientDTO PatientDTO) {
 
 			Patient Patient = new Patient();
+			Patient.setId(111);
 			Patient.setName(PatientDTO.getName());
 			Patient.setSurname(PatientDTO.getSurname());
 			Patient.setEmail(PatientDTO.getEmail());

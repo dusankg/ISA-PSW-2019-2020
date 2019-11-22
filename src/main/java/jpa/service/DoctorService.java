@@ -36,7 +36,9 @@ public class DoctorService {
 	public List<Doctor> findAll() {
 		return doctorRepository.findAll();
 	}
-
+	public Page<Doctor> findAll(Pageable page) {
+		return doctorRepository.findAll(page);
+	}
 	public List<Doctor> findByName(String name) {
 		return doctorRepository.findAllByName(name);
 	}

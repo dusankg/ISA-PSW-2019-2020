@@ -22,15 +22,18 @@ public class DoctorDTO {
 	private int phone;
 	private Set<Patient>patient=new HashSet<Patient>();
 	// private Set<Examination> examinations=new HashSet<Examination>();
+public DoctorDTO() {
 		
+	}
 		
 	public DoctorDTO(Doctor doctor) {
-		this( doctor.getName(), doctor.getSurname(), doctor.getEmail(), doctor.getPassword(), doctor.getAdress(), doctor.getCity(), doctor.getState(), doctor.getPhone());
+		this(doctor.getId(), doctor.getName(), doctor.getSurname(), doctor.getEmail(), doctor.getPassword(), doctor.getAdress(), doctor.getCity(), doctor.getState(), doctor.getPhone());
 	}
 	
-	public DoctorDTO(String name, String surname, String email, String password, String adress, String city, String state,
+	public DoctorDTO(Long id,String name, String surname, String email, String password, String adress, String city, String state,
 		int phone) {
 		super();
+		this.id=id;
 		this.name = name;
 		this.surname = surname;
 		this.email = email;
