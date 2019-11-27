@@ -1,6 +1,6 @@
 import Vue from "vue";
 import Router from "vue-router";
-import DoctorApp from "../components/ListDoctorComponent.vue"
+import DoctorApp from "./components/ListDoctorComponent.vue"
 Vue.use(Router);
 
 const router = new Router({
@@ -20,6 +20,11 @@ const router = new Router({
       path: "/doctors",
       name: "ListDoctors",
       component: DoctorApp
+    },
+    {
+      path: "/diagnosis",
+      name: "ListDiagnosis",
+      component: () => import("./components/ListDiagnosisComponent")
     }
   ]
 });

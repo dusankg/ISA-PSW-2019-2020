@@ -1,9 +1,9 @@
 import axios from "axios";
-
+Vue.use(Vuelidate);
 <template>
   <div class="container">
     <h3>All clinics</h3>
-    <router-link to = "/doctors"> Neki link</router-link>
+    <router-link to = "/doctors"> Neki link </router-link>
     <div class="container">
       <table class="table">
         <thead>
@@ -29,13 +29,13 @@ import axios from "axios";
     <h3>Add new clinic</h3>
     <div class="container">
       <form @submit="validateAndSubmit">
-        <fieldset class="form-group">
+        <fieldset class="form-group" name="nameField">
           <label>Name</label>
-          <input type="text" class="form-control" v-model="name" >
+          <input type="text" class="form-control" v-model="name" required>
         </fieldset>
         <fieldset class="form-group">
           <label>Adress</label>
-          <input type="text" class="form-control" v-model="adress">
+          <input type="text" class="form-control" v-model="adress" required>
         </fieldset>
         <fieldset class="form-group">
           <label>Description</label>
@@ -45,8 +45,6 @@ import axios from "axios";
       </form>
     </div>
   </div>
-
-
 
   </div>
 
@@ -74,6 +72,15 @@ export default {
     },
     validateAndSubmit(e) {
     e.preventDefault();
+
+    this.errors = [];
+      if (!this.name) {
+        this.errors.push("Enter valid values");
+      } else if (this.adress.length < 1 ) {
+        this.errors.push("Enter atleast 5 characters in Adress");
+      }
+
+      if (this.errors.length === 0) {
     var temp={
       "name":this.name,
       "adress":this.adress,
@@ -81,8 +88,12 @@ export default {
       "gradeSum":0,
       "gradeNumber":0
     }
-    Axios.post("http://localhost:8082/api/clinics", temp);
+    this.name = ""
+    this.adress = ""
+    this.description = ""
+    Axios.post("http://localhost:8082/api/clinics", temp)
     this.refreshClinics();
+      }
   }
   },
   created() {
