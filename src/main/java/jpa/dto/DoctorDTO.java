@@ -18,9 +18,9 @@ public class DoctorDTO {
 	private String adress;
 	private String city;
 	private String state;
-	private Clinic clinic;
+	//private Clinic clinic;
 	private int phone;
-	private Set<Patient>patient=new HashSet<Patient>();
+	//private Set<Patient>patient=new HashSet<Patient>();
 	// private Set<Examination> examinations=new HashSet<Examination>();
 public DoctorDTO() {
 		
@@ -134,7 +134,7 @@ public DoctorDTO() {
 			this.phone = phone;
 		}
 
-
+		/*
 		public Set<Patient> getPatient() {
 			return patient;
 		}
@@ -144,7 +144,7 @@ public DoctorDTO() {
 			this.patient = patient;
 		}
 
-		/*
+		
 		public Set<Examination> getExaminations() {
 			return examinations;
 		}
@@ -153,7 +153,7 @@ public DoctorDTO() {
 		public void setExaminations(Set<Examination> examinations) {
 			this.examinations = examinations;
 		}
-		 */
+		 
 		public Clinic getClinic() {
 			return clinic;
 		}
@@ -162,5 +162,5 @@ public DoctorDTO() {
 		public void setClinic(Clinic clinic) {
 			this.clinic = clinic;
 		}
-
+		*/
 }

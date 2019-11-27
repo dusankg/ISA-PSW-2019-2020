@@ -70,13 +70,14 @@ public class DoctorController {
 	public ResponseEntity<DoctorDTO> saveDoctor(@RequestBody DoctorDTO doctorDTO) {
 
 		Doctor doctor = new Doctor();
+		doctor.setId(222);
 		doctor.setName(doctorDTO.getName());
 		doctor.setSurname(doctorDTO.getSurname());
 		doctor.setEmail(doctorDTO.getEmail());
 		doctor.setPassword(doctorDTO.getPassword());
 		doctor.setAdress(doctorDTO.getAdress());
 		doctor.setCity(doctorDTO.getCity());
-		doctor.setState(doctorDTO.getCity());
+		doctor.setState(doctorDTO.getState());
 		doctor.setPhone(doctorDTO.getPhone());
 		
 		doctor = doctorService.save(doctor);
@@ -99,7 +100,7 @@ public class DoctorController {
 		doctor.setPassword(doctorDTO.getPassword());
 		doctor.setAdress(doctorDTO.getAdress());
 		doctor.setCity(doctorDTO.getCity());
-		doctor.setState(doctorDTO.getCity());
+		doctor.setState(doctorDTO.getState());
 		doctor.setPhone(doctorDTO.getPhone());
 
 		doctor = doctorService.save(doctor);
