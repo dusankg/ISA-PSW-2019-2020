@@ -1,5 +1,7 @@
 package jpa.controller;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -20,9 +22,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+
 
 import jpa.dto.PatientDTO;
 import jpa.modeli.Patient;
+import jpa.service.EmailService;
 import jpa.service.PatientService;
 
 
@@ -35,10 +48,18 @@ import jpa.service.PatientService;
 	@CrossOrigin(origins = { "http://localhost:3000", "http://localhost:4200", "http://localhost:8080" })
 	@RequestMapping(value = "api/patients")
 public class PatientController {
+		private Logger logger = LoggerFactory.getLogger(PatientController.class);
+
+		@Autowired
+		private EmailService emailService;
 
 		@Autowired
 		private PatientService patientService;
 
+		
+		
+		
+		
 		@GetMapping(value = "/all")
 		public ResponseEntity<List<PatientDTO>> getAllPatients() {
 
@@ -96,7 +117,25 @@ public class PatientController {
 			Patient.setPhone(PatientDTO.getPhone());
 			Patient.setLbo(PatientDTO.getLbo());
 
+			try{    
+				BufferedWriter out = new BufferedWriter( 
+		                   new FileWriter("C:\\Users\\Petar\\workspace1\\ISA-PSW-2019-2020\\src\\main\\resources\\data-postgres.sql", true)); 
+		            out.write(Patient.toString()+"\n"); 
+		            out.close();
+				//FileWriter fw=new FileWriter("C:\\Users\\Petar\\workspace1\\ISA-PSW-2019-2020\\src\\main\\resources\\data-postgres.sql");    
+				//fw.write(Patient.toString());    
+				//fw.close();    
+			}catch(Exception e){System.out.println(e);} 
+			
+			try {
+				emailService.sendNotificaitionAsync(Patient);
+			}catch( Exception e ){
+				logger.info("Greska prilikom slanja emaila: " + e.getMessage());
+			}
+
+			
 			Patient = patientService.save(Patient);
+			
 			return new ResponseEntity<>(new PatientDTO(Patient), HttpStatus.CREATED);
 		}
 

@@ -37,6 +37,34 @@ import axios from "axios"
           <label>Email</label>
           <input type="text" class="form-control" v-model="email">
         </fieldset>
+         <fieldset class="form-group">
+          <label>Password</label>
+          <input type="text" class="form-control" v-model="password">
+        </fieldset>
+        <fieldset class="form-group">
+          <label>Password2</label>
+          <input type="text" class="form-control" v-model="password2">
+        </fieldset>
+         <fieldset class="form-group">
+          <label>Adress</label>
+          <input type="text" class="form-control" v-model="adress">
+        </fieldset>
+         <fieldset class="form-group">
+          <label>City</label>
+          <input type="text" class="form-control" v-model="city">
+        </fieldset>
+         <fieldset class="form-group">
+          <label>State</label>
+          <input type="text" class="form-control" v-model="state">
+        </fieldset>
+         <fieldset class="form-group">
+          <label>Phone</label>
+          <input type="text" class="form-control" v-model="phone">
+        </fieldset>
+         <fieldset class="form-group">
+          <label>Lbo</label>
+          <input type="text" class="form-control" v-model="lbo">
+        </fieldset>
         <button class="btn btn-success" type="submit">Save</button>
       </form>
     </div>
@@ -78,16 +106,16 @@ export default {
       "name":this.name,
       "surname":this.surname,
       "email":this.email,
-      "adress":" ",
-      "password": "111",
-      "city":"Zrenjanin",
-      "state":"Srbija",
-      "phone": 0,
-      "lbo": 0
-
+      "adress":this.adress,
+      "password": this.password,
+      "city":this.city,
+      "state":this.state,
+      "phone":this.phone,
+      "lbo": this.lbo
     }
+    if(this.password==this.password2){
     Axios.post("http://localhost:8082/api/patients", temp);
-    this.refreshPatients();
+    }this.refreshPatients();
   }
 
 

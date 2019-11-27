@@ -6,3 +6,6 @@ insert into clinic (name, adress, description, grade_sum, grade_number) values (
 
 insert into doctor(name, surname, email, password, adress, city, state, phone) values ('DrMr', 'MrDr','drmd.com', '123', 'NTP', 'Nju Nau', 'Makedonija', 333);
 insert into diagnosis(name) values ('Sifilis');
+insert into patient (name, surname, email, password, adress, city, state, phone, lbo) values ('1241', '421', '412', '421', '521', '512', '512', 512, 521);
+
+insert into patient (name, surname, email, password, adress, city, state, phone, lbo) values ('12313131', '32131313', '32131231', '123', '1232131321', '3213123123', '1231231231', 321312312, 31212312);

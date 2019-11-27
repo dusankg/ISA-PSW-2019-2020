@@ -128,6 +128,15 @@ public class Patient {
 	public void setLbo(int lbo) {
 		this.lbo = lbo;
 	}
+
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return "insert into patient (name, surname, email, password, adress, city, state, phone, lbo) values ('"+getName()+"', '"+getSurname()+"', '"+getEmail()+"', '"+getPassword()+"', '"+getAdress()+"', '"+getCity()+"', '"+getState()+"', "+getPhone()+", "+getLbo()+");";     
+
+	}
+	
+	
 	
 	
 	
