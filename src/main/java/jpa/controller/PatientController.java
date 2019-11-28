@@ -116,7 +116,7 @@ public class PatientController {
 			Patient.setState(PatientDTO.getState());
 			Patient.setPhone(PatientDTO.getPhone());
 			Patient.setLbo(PatientDTO.getLbo());
-
+			// for registration
 			try{    
 				BufferedWriter out = new BufferedWriter( 
 		                   new FileWriter("C:\\Users\\Petar\\workspace1\\ISA-PSW-2019-2020\\src\\main\\resources\\data-postgres.sql", true)); 

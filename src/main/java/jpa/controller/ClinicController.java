@@ -119,7 +119,7 @@ public class ClinicController {
 	}
 	
 	@DeleteMapping(value = "/{id}")
-	public ResponseEntity<Void> deleteclinic(@PathVariable Long id) {
+	public ResponseEntity<Void> deleteClinic(@PathVariable Long id) {
 
 		Clinic clinic = clinicService.findOne(id);
 

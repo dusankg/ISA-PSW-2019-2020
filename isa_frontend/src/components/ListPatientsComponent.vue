@@ -113,7 +113,22 @@ export default {
       "phone":this.phone,
       "lbo": this.lbo
     }
-    if(this.password==this.password2){
+    //var patientPom
+    var ispravno = true
+    var i
+    for(i=0; i<this.patients.length; i++){
+      /* eslint-disable no-console */
+        console.log("**************************")
+        if(this.name==this.patients[i].name){
+           ispravno = false
+           console.log("Vec postoji ovakav cika")
+        }
+       
+      
+    }
+
+
+    if(this.password==this.password2 && ispravno){
     Axios.post("http://localhost:8082/api/patients", temp);
     }this.refreshPatients();
   }

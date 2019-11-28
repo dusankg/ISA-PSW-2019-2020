@@ -10,4 +10,6 @@ insert into patient (name, surname, email, password, adress, city, state, phone,
 
 insert into patient (name, surname, email, password, adress, city, state, phone, lbo) values ('12313131', '32131313', '32131231', '123', '1232131321', '3213123123', '1231231231', 321312312, 31212312);
 
+insert into clinical_center_administrator (name, surname, email, password, adress, city, state, phone, validated) values ('12313131', '32131313', '32131231', '123', '1232131321', '3213123123', '1231231231', 111222333, false);
+
 insert into medical_room (operational, reserved, room_codename, date) values (true, false, 'Soba333', '1999-05-05');
