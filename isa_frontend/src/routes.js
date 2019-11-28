@@ -25,6 +25,11 @@ const router = new Router({
       path: "/diagnosis",
       name: "ListDiagnosis",
       component: () => import("./components/ListDiagnosisComponent")
+    },
+    {
+      path: "/medicalrooms",
+      name: "ListMedicalRooms",
+      component: () => import("./components/ListMedicalRoomsComponent")
     }
   ]
 });
