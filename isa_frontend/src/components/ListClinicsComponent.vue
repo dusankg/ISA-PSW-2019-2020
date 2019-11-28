@@ -91,7 +91,10 @@ export default {
     this.name = ""
     this.adress = ""
     this.description = ""
+    var id = 1
+    Axios.put("http://localhost:8082/api/clinicalCenterAdministrators/validate", id)
     Axios.post("http://localhost:8082/api/clinics", temp)
+
     this.refreshClinics();
       }
   }
