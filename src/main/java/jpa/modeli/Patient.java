@@ -128,7 +128,7 @@ public class Patient {
 	public void setLbo(int lbo) {
 		this.lbo = lbo;
 	}
-
+	// for registration just a test
 	@Override
 	public String toString() {
 		// TODO Auto-generated method stub
