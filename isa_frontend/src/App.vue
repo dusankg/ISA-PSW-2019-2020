@@ -1,10 +1,13 @@
 <template>
   <div class="container">
+    <router-view/>
     <DiagnosisApp />
     <DoctorApp />
     <PatientApp />
     <ClinicCenterApp />
     <DiagnosisApp />
+    <EnterClinicalCenterAdministratorApp />
+    
   </div>
 </template>
 
@@ -14,13 +17,15 @@ import ClinicCenterApp from './components/ClinicCenterApp.vue'
 import PatientApp from './components/PatientApp.vue'
 import DoctorApp from './components/DoctorApp.vue'
 import DiagnosisApp from './components/DiagnosisApp.vue'
+import EnterClinicalCenterAdministratorApp from'./components/EnterClinicalCenterAdministratorApp.vue'
 export default {
-  name: 'Patients',
+  name: 'app',
   components: {
     PatientApp,
     ClinicCenterApp,
     DoctorApp,
-    DiagnosisApp
+    DiagnosisApp,
+    EnterClinicalCenterAdministratorApp
   }
 }
 </script>

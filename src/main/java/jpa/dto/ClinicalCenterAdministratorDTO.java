@@ -23,6 +23,9 @@ public class ClinicalCenterAdministratorDTO {
 	private String state;
 
 	private int phone;
+	
+	private boolean validated;
+	
 	public ClinicalCenterAdministratorDTO(String name, String surname, String email, String password, String adress,
 			String city, String state, int phone) {
 		super();
@@ -34,6 +37,7 @@ public class ClinicalCenterAdministratorDTO {
 		this.city = city;
 		this.state = state;
 		this.phone = phone;
+		this.validated = false;
 	}
 
 	public ClinicalCenterAdministratorDTO(Long id, String name, String surname, String email, String password,
@@ -48,6 +52,7 @@ public class ClinicalCenterAdministratorDTO {
 		this.city = city;
 		this.state = state;
 		this.phone = phone;
+		this.validated = false;
 	}
 	
 	public ClinicalCenterAdministratorDTO(ClinicalCenterAdministrator admin) {
@@ -61,6 +66,7 @@ public class ClinicalCenterAdministratorDTO {
 		this.city = admin.getCity();
 		this.state = admin.getState();
 		this.phone = admin.getPhone();
+		this.validated = admin.isValidated();
 	}
 	public ClinicalCenterAdministratorDTO() {
 		super();
@@ -136,6 +142,14 @@ public class ClinicalCenterAdministratorDTO {
 
 	public void setPhone(int phone) {
 		this.phone = phone;
+	}
+
+	public boolean isValidated() {
+		return validated;
+	}
+
+	public void setValidated(boolean validated) {
+		this.validated = validated;
 	}
 	
 	

@@ -36,6 +36,10 @@ public class ClinicalCenterAdministrator {
 	
 	@Column(name="phone", nullable = false)
 	private int phone;
+	
+	@Column(name="validated", nullable = false)
+	private boolean validated;
+	
 	public ClinicalCenterAdministrator(String name, String surname, String email, String password, String adress,
 			String city, String state, int phone) {
 		super();
@@ -47,9 +51,11 @@ public class ClinicalCenterAdministrator {
 		this.city = city;
 		this.state = state;
 		this.phone = phone;
+		this.validated = false;
 	}
 	public ClinicalCenterAdministrator() {
 		super();
+		this.validated = false;
 	}
 	public long getId() {
 		return id;
@@ -104,6 +110,12 @@ public class ClinicalCenterAdministrator {
 	}
 	public void setPhone(int phone) {
 		this.phone = phone;
+	}
+	public boolean isValidated() {
+		return validated;
+	}
+	public void setValidated(boolean validated) {
+		this.validated = validated;
 	}
 	
 	
