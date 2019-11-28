@@ -5,6 +5,7 @@
     <PatientApp />
     <ClinicCenterApp />
     <DiagnosisApp />
+    <MedicalRoomApp />
   </div>
 </template>
 
@@ -14,13 +15,16 @@ import ClinicCenterApp from './components/ClinicCenterApp.vue'
 import PatientApp from './components/PatientApp.vue'
 import DoctorApp from './components/DoctorApp.vue'
 import DiagnosisApp from './components/DiagnosisApp.vue'
+import MedicalRoomApp from './components/MedicalRoomApp.vue'
+
 export default {
   name: 'Patients',
   components: {
     PatientApp,
     ClinicCenterApp,
     DoctorApp,
-    DiagnosisApp
+    DiagnosisApp,
+    MedicalRoomApp
   }
 }
 </script>

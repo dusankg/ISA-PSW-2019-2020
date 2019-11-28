@@ -27,8 +27,6 @@ public class DoctorService {
 		return doctorRepository.findOneBySurname(surname);
 	}
 	
-	// Pageable check if it needs to be added
-	
 	public Doctor findOneByEmail(String email) {
 		return doctorRepository.findOneByEmail(email);
 	}
@@ -36,9 +34,11 @@ public class DoctorService {
 	public List<Doctor> findAll() {
 		return doctorRepository.findAll();
 	}
+	
 	public Page<Doctor> findAll(Pageable page) {
 		return doctorRepository.findAll(page);
-	}
+	} 
+	
 	public List<Doctor> findByName(String name) {
 		return doctorRepository.findAllByName(name);
 	}
