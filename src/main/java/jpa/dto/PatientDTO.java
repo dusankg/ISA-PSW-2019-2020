@@ -15,6 +15,7 @@ public class PatientDTO {
 	private String state;
 	private int phone;
 	private int lbo;
+	private boolean validated;
 	
 	
 	public PatientDTO() {
@@ -34,10 +35,21 @@ public class PatientDTO {
 		this.state=state2;
 		this.phone=phone2;
 		this.lbo=lbo2;
+		this.validated = false;
 	}
 	
 	public PatientDTO(Patient patient) {
-		this(patient.getId(),patient.getName(), patient.getSurname(), patient.getEmail(), patient.getPassword(),patient.getAdress(),patient.getCity(),patient.getState(),patient.getPhone(),patient.getLbo());
+		this.id=patient.getId();
+		this.name=patient.getName();
+		this.surname=patient.getSurname();
+		this.email=patient.getEmail();
+		this.password=patient.getPassword();
+		this.adress=patient.getAdress();
+		this.city=patient.getCity();
+		this.state=patient.getState();
+		this.phone=patient.getPhone();
+		this.lbo=patient.getLbo();
+		this.validated = patient.isValidated();
 	}
 
 
@@ -138,6 +150,16 @@ public class PatientDTO {
 
 	public void setLbo(int lbo) {
 		this.lbo = lbo;
+	}
+
+
+	public boolean isValidated() {
+		return validated;
+	}
+
+
+	public void setValidated(boolean validated) {
+		this.validated = validated;
 	}
 
 

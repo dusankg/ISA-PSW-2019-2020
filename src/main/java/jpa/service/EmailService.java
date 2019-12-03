@@ -36,10 +36,10 @@ public class EmailService {
 		System.out.println("Slanje emaila...");
 
 		SimpleMailMessage mail = new SimpleMailMessage();
-		mail.setTo("japatrisko97@gmail.com");
+		mail.setTo("isapswgrupa11@gmail.com");
 		mail.setFrom(env.getProperty("spring.mail.username"));
-		mail.setSubject("Primer slanja emaila pomoću asinhronog Spring taska");
-		mail.setText("Pozdrav " + patient.getName() + ",\n\nhvala što pratiš ISA.");
+		mail.setSubject("Validacija pacijenta: " + patient.getName());
+		mail.setText("Pozdrav " + patient.getName() + ",\n\nhvala što pratiš ISA. Ovde ces aktivirati nalog "+ "http://localhost:8082/api/patients/validate/" + patient.getId());
 		javaMailSender.send(mail);
 
 		System.out.println("Email poslat!");

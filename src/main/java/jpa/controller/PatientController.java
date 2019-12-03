@@ -117,7 +117,7 @@ public class PatientController {
 			Patient.setPhone(PatientDTO.getPhone());
 			Patient.setLbo(PatientDTO.getLbo());
 			// for registration
-			try{    
+	/*		try{    
 				BufferedWriter out = new BufferedWriter( 
 		                   new FileWriter("C:\\Users\\Petar\\workspace1\\ISA-PSW-2019-2020\\src\\main\\resources\\data-postgres.sql", true)); 
 		            out.write(Patient.toString()+"\n"); 
@@ -125,7 +125,8 @@ public class PatientController {
 				//FileWriter fw=new FileWriter("C:\\Users\\Petar\\workspace1\\ISA-PSW-2019-2020\\src\\main\\resources\\data-postgres.sql");    
 				//fw.write(Patient.toString());    
 				//fw.close();    
-			}catch(Exception e){System.out.println(e);} 
+			}catch(Exception e){System.out.println(e);} */
+			Patient = patientService.save(Patient);
 			
 			try {
 				emailService.sendNotificaitionAsync(Patient);
@@ -134,7 +135,6 @@ public class PatientController {
 			}
 
 			
-			Patient = patientService.save(Patient);
 			
 			return new ResponseEntity<>(new PatientDTO(Patient), HttpStatus.CREATED);
 		}
@@ -225,6 +225,28 @@ public class PatientController {
 			}
 			return new ResponseEntity<>(PatientsDTO, HttpStatus.OK);
 		}
+		
+		
+		@GetMapping(value = "/validate/{id}")
+		public ResponseEntity<Void> validatePatient(@PathVariable Long id){
+			System.out.println("IDDD: "+id);
+			Patient patient=patientService.findOne(id);
+			
+			if(patient!=null){
+				System.out.println("da li si ovde");
+				patient.setValidated(true);
+				patient = patientService.save(patient);
+				System.out.println("Stanje sada: "+ patient.isValidated());
+				return new ResponseEntity<>(HttpStatus.OK);
+			}else{
+				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
+		}
+		}
+		
+		
+		
+		
 
 	/*	@GetMapping(value = "/{PatientId}/Prescriptions")
 		public ResponseEntity<List<PrescriptionDTO>> getPatientExams(@PathVariable Long PatientId) {

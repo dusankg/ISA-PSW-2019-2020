@@ -1,6 +1,7 @@
 <template>
   <div class="container">
     <router-view/>
+    <LoginApp/>
     <DiagnosisApp />
     <DoctorApp />
     <PatientApp />
@@ -14,7 +15,7 @@
 
 <script>
 import ClinicCenterApp from './components/ClinicCenterApp.vue'
-
+import LoginApp from './components/LoginApp.vue'
 import PatientApp from './components/PatientApp.vue'
 import DoctorApp from './components/DoctorApp.vue'
 import DiagnosisApp from './components/DiagnosisApp.vue'
@@ -28,8 +29,8 @@ export default {
     ClinicCenterApp,
     DoctorApp,
     DiagnosisApp,
-    MedicalRoomApp
-    EnterClinicalCenterAdministratorApp
+    EnterClinicalCenterAdministratorApp,
+    LoginApp
   }
 }
 </script>

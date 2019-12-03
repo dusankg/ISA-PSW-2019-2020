@@ -39,6 +39,8 @@ public class Patient {
 	private int phone;
 	@Column(name = "lbo", nullable = false)
 	private int lbo; // Licni broj osiguranika
+	@Column(name="validated", nullable = false)
+	private boolean validated;
 	
 	
 	
@@ -51,7 +53,8 @@ public class Patient {
 	
 	
 	public Patient(){
-		
+		super();
+		this.validated = false;
 	}
 	
 	// Konstruktor, ali bez zato sto bi on morao sam da se generise
@@ -67,6 +70,7 @@ public class Patient {
 		this.state = state;
 		this.phone = phone;
 		this.lbo = lbo;
+		this.validated = false;
 	}
 	public long getId() {
 		return id;
@@ -134,6 +138,14 @@ public class Patient {
 		// TODO Auto-generated method stub
 		return "insert into patient (name, surname, email, password, adress, city, state, phone, lbo) values ('"+getName()+"', '"+getSurname()+"', '"+getEmail()+"', '"+getPassword()+"', '"+getAdress()+"', '"+getCity()+"', '"+getState()+"', "+getPhone()+", "+getLbo()+");";     
 
+	}
+
+	public boolean isValidated() {
+		return validated;
+	}
+
+	public void setValidated(boolean validated) {
+		this.validated = validated;
 	}
 	
 	
