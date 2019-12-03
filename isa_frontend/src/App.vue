@@ -28,7 +28,7 @@ export default {
     ClinicCenterApp,
     DoctorApp,
     DiagnosisApp,
-    LoginApp
+    LoginApp,
     MedicalRoomApp,
     EnterClinicalCenterAdministratorApp
   }

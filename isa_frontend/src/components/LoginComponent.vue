@@ -28,7 +28,7 @@ Vue.use(Vuelidate);
 
 <script>
 import PatientService from '../service/PatientService';
-import Axios from 'axios';
+//import Axios from 'axios';
 export default {
   name: "Login",
   data() {
@@ -54,12 +54,13 @@ export default {
     }
     var ispravno = false
     var i
+    var indexNadjenog 
     for(i=0; i<this.patients.length; i++){
       /* eslint-disable no-console */
         if(temp.email == this.patients[i].email){
            if(temp.password == this.patients[i].password){
                ispravno = true ;
-               
+               indexNadjenog = i;
            }
            
         }
@@ -68,7 +69,8 @@ export default {
     }
 
     if(ispravno == true){
-        Axios.get("http://localhost:8082/api/patients/all")
+        //Axios.get("http://localhost:8082/api/patients/all")
+        this.$router.push('/patientHomePage/'+ indexNadjenog) 
         console.log("Nasao")
     }
 
