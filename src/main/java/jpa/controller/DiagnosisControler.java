@@ -129,10 +129,6 @@ public class DiagnosisControler {
 		return new ResponseEntity<>(new DiagnosisDTO(Diagnosis), HttpStatus.OK);
 	}
 
-	//PROVERITI DAL TREBA JOS DODATI
-
-	
-
 	
 
 /*	@GetMapping(value = "/{DiagnosisId}/Prescriptions")

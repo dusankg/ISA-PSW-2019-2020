@@ -75,36 +75,36 @@ public class ClinicalCenterAdministratorController {
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<ClinicalCenterAdministratorDTO> getAdministrators(@PathVariable Long id) {
 
-		ClinicalCenterAdministrator clinic = service.findOne(id);
+		ClinicalCenterAdministrator admin = service.findOne(id);
 
 		// studen must exist
-		if (clinic == null) {
+		if (admin == null) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 
-		return new ResponseEntity<ClinicalCenterAdministratorDTO>(new ClinicalCenterAdministratorDTO(clinic), HttpStatus.OK);
+		return new ResponseEntity<ClinicalCenterAdministratorDTO>(new ClinicalCenterAdministratorDTO(admin), HttpStatus.OK);
 	}
 	
 	@PostMapping(consumes = "application/json")
 	public ResponseEntity<ClinicalCenterAdministratorDTO> saveAdministrator(@RequestBody ClinicalCenterAdministratorDTO clinicDTO) {
 
-		ClinicalCenterAdministrator clinic = new ClinicalCenterAdministrator();
-		clinic.setId(222);
-		clinic.setName(clinicDTO.getName());
-		clinic.setSurname(clinicDTO.getSurname());
-		clinic.setEmail(clinicDTO.getEmail());
-		clinic.setPassword(clinicDTO.getPassword());
-		clinic.setAdress(clinicDTO.getAdress());
-		clinic.setCity(clinicDTO.getCity());
-		clinic.setState(clinicDTO.getState());
-		clinic.setPhone(clinicDTO.getPhone());
+		ClinicalCenterAdministrator admin = new ClinicalCenterAdministrator();
+		admin.setId(222);
+		admin.setName(clinicDTO.getName());
+		admin.setSurname(clinicDTO.getSurname());
+		admin.setEmail(clinicDTO.getEmail());
+		admin.setPassword(clinicDTO.getPassword());
+		admin.setAdress(clinicDTO.getAdress());
+		admin.setCity(clinicDTO.getCity());
+		admin.setState(clinicDTO.getState());
+		admin.setPhone(clinicDTO.getPhone());
 
 		
 		System.out.println("********* Prosledjeno ime administratora: " + clinicDTO.getName()+ " ***************");
 
 
 		
-		clinic = service.save(clinic);
+		admin = service.save(admin);
 		
 		List<ClinicalCenterAdministrator> administratoriIzBaze = service.findAll();
 		long id = 0;
@@ -115,11 +115,11 @@ public class ClinicalCenterAdministratorController {
 			}
 		}
 		try {
-			emailService.sendNotificaitionAsync(clinic);
+			emailService.sendNotificaitionAsync(admin);
 		}catch( Exception e ){
 			logger.info("Greska prilikom slanja emaila: " + e.getMessage());
 		}
-		return new ResponseEntity<>(new ClinicalCenterAdministratorDTO(clinic), HttpStatus.CREATED);
+		return new ResponseEntity<>(new ClinicalCenterAdministratorDTO(admin), HttpStatus.CREATED);
 	}
 	
 	
@@ -127,24 +127,24 @@ public class ClinicalCenterAdministratorController {
 	@PutMapping(consumes = "application/json")
 	public ResponseEntity<ClinicalCenterAdministratorDTO> updateAdministrator(@RequestBody ClinicalCenterAdministratorDTO clinicDTO) {
 
-		// a clinic must exist
-		ClinicalCenterAdministrator clinic = service.findOne(clinicDTO.getId());
+		// a admin must exist
+		ClinicalCenterAdministrator admin = service.findOne(clinicDTO.getId());
 
-		if (clinic == null) {
+		if (admin == null) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 
-		clinic.setName(clinicDTO.getName());
-		clinic.setSurname(clinicDTO.getSurname());
-		clinic.setEmail(clinicDTO.getEmail());
-		clinic.setPassword(clinicDTO.getPassword());
-		clinic.setAdress(clinicDTO.getAdress());
-		clinic.setCity(clinicDTO.getCity());
-		clinic.setState(clinicDTO.getState());
-		clinic.setPhone(clinicDTO.getPhone());
+		admin.setName(clinicDTO.getName());
+		admin.setSurname(clinicDTO.getSurname());
+		admin.setEmail(clinicDTO.getEmail());
+		admin.setPassword(clinicDTO.getPassword());
+		admin.setAdress(clinicDTO.getAdress());
+		admin.setCity(clinicDTO.getCity());
+		admin.setState(clinicDTO.getState());
+		admin.setPhone(clinicDTO.getPhone());
 		
-		clinic = service.save(clinic);
-		return new ResponseEntity<>(new ClinicalCenterAdministratorDTO(clinic), HttpStatus.OK);
+		admin = service.save(admin);
+		return new ResponseEntity<>(new ClinicalCenterAdministratorDTO(admin), HttpStatus.OK);
 	}
 	
 	/*
@@ -171,9 +171,9 @@ public class ClinicalCenterAdministratorController {
 	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<Void> deleteAdministrator(@PathVariable Long id) {
 
-		ClinicalCenterAdministrator clinic = service.findOne(id);
+		ClinicalCenterAdministrator admin = service.findOne(id);
 
-		if (clinic != null) {
+		if (admin != null) {
 			service.remove(id);
 			return new ResponseEntity<>(HttpStatus.OK);
 		} else {

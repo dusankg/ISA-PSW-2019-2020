@@ -19,16 +19,10 @@ public class EmailService {
 	@Autowired
 	private JavaMailSender javaMailSender;
 
-	/*
-	 * Koriscenje klase za ocitavanje vrednosti iz application.properties fajla
-	 */
 	@Autowired
 	private Environment env;
 
-	/*
-	 * Anotacija za oznacavanje asinhronog zadatka
-	 * Vise informacija na: https://docs.spring.io/spring/docs/current/spring-framework-reference/integration.html#scheduling
-	 */
+
 	@Async
 	public void sendNotificaitionAsync(Patient patient) throws MailException, InterruptedException {
 

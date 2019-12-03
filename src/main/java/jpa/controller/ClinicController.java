@@ -53,8 +53,7 @@ public class ClinicController {
 	@GetMapping
 	public ResponseEntity<List<ClinicDTO>> getClinicsPage(Pageable page) {
 
-		// page object holds data about pagination and sorting
-		// the object is created based on the url parameters "page", "size" and "sort"
+		
 		Page<Clinic> clinics = clinicService.findAll(page);
 
 		// convert clinics to DTOs

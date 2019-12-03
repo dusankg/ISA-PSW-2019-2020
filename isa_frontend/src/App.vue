@@ -6,7 +6,6 @@
     <DoctorApp />
     <PatientApp />
     <ClinicCenterApp />
-    <DiagnosisApp />
     <MedicalRoomApp />
     <EnterClinicalCenterAdministratorApp />
     
@@ -29,8 +28,9 @@ export default {
     ClinicCenterApp,
     DoctorApp,
     DiagnosisApp,
-    EnterClinicalCenterAdministratorApp,
     LoginApp
+    MedicalRoomApp,
+    EnterClinicalCenterAdministratorApp
   }
 }
 </script>
