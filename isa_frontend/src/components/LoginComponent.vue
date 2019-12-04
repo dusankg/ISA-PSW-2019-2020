@@ -15,7 +15,12 @@ Vue.use(Vuelidate);
         </fieldset>
         <fieldset class="form-group">
           <label>User role</label>
-          <input type="text" class="form-control" v-model="role">
+          <select v-model="role">
+            <option disabled value="">Role</option>
+            <option>patient</option>
+            <option>doctor</option>
+            <option>clinicCenterAdministrator</option>
+          </select>
         </fieldset>
         <button class="btn btn-success" type="submit">Login</button>
       </form>
@@ -28,6 +33,7 @@ Vue.use(Vuelidate);
 
 <script>
 import PatientService from '../service/PatientService';
+import DoctorService from '../service/DoctorService';
 //import Axios from 'axios';
 export default {
   name: "Login",
@@ -43,6 +49,12 @@ export default {
                 this.patients = response.data;
         });
     },
+    refreshDoctors() {
+        DoctorService.retrieveAllDoctors() 
+            .then(response => {
+                this.doctors = response.data;
+        });
+    },
     validateAndSubmit(e) {
     e.preventDefault();
 
@@ -50,27 +62,45 @@ export default {
     var temp={
       "email": this.email,
       "password": this.password,
-      "role": this.role,
+      "role": this.role
     }
+    var uloga
     var ispravno = false
     var i
     var indexNadjenog 
+    if(temp.role == 'patient'){
     for(i=0; i<this.patients.length; i++){
       /* eslint-disable no-console */
         if(temp.email == this.patients[i].email){
            if(temp.password == this.patients[i].password){
                ispravno = true ;
                indexNadjenog = i;
+               uloga = temp.role;
+           }
+           
+        }
+       
+      
+    }}
+    else if(temp.role=='doctor'){
+        for(i=0; i<this.doctors.length; i++){
+      /* eslint-disable no-console */
+          if(temp.email == this.doctors[i].email){
+            if(temp.password == this.doctors[i].password){
+               ispravno = true ;
+               indexNadjenog = i;
+               uloga = temp.role;
            }
            
         }
        
       
     }
+    }
 
     if(ispravno == true){
         //Axios.get("http://localhost:8082/api/patients/all")
-        this.$router.push('/patientHomePage/'+ indexNadjenog) 
+        this.$router.push('/'+uloga+'HomePage/'+ indexNadjenog) 
         console.log("Nasao")
     }
 
@@ -80,6 +110,7 @@ export default {
   },
   created() {
     this.refreshPatients();
+    this.refreshDoctors();
   }
 };
 </script>
