@@ -75,10 +75,11 @@ public class ClinicalCenterAdministratorController {
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<ClinicalCenterAdministratorDTO> getAdministrators(@PathVariable Long id) {
 
+		System.out.println("Indeks trazenog administratora je: " + id);
 		ClinicalCenterAdministrator admin = service.findOne(id);
-
-		// studen must exist
+		
 		if (admin == null) {
+			System.out.println("Nisam nasao sa idejem" + id);
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 

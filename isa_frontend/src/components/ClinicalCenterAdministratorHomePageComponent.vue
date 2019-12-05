@@ -40,6 +40,18 @@ export default {
   data() {
     return {
         nonAcceptedPatients: [],
+        administrator: {
+          id: 0,
+          name: '',
+          surname:'',
+          email:'',
+          password:'',
+          adress:'',
+          city: '',
+          state: '',
+          phone: 0,
+          validated: true
+        },
         message: null,
         INSTRUCTOR: "all"
     };
@@ -48,6 +60,11 @@ export default {
     refreshPatients() {
         Axios.get('http://localhost:8082/api/patients/nonAccepted').then(response => (this.nonAcceptedPatients = response.data))
         
+    },
+    refreshAdministrator(){
+        Axios.get('http://localhost:8082/api/clinicalCenterAdministrators/'+ this.$route.params.id).then(response => (this.administrator = response.data))
+        /* eslint-disable no-console */
+        console.log("**************************")
     },
     deletePatient(index){
     /* eslint-disable no-console */
@@ -58,13 +75,14 @@ export default {
   },
   acceptPatient(index){
     /* eslint-disable no-console */
-    console.log('Prihvatanje pacijenta'+index);
+    console.log('Prihvatanje pacijenta' + index);
     Axios.get('http://localhost:8082/api/patients/accept/' + index)
     this.refreshPatients();
   }
   },
   created() {
     this.refreshPatients();
+    this.refreshAdministrator();
   }
   
 }

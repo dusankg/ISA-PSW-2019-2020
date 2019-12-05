@@ -78,9 +78,9 @@ export default {
     for(i=0; i<this.patients.length; i++){
       /* eslint-disable no-console */
         if(temp.email == this.patients[i].email){
-           if(temp.password == this.patients[i].password){
+           if(temp.password == this.patients[i].passwordm && this.patients[i].validated == true){
                ispravno = true ;
-               indexNadjenog = i;
+               indexNadjenog = this.patients[i].id;
                uloga = temp.role;
            }
            
@@ -94,7 +94,7 @@ export default {
           if(temp.email == this.doctors[i].email){
             if(temp.password == this.doctors[i].password){
                ispravno = true ;
-               indexNadjenog = i;
+               indexNadjenog = this.doctors[i].id;
                uloga = temp.role;
            }
            
@@ -111,11 +111,11 @@ export default {
             // check just for validated accounts of admionistrators
             if(temp.email == this.clinicCenterAdministrators[i].email && temp.password == this.clinicCenterAdministrators[i].password && this.clinicCenterAdministrators[i].validated == true){
               ispravno = true;
-              indexNadjenog = i;
+              indexNadjenog = this.clinicCenterAdministrators[i].id;
               uloga = temp.role;
             }
         }
-    }
+    } 
 
     if(ispravno == true){
         //Axios.get("http://localhost:8082/api/patients/all")
