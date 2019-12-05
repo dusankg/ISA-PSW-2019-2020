@@ -3,6 +3,9 @@ import axios from "axios";
 <template>
   <div class="container">
     <h3>All Doctors</h3>
+    <div v-if="message" class="alert alert-success">
+        {{message}} 
+    </div>
     <div class="container">
       <table class="table">
         <thead>
@@ -29,6 +32,11 @@ import axios from "axios";
             <td>{{doctor.city}}</td>
             <td>{{doctor.state}}</td>
             <td>{{doctor.phone}}</td>
+            <td>
+              <button class="btn btn-warning" v-on:click=deleteDoctorClicked(doctor.id)>
+              Delete 
+              </button>
+            </td>
           </tr>
         </tbody>
       </table>
@@ -110,6 +118,14 @@ export default {
       }
       Axios.post("http://localhost:8082/api/doctors", temp);
       this.refreshDoctors();
+    },
+    deleteDoctorClicked(id){
+      DoctorService.deleteDoctor(id).then(response => {
+        this.message = `Deleted doctor with id ${id} successfuly`;
+        this.refreshDoctors();
+        //only to avoid errors
+        response.message 
+      });
     }
   },
   created() {

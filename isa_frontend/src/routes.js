@@ -53,6 +53,26 @@ const router = new Router({
       path: "/ClinicalCenterAdministratorHomePage/:id",
       name: "ClinicalCenterAdministratorHomePage",
       component: () => import("./components/ClinicalCenterAdministratorHomePageComponent")
+    },
+    {
+      path: "/login",
+      name: "LoginComponent",
+      component: () => import("./components/LoginComponent")
+    },
+    {
+      path: "/patients",
+      name: "ListPatientsComponent",
+      component: () => import("./components/ListPatientsComponent")
+    },
+    {
+      path: "/start",
+      name: "StartPage",
+      component: () => import("./components/StartPage")
+    },
+    {
+      path: "/all",
+      name: "All",
+      component: () => import("./components/All")
     }
   ]
 });
