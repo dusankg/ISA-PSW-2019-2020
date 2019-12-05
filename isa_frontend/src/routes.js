@@ -8,7 +8,7 @@ const router = new Router({
     {
       path: "/",
       name: "Home",
-      component: () => import("./components/ListClinicsComponent")
+      //component: () => import("./")
     },
     {
       path: "/clinics",
@@ -39,6 +39,26 @@ const router = new Router({
       path: "/ValidateClinicalCenterAdministrator/:id",
       name: "ValidateClinicalCenterAdministrator",
       component: () => import("./components/ValidateClinicalCenterAdministratorComponent")
+    },
+    {
+      path: "/login",
+      name: "LoginComponent",
+      component: () => import("./components/LoginComponent")
+    },
+    {
+      path: "/patients",
+      name: "ListPatientsComponent",
+      component: () => import("./components/ListPatientsComponent")
+    },
+    {
+      path: "/start",
+      name: "StartPage",
+      component: () => import("./components/StartPage")
+    },
+    {
+      path: "/all",
+      name: "All",
+      component: () => import("./components/All")
     }
   ]
 });
