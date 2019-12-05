@@ -6,11 +6,11 @@ Vue.use(Vuelidate);
     <div class="container">
       <form @submit="validateAndSubmit">
         <fieldset class="form-group" name="nameField">
-          <label>Email</label>
+          <label>Email </label>
           <input type="text" class="form-control" v-model="email" required>
         </fieldset>
         <fieldset class="form-group">
-          <label>Password</label>
+          <label>Password </label>
           <input type="text" class="form-control" v-model="password" required>
         </fieldset>
         <fieldset class="form-group">
@@ -19,7 +19,7 @@ Vue.use(Vuelidate);
             <option disabled value="">Role</option>
             <option>patient</option>
             <option>doctor</option>
-            <option>clinicCenterAdministrator</option>
+            <option>ClinicalCenterAdministrator</option>
           </select>
         </fieldset>
         <button class="btn btn-success" type="submit">Login</button>
@@ -34,6 +34,7 @@ Vue.use(Vuelidate);
 <script>
 import PatientService from '../service/PatientService';
 import DoctorService from '../service/DoctorService';
+import Axios from 'axios';
 //import Axios from 'axios';
 export default {
   name: "Login",
@@ -55,9 +56,14 @@ export default {
                 this.doctors = response.data;
         });
     },
+    refreshClinicCenterAdministrator(){
+      Axios.get('http://localhost:8082/api/clinicalCenterAdministrators/all').then(response => (this.clinicCenterAdministrators = response.data))
+    },
     validateAndSubmit(e) {
     e.preventDefault();
-
+    this.refreshPatients
+    this.refreshDoctors
+    this.re
    
     var temp={
       "email": this.email,
@@ -82,7 +88,7 @@ export default {
        
       
     }}
-    else if(temp.role=='doctor'){
+    else if(temp.role == 'doctor'){
         for(i=0; i<this.doctors.length; i++){
       /* eslint-disable no-console */
           if(temp.email == this.doctors[i].email){
@@ -96,6 +102,19 @@ export default {
        
       
     }
+    }
+    else if (temp.role == 'ClinicalCenterAdministrator'){
+        for(i = 0; i<this.clinicCenterAdministrators.length; i++){
+          /* eslint-disable no-console */
+          console.log(this.clinicCenterAdministrators[i].validated)
+
+            // check just for validated accounts of admionistrators
+            if(temp.email == this.clinicCenterAdministrators[i].email && temp.password == this.clinicCenterAdministrators[i].password && this.clinicCenterAdministrators[i].validated == true){
+              ispravno = true;
+              indexNadjenog = i;
+              uloga = temp.role;
+            }
+        }
     }
 
     if(ispravno == true){
@@ -111,6 +130,7 @@ export default {
   created() {
     this.refreshPatients();
     this.refreshDoctors();
+    this.refreshClinicCenterAdministrator();
   }
 };
 </script>
