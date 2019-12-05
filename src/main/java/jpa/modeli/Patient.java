@@ -38,9 +38,11 @@ public class Patient {
 	@Column(name = "phone", nullable = false)
 	private int phone;
 	@Column(name = "lbo", nullable = false)
-	private int lbo; // Licni broj osiguranika
+	private int lbo; // licni broj osiguranika
 	@Column(name="validated", nullable = false)
 	private boolean validated;
+	@Column(name="accepted", nullable = false)
+	private boolean accepted;
 	
 	
 	
@@ -71,6 +73,7 @@ public class Patient {
 		this.phone = phone;
 		this.lbo = lbo;
 		this.validated = false;
+		this.accepted = false;
 	}
 	public long getId() {
 		return id;
@@ -146,6 +149,18 @@ public class Patient {
 
 	public void setValidated(boolean validated) {
 		this.validated = validated;
+	}
+
+	public boolean isAccepted() {
+		return accepted;
+	}
+
+	public void setAccepted(boolean accepted) {
+		this.accepted = accepted;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 	
 	

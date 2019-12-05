@@ -128,11 +128,7 @@ public class PatientController {
 			}catch(Exception e){System.out.println(e);} */
 			Patient = patientService.save(Patient);
 			
-			try {
-				emailService.sendNotificaitionAsync(Patient);
-			}catch( Exception e ){
-				logger.info("Greska prilikom slanja emaila: " + e.getMessage());
-			}
+			// slanje emaila je prebaceno u logiku za prihvatanje naloga
 
 			
 			
@@ -229,7 +225,7 @@ public class PatientController {
 		
 		@GetMapping(value = "/validate/{id}")
 		public ResponseEntity<Void> validatePatient(@PathVariable Long id){
-			System.out.println("IDDD: "+id);
+		
 			Patient patient=patientService.findOne(id);
 			
 			if(patient!=null){
@@ -244,6 +240,46 @@ public class PatientController {
 		}
 		}
 		
+		@GetMapping(value = "/accept/{id}")
+		public ResponseEntity<Void> acceptPatient(@PathVariable Long id){
+		
+			Patient patient=patientService.findOne(id);
+			
+			
+			if(patient!=null){
+				
+				// slanje mejla za validaciju
+				try {
+					emailService.sendNotificaitionAsync(patient);
+				}catch( Exception e ){
+					logger.info("Greska prilikom slanja emaila: " + e.getMessage());
+				}
+				
+				patient.setAccepted(true);
+				patient = patientService.save(patient);
+				System.out.println("Stanje sada: "+ patient.isValidated());
+				return new ResponseEntity<>(HttpStatus.OK);
+			}else{
+				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
+			}
+			
+		}
+		
+		@GetMapping(value = "/nonAccepted")
+		public ResponseEntity<List<PatientDTO>> getNonAcceptedPatients() {
+
+			List<Patient> patients = patientService.findAll();
+
+			// convert Patients to DTOs
+			List<PatientDTO> patientsDTO = new ArrayList<>();
+			for (Patient p : patients) {
+				if(p.isAccepted() == false)
+					patientsDTO.add(new PatientDTO(p));
+			}
+
+			return new ResponseEntity<>(patientsDTO, HttpStatus.OK);
+		}
 		
 		
 		

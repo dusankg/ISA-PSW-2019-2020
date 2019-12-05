@@ -16,6 +16,7 @@ public class PatientDTO {
 	private int phone;
 	private int lbo;
 	private boolean validated;
+	private boolean accepted;
 	
 	
 	public PatientDTO() {
@@ -36,6 +37,7 @@ public class PatientDTO {
 		this.phone=phone2;
 		this.lbo=lbo2;
 		this.validated = false;
+		this.accepted = false;
 	}
 	
 	public PatientDTO(Patient patient) {
@@ -50,6 +52,7 @@ public class PatientDTO {
 		this.phone=patient.getPhone();
 		this.lbo=patient.getLbo();
 		this.validated = patient.isValidated();
+		this.accepted = patient.isAccepted();
 	}
 
 
@@ -160,6 +163,16 @@ public class PatientDTO {
 
 	public void setValidated(boolean validated) {
 		this.validated = validated;
+	}
+
+
+	public boolean isAccepted() {
+		return accepted;
+	}
+
+
+	public void setAccepted(boolean accepted) {
+		this.accepted = accepted;
 	}
 
 

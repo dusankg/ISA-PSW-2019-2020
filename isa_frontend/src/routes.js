@@ -39,6 +39,11 @@ const router = new Router({
       path: "/ValidateClinicalCenterAdministrator/:id",
       name: "ValidateClinicalCenterAdministrator",
       component: () => import("./components/ValidateClinicalCenterAdministratorComponent")
+    },
+    {
+      path: "/ClinicalCenterAdministratorHomePage/:id",
+      name: "ClinicalCenterAdministratorHomePage",
+      component: () => import("./components/ClinicalCenterAdministratorHomePageComponent")
     }
   ]
 });
