@@ -24,6 +24,10 @@ Vue.use(Vuelidate);
         </fieldset>
         <button class="btn btn-success" type="submit">Login</button>
       </form>
+      <form @submit="val">
+                <button class="btn btn-success" type="submit">Register</button>
+
+      </form>
     </div>
   </div>
 
@@ -106,6 +110,11 @@ export default {
 
 
     
+  },
+  val(e) {
+    e.preventDefault();
+        this.$router.push('/patients') 
+
   }
   },
   created() {
