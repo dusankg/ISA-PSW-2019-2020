@@ -82,7 +82,7 @@ export default {
     for(i=0; i<this.patients.length; i++){
       /* eslint-disable no-console */
         if(temp.email == this.patients[i].email){
-           if(temp.password == this.patients[i].passwordm && this.patients[i].validated == true){
+           if(temp.password == this.patients[i].password && this.patients[i].validated == true){
                ispravno = true ;
                indexNadjenog = this.patients[i].id;
                uloga = temp.role;

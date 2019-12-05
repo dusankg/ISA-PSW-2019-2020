@@ -4,8 +4,8 @@
         <div v-if="($route.name) ==='Home' ">
         <!--For now we make like this until we split this on separate pages-->
             <router-link to="/all">Lists off all data and forms for managing them</router-link>
-            <PatientApp />
-            <LoginApp/>
+            <!--<PatientApp />
+            <LoginApp/>-->
             
         </div>
         <div>
@@ -16,13 +16,13 @@
 </template>
 
 <script>
-import LoginApp from './LoginApp.vue'
-import PatientApp from './PatientApp.vue'
+//import LoginApp from './LoginApp.vue'
+//import PatientApp from './PatientApp.vue'
 export default {
     name: 'start',
     components:{
-        LoginApp,
-        PatientApp
+      //  LoginApp,
+    //    PatientApp
     }
     
 }
