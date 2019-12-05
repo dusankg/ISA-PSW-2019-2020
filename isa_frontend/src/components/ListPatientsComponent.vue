@@ -130,6 +130,8 @@ export default {
 
     if(this.password==this.password2 && ispravno){
     Axios.post("http://localhost:8082/api/patients", temp);
+            this.$router.push('/') 
+
     }this.refreshPatients();
   }
 
