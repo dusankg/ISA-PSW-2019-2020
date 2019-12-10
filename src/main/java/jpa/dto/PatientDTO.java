@@ -5,7 +5,7 @@ package jpa.dto;
 import jpa.modeli.Patient;
 
 public class PatientDTO {
-	private long id;
+	private Long id;
 	private String name;
 	private String surname;
 	private String email;
@@ -24,7 +24,7 @@ public class PatientDTO {
 	}
 	
 	
-	public PatientDTO(long id2, String name2, String surname2, String email2, String password2, String adress2,
+	public PatientDTO(Long id2, String name2, String surname2, String email2, String password2, String adress2,
 			String city2,String state2, int phone2,int lbo2) {
 		this.id=id2;
 		this.name=name2;
@@ -56,12 +56,12 @@ public class PatientDTO {
 	}
 
 
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

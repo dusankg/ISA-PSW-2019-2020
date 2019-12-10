@@ -20,6 +20,16 @@ const router = new Router({
       
     },
     {
+      path: "/patientHomePage",
+      name: "HomePagePatient",
+      component: () => import("./components/HomePagePatientComponent")
+    },
+    {
+      path: "/EditPersonalData",
+      name: "EditPersonalData",
+      component: () => import("./components/EditPersonalDataComponent")
+    },
+    {
       path: "/clinics",
       name: "Clinics",
       component: () => import("./components/ListClinicsComponent")

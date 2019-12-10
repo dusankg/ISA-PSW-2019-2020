@@ -106,7 +106,7 @@ public class PatientController {
 		public ResponseEntity<PatientDTO> savePatient(@RequestBody PatientDTO PatientDTO) {
 
 			Patient Patient = new Patient();
-			Patient.setId(111);
+			Patient.setId(111L);
 			Patient.setName(PatientDTO.getName());
 			Patient.setSurname(PatientDTO.getSurname());
 			Patient.setEmail(PatientDTO.getEmail());
@@ -136,24 +136,25 @@ public class PatientController {
 		}
 
 		@PutMapping(consumes = "application/json")
-		public ResponseEntity<PatientDTO> updatePatient(@RequestBody PatientDTO PatientDTO) {
-
+		public ResponseEntity<PatientDTO> updatePatient(@RequestBody PatientDTO patientDTO) {
+			System.out.println(patientDTO.getEmail());
+			System.out.println(patientDTO.getId());
 			// a Patient must exist
-			Patient Patient = patientService.findOne(PatientDTO.getId());
+			Patient Patient = patientService.findOne(patientDTO.getId());
 
 			if (Patient == null) {
 				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 			}
 
-			Patient.setName(PatientDTO.getName());
-			Patient.setSurname(PatientDTO.getSurname());
-			Patient.setEmail(PatientDTO.getEmail());
-			Patient.setPassword(PatientDTO.getPassword());
-			Patient.setAdress(PatientDTO.getAdress());
-			Patient.setCity(PatientDTO.getCity());
-			Patient.setState(PatientDTO.getState());
-			Patient.setPhone(PatientDTO.getPhone());
-			Patient.setLbo(PatientDTO.getLbo());
+			Patient.setName(patientDTO.getName());
+			Patient.setSurname(patientDTO.getSurname());
+			Patient.setEmail(patientDTO.getEmail());
+			Patient.setPassword(patientDTO.getPassword());
+			Patient.setAdress(patientDTO.getAdress());
+			Patient.setCity(patientDTO.getCity());
+			Patient.setState(patientDTO.getState());
+			Patient.setPhone(patientDTO.getPhone());
+			Patient.setLbo(patientDTO.getLbo());
 
 			Patient = patientService.save(Patient);
 			return new ResponseEntity<>(new PatientDTO(Patient), HttpStatus.OK);

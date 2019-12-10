@@ -75,10 +75,10 @@ public class Patient {
 		this.validated = false;
 		this.accepted = false;
 	}
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 	public String getName() {
@@ -159,9 +159,7 @@ public class Patient {
 		this.accepted = accepted;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+	
 	
 	
 	

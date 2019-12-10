@@ -82,7 +82,7 @@ export default {
     for(i=0; i<this.patients.length; i++){
       /* eslint-disable no-console */
         if(temp.email == this.patients[i].email){
-           if(temp.password == this.patients[i].passwordm && this.patients[i].validated == true){
+           if(temp.password == this.patients[i].password && this.patients[i].validated == true){
                ispravno = true ;
                indexNadjenog = this.patients[i].id;
                uloga = temp.role;
@@ -123,7 +123,7 @@ export default {
 
     if(ispravno == true){
         //Axios.get("http://localhost:8082/api/patients/all")
-        this.$router.push('/'+uloga+'HomePage/'+ indexNadjenog) 
+        this.$router.push('/'+uloga+'HomePage?id='+ indexNadjenog) 
         console.log("Nasao")
     }
 
