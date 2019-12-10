@@ -3,7 +3,7 @@ Vue.use(Vuelidate);
 <template>
   <div class="container">
     <h3>All clinics</h3>
-    <router-link to = "/doctors"> Neki link </router-link>
+    <!--<router-link to = "/doctors"> Neki link </router-link>-->
     <div class="container">
       <table class="table">
         <thead>
@@ -60,7 +60,7 @@ export default {
     return {
         clinics: [],
         message: null,
-        INSTRUCTOR: "all"
+        //INSTRUCTOR: "all"
     };
   },
   methods: {
