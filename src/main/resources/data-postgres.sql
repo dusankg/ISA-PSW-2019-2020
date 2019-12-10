@@ -10,5 +10,13 @@ insert into clinical_center_administrator (name, surname, email, password, adres
 insert into medical_room (operational, reserved, room_codename, date) values (true, false, 'Soba333', '1999-05-05');
 
 
-insert into patient (name, surname, email, password, adress, city, state, phone, lbo, validated, accepted) values ('12313131', '32131313', 'novi.com', '123', '1232131321', '3213123123', '1231231231', 111222333, 111, false, false);
+insert into patient (name, surname, email, password, adress, city, state, phone, lbo, validated, accepted) values ('1', '32131313', 'novi.com', '123', '1232131321', '3213123123', '1231231231', 111222333, 111, false, false);
 insert into patient (name, surname, email, password, adress, city, state, phone, lbo, validated, accepted) values ('Prihvaceni', '32131313', 'prihvaceni.com', '123', '1232131321', '3213123123', '1231231231', 111222333, 111, true, true);
+
+insert into patient (name, surname, email, password, adress, city, state, phone, lbo, validated, accepted) values ('2', '32131313', 'novi.com', '123', '1232131321', '3213123123', '1231231231', 111222333, 111, false, false);
+
+insert into patient (name, surname, email, password, adress, city, state, phone, lbo, validated, accepted) values ('3', '32131313', 'novi.com', '123', '1232131321', '3213123123', '1231231231', 111222333, 111, false, false);
+
+insert into patient (name, surname, email, password, adress, city, state, phone, lbo, validated, accepted) values ('4', '32131313', 'novi.com', '123', '1232131321', '3213123123', '1231231231', 111222333, 111, false, false);
+
+insert into patient (name, surname, email, password, adress, city, state, phone, lbo, validated, accepted) values ('5', '32131313', 'novi.com', '123', '1232131321', '3213123123', '1231231231', 111222333, 111, false, false);

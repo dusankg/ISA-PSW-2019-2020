@@ -123,7 +123,11 @@ export default {
 
     if(ispravno == true){
         //Axios.get("http://localhost:8082/api/patients/all")
-        this.$router.push('/'+uloga+'HomePage?id='+ indexNadjenog) 
+        if (temp.role == 'ClinicalCenterAdministrator'){
+          this.$router.push('/'+uloga+'HomePage/'+ indexNadjenog) 
+        }else {
+          this.$router.push('/'+uloga+'HomePage?id='+ indexNadjenog) 
+        }
         console.log("Nasao")
     }
 

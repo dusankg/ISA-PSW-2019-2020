@@ -282,7 +282,23 @@ public class PatientController {
 			return new ResponseEntity<>(patientsDTO, HttpStatus.OK);
 		}
 		
-		
+		@PutMapping(value = "rejectPatient/{id}/{message}")
+		public ResponseEntity<Void> rejectPatient(@PathVariable Long id, @PathVariable String message) {
+
+			Patient patient = patientService.findOne(id);
+
+			if (patient != null) {
+				try {
+					emailService.sendNotificaitionReject(patient, message);
+				}catch( Exception e ){
+					logger.info("Greska prilikom slanja emaila: " + e.getMessage());
+				}
+				patientService.remove(id);
+				return new ResponseEntity<>(HttpStatus.OK);
+			} else {
+				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			}
+		}
 		
 
 	/*	@GetMapping(value = "/{PatientId}/Prescriptions")

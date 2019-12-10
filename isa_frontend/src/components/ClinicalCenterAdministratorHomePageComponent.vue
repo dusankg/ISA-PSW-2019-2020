@@ -16,15 +16,19 @@
             <td>{{patient.name}}</td>
             <td>{{patient.surname}}</td>
             <td>
-              <button class="btn" v-on:click="deletePatient(patient.id)">
-                Reject
-              </button>
-            </td>
-            <td>
               <button class="btn" v-on:click="acceptPatient(patient.id)">
                 Accept
               </button>
             </td>
+
+            <td>
+              <form @submit="deletePatient(patient.id, poruka)">
+                  <button class="btn btn-success" type = "submit">Reject</button>
+                  <label>  Reason: </label>
+                  <input type="text" class="form-control" v-model="poruka" required>
+               </form>
+            </td>
+            
           </tr>
         </tbody>
       </table>
@@ -66,10 +70,11 @@ export default {
         /* eslint-disable no-console */
         console.log("**************************")
     },
-    deletePatient(index){
+    deletePatient(index, poruka){
     /* eslint-disable no-console */
-    console.log('Brisanje pacijenta'+index);
-    Axios.delete('http://localhost:8082/api/patients/' + index)
+    console.log('Brisanje pacijenta'+index + poruka);
+    var message = poruka
+    Axios.put('http://localhost:8082/api/patients/rejectPatient/' + index + "/" + message)
     this.refreshPatients();
 
   },
