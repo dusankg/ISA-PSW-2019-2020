@@ -1,43 +1,29 @@
-package jpa.modeli;
+package jpa.dto;
+
 import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import jpa.modeli.Examination;
 
-@Entity
-public class Examination {
+public class ExaminationDTO {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
-	@Column(name = "date")
 	private Date date;
-	
-	@Column(name = "duration")
 	private double duration;
-
-	@Column(name = "price")
 	private double price;
 	
 	/*
-	Mapping needs to be added here
-	@Column(name = "type")
 	private ExaminationType type;
-	
-	@Column(name = "room")
 	private MedicalRoom room;
-	
-	@Column(name = "doctor")
 	private Doctor doctor;
 	*/
 	
-	public Examination() {}
+	public ExaminationDTO() {}
 	
-	public Examination(Long id, Date date, double duration, double price) {
+	public ExaminationDTO(Examination examination) {
+		this(examination.getId(), examination.getDate(), examination.getDuration(), examination.getPrice());
+	}
+	
+	public ExaminationDTO(Long id, Date date, double duration, double price) {
 		super();
 		this.id = id;
 		this.date = date;

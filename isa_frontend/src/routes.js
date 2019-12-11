@@ -83,6 +83,11 @@ const router = new Router({
       path: "/all",
       name: "All",
       component: () => import("./components/All")
+    },
+    {
+      path: "/examinations",
+      name: "ListExaminationsComponent",
+      component: () => import("./components/ListExaminationsComponent")
     }
   ]
 });

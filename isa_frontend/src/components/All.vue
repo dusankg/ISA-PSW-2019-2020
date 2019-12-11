@@ -7,6 +7,7 @@
     <ClinicCenterApp />
     <MedicalRoomApp />
     <EnterClinicalCenterAdministratorApp />
+    <ExaminationApp />
     
   </div>
 </template>
@@ -19,6 +20,7 @@ import DiagnosisApp from './DiagnosisApp.vue'
 import MedicalRoomApp from './MedicalRoomApp.vue'
 
 import EnterClinicalCenterAdministratorApp from'./EnterClinicalCenterAdministratorApp.vue'
+import ExaminationApp from './ExaminationApp.vue'
 export default {
   name: 'all',
   components: {
@@ -29,6 +31,7 @@ export default {
 
     MedicalRoomApp,
     EnterClinicalCenterAdministratorApp,
+    ExaminationApp
   }
 }
 </script>
