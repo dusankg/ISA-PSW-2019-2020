@@ -1,19 +1,41 @@
 package jpa.modeli;
 
-import org.springframework.data.annotation.Id;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+
+@Entity
 public class Nurse {
 
 	@Id
-	private long id;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 	
+	@Column(name = "name", nullable = false)
 	private String name;
+	@Column(name = "surname", nullable = false)
 	private String surname;
+	@Column(name = "email", nullable = false)
 	private String email;
+	@Column(name = "password", nullable = false)
 	private String password;
+	@Column(name = "adress")
 	private String adress;
+	@Column(name = "city")
 	private String city;
+	@Column(name = "state")
 	private String state;
+	@Column(name = "phone")
 	private int phone;
 	
 	
@@ -30,10 +52,14 @@ public class Nurse {
 		this.state = state;
 		this.phone = phone;
 	}
-	public long getId() {
+	
+	public Nurse() {
+		
+	}
+	public Long getId() {
 		return id;
 	}
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 	public String getName() {
@@ -84,4 +110,5 @@ public class Nurse {
 	public void setPhone(int phone) {
 		this.phone = phone;
 	}
+	
 }
