@@ -113,6 +113,8 @@ public class ClinicController {
 		clinic.setGradeSum(clinicDTO.getGradeSum());
 		clinic.setGradeNumber(clinicDTO.getGradeNumber());
 
+		System.out.println("********* Upadateovani naziv klinike: " + clinicDTO.getName()+ " ***************");
+		
 		clinic = clinicService.save(clinic);
 		return new ResponseEntity<>(new ClinicDTO(clinic), HttpStatus.OK);
 	}
