@@ -93,7 +93,9 @@ public class MedicalRoomController {
 		MedicalRoom medicalRoom = medicalRoomService.findOne(id);
 
 		if (medicalRoom != null) {
-			medicalRoomService.remove(id);
+			if(!medicalRoom.getReserved()) 
+				medicalRoomService.remove(id);
+			
 			return new ResponseEntity<>(HttpStatus.OK);
 		} else {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);

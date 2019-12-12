@@ -21,6 +21,11 @@ import axios from "axios";
                         <td>{{medicalroom.reserved}}</td>
                         <td>{{medicalroom.roomCodeName}}</td>
                         <td>{{medicalroom.date}}</td>
+                        <td>
+                            <button class="btn btn-warning" v-on:click=deleteRoomClicked(medicalroom.id)>
+                                Delete
+                            </button>
+                        </td>
                     </tr>
                 </tbody>
             </table>
@@ -62,7 +67,10 @@ export default {
         return {
             medicalrooms: [],
             message: null,
-            INSTRUCTOR: "all"
+            operational: undefined,
+            reserved: undefined,
+            roomCodeName: undefined,
+            date: undefined
         };
     },
     methods: {
@@ -83,6 +91,18 @@ export default {
 
             Axios.post("http://localhost:8082/api/medicalrooms", temp);
             this.refreshMedicalRooms();
+        },
+        deleteRoomClicked(id){
+            MedicalRoomService.deleteRoom(id).then(response => {
+                var del = this.medicalrooms.getElementById(id); 
+                if(!del.reserved){
+                    this.message = `Cannot delete room because it is already reserved`
+                } else {
+                    this.message = `Deleted room successfully`;
+                }
+                this.refreshMedicalRooms();
+                response.message
+            });
         }
     },
     created() {

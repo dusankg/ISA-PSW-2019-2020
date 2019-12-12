@@ -34,7 +34,7 @@ import axios from "axios";
             <td>{{doctor.phone}}</td>
             <td>
               <button class="btn btn-warning" v-on:click=deleteDoctorClicked(doctor.id)>
-              Delete 
+                Delete 
               </button>
             </td>
           </tr>
@@ -95,7 +95,14 @@ export default {
     return {
         doctors: [],
         message: null,
-        INSTRUCTOR: "all"
+        name: undefined,
+        surname: undefined,
+        password: undefined,
+        email: undefined,
+        adress: undefined,
+        city: undefined, 
+        state: undefined,
+        phone: undefined
     };
   },
   methods: {
@@ -114,8 +121,17 @@ export default {
         "email":this.email,
         "adress":this.adress,
         "city":this.city,
-        "state":this.state
+        "state":this.state,
+        "phone":this.phone
       }
+      this.name = "",
+      this.surname = "",
+      this.password = "",
+      this.email = "",
+      this.adress = "",
+      this.city = "",
+      this.state = "",
+      this.phone = 0
       Axios.post("http://localhost:8082/api/doctors", temp);
       this.refreshDoctors();
     },
