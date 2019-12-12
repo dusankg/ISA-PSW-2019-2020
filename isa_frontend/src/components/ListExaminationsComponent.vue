@@ -58,6 +58,9 @@ export default {
     return {
         examinations: [],
         message: null,
+        date: undefined,
+        duration: undefined,
+        price: undefined
     };
   },
   methods: {
