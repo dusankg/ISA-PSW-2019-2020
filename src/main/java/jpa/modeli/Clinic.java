@@ -36,6 +36,9 @@ public class Clinic {
 	
 	@Column(name = "gradeNumber", nullable = true)
 	private int gradeNumber;
+	@OneToMany(mappedBy = "clinic", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@Column(name="Examinations", nullable = true)
+	private Set<Examination> examinations = new HashSet<Examination>();
 	
 	//@OneToMany(mappedBy = "clinic", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	//private Set<Doctor> doctors = new HashSet<Doctor>();
@@ -131,6 +134,15 @@ public class Clinic {
 		
 	}
 
+	public Set<Examination> getExaminations() {
+		return examinations;
+	}
+
+	public void setExaminations(Set<Examination> examinations) {
+		this.examinations = examinations;
+	}
+
+	
 /*	public Set<Doctor> getDoctors() {
 		return doctors;
 	}

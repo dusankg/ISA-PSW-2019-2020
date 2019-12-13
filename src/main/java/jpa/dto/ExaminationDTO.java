@@ -10,7 +10,8 @@ public class ExaminationDTO {
 	private Date date;
 	private double duration;
 	private double price;
-	
+	private PatientDTO patient;
+	private ClinicDTO clinic;
 	/*
 	private ExaminationType type;
 	private MedicalRoom room;
@@ -20,8 +21,24 @@ public class ExaminationDTO {
 	public ExaminationDTO() {}
 	
 	public ExaminationDTO(Examination examination) {
-		this(examination.getId(), examination.getDate(), examination.getDuration(), examination.getPrice());
-	}
+		if(examination.getPatient()==null || examination.getClinic()==null){
+			
+			this.id=examination.getId();
+			this.date=examination.getDate();
+			this.duration=examination.getDuration();
+			this.price=examination.getPrice();
+			this.patient=new PatientDTO();
+			this.clinic=new ClinicDTO();
+			
+		}
+		else{
+		this.id=examination.getId();
+		this.date=examination.getDate();
+		this.duration=examination.getDuration();
+		this.price=examination.getPrice();
+		this.patient=new PatientDTO(examination.getPatient());
+		this.clinic=new ClinicDTO(examination.getClinic());
+		}}
 	
 	public ExaminationDTO(Long id, Date date, double duration, double price) {
 		super();
@@ -29,6 +46,25 @@ public class ExaminationDTO {
 		this.date = date;
 		this.duration = duration;
 		this.price = price;
+		this.patient = new PatientDTO();
+		this.clinic = new ClinicDTO();
+		/*
+		this.type = type;
+		this.room = room;
+		this.doctor = doctor;
+		*/
+	}
+	
+	
+	
+	public ExaminationDTO(Long id, Date date, double duration, double price,PatientDTO patient,ClinicDTO clinic) {
+		super();
+		this.id = id;
+		this.date = date;
+		this.duration = duration;
+		this.price = price;
+		this.patient = patient;
+		this.clinic = clinic;
 		/*
 		this.type = type;
 		this.room = room;
