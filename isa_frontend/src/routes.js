@@ -88,6 +88,11 @@ const router = new Router({
       path: "/examinations",
       name: "ListExaminationsComponent",
       component: () => import("./components/ListExaminationsComponent")
+    },
+    {
+      path: "/NurseHomePage/:id",
+      name: "NurseHomePage",
+      component: () => import("./components/NurseHomePageComponent")
     }
   ]
 });

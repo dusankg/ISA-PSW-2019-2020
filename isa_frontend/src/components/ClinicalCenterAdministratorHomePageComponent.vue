@@ -69,6 +69,11 @@ export default {
         Axios.get('http://localhost:8082/api/clinicalCenterAdministrators/'+ this.$route.params.id).then(response => (this.administrator = response.data))
         /* eslint-disable no-console */
         console.log("**************************")
+        if(this.administrator.id == 1){
+            console.log("Ima samo nece da ispise");
+        } else{
+          console.log("Nije ni preuzeo podatke");
+        }
     },
     deletePatient(index, poruka){
     /* eslint-disable no-console */

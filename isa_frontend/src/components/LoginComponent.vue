@@ -20,6 +20,7 @@ Vue.use(Vuelidate);
             <option>patient</option>
             <option>doctor</option>
             <option>ClinicalCenterAdministrator</option>
+            <option>Nurse</option>
           </select>
         </fieldset>
         <button class="btn btn-success" type="submit">Login</button>
@@ -62,6 +63,10 @@ export default {
     },
     refreshClinicCenterAdministrator(){
       Axios.get('http://localhost:8082/api/clinicalCenterAdministrators/all').then(response => (this.clinicCenterAdministrators = response.data))
+    },
+    refreshNurse(){
+    Axios.get('http://localhost:8082/api/nurses/all').then(response => (this.nurses = response.data))
+     
     },
     validateAndSubmit(e) {
     e.preventDefault();
@@ -114,21 +119,37 @@ export default {
 
             // check just for validated accounts of admionistrators
             if(temp.email == this.clinicCenterAdministrators[i].email && temp.password == this.clinicCenterAdministrators[i].password && this.clinicCenterAdministrators[i].validated == true){
+              this.ulogovaniAdministrator = this.clinicCenterAdministrators[i]
+              console.log(this.ulogovaniAdministrator.name);
               ispravno = true;
               indexNadjenog = this.clinicCenterAdministrators[i].id;
               uloga = temp.role;
             }
         }
-    } 
+    }
+    else if (temp.role == 'Nurse'){
+      /* eslint-disable no-console */
+     console.log(this.nurses.length)
+        for(i = 0; i<this.nurses.length; i++){
+          /* eslint-disable no-console */
+            if(temp.email == this.nurses[i].email && temp.password == this.nurses[i].password){
+              ispravno = true;
+              indexNadjenog = this.nurses[i].id;
+              uloga = temp.role;
+            }
+        }
+    }
+     
 
     if(ispravno == true){
         //Axios.get("http://localhost:8082/api/patients/all")
-        if (temp.role == 'ClinicalCenterAdministrator'){
+        console.log("Nasao")
+        if (temp.role == 'ClinicalCenterAdministrator' || temp.role == "Nurse"){
           this.$router.push('/'+uloga+'HomePage/'+ indexNadjenog) 
         }else {
           this.$router.push('/'+uloga+'HomePage?id='+ indexNadjenog) 
         }
-        console.log("Nasao")
+        
     }
 
 
@@ -144,6 +165,7 @@ export default {
     this.refreshPatients();
     this.refreshDoctors();
     this.refreshClinicCenterAdministrator();
+    this.refreshNurse();
   }
 };
 </script>
