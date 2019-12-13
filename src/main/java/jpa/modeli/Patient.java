@@ -44,6 +44,9 @@ public class Patient {
 	@Column(name="accepted", nullable = false)
 	private boolean accepted;
 	
+	@OneToMany(mappedBy = "patient", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private Set<Examination> examinations = new HashSet<Examination>();
+	
 	
 	
 	
@@ -141,6 +144,17 @@ public class Patient {
 		// TODO Auto-generated method stub
 		return "insert into patient (name, surname, email, password, adress, city, state, phone, lbo) values ('"+getName()+"', '"+getSurname()+"', '"+getEmail()+"', '"+getPassword()+"', '"+getAdress()+"', '"+getCity()+"', '"+getState()+"', "+getPhone()+", "+getLbo()+");";     
 
+	}
+	
+	
+	
+
+	public Set<Examination> getExaminations() {
+		return examinations;
+	}
+
+	public void setExaminations(Set<Examination> examinations) {
+		this.examinations = examinations;
 	}
 
 	public boolean isValidated() {

@@ -18,7 +18,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import jpa.dto.ExaminationDTO;
 import jpa.modeli.Examination;
+import jpa.modeli.Patient;
 import jpa.service.ExaminationService;
+import jpa.service.PatientService;
 
 @RestController
 @CrossOrigin(origins = {"http://localhost:3000", "http://localhost:4200", "http://localhost:8080"})
@@ -27,6 +29,9 @@ public class ExaminationController {
 
 	@Autowired
 	private ExaminationService examinationService;
+	@Autowired
+	private PatientService patientService;
+
 	
 	@GetMapping(value = "/all")
 	public ResponseEntity<List<ExaminationDTO>> getAllExaminations(){
@@ -68,21 +73,24 @@ public class ExaminationController {
 		return new ResponseEntity<>(new ExaminationDTO(examination), HttpStatus.CREATED);
 	}
 
-	@PutMapping(consumes = "application/json")
-	public ResponseEntity<ExaminationDTO> updateExamination(@RequestBody ExaminationDTO examinationDTO) {
-
+	@GetMapping(value = "reserve/{id1}/{id2}")
+	public ResponseEntity<ExaminationDTO> updateExamination(@PathVariable Long id1 ,@PathVariable Long id2 ) {
+		System.out.println("ARE YOU HEREEEEE???");
 		// an examination must exist
-		Examination examination = examinationService.findOne(examinationDTO.getId());
-
+		System.out.println(id1);
+		System.out.println(id2);
+		Examination examination = examinationService.findOne(id1);
+		Patient patient = patientService.findOne(id2);
 		if (examination == null) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
+		if (patient == null) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
 
-		examination.setDate(examinationDTO.getDate());
-		examination.setDuration(examinationDTO.getDuration());
-		examination.setPrice(examinationDTO.getPrice());
-
+		examination.setPatient(patient);
 		examination = examinationService.save(examination);
+		System.out.println(examination.getPatient().getName());
 		return new ResponseEntity<>(new ExaminationDTO(examination), HttpStatus.OK);
 	}
 

@@ -6,6 +6,11 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.CascadeType;
+
+import javax.persistence.FetchType;
+
+import javax.persistence.ManyToOne;
 
 @Entity
 public class Examination {
@@ -22,6 +27,12 @@ public class Examination {
 
 	@Column(name = "price")
 	private double price;
+	
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	private Patient patient;
+	
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	private Clinic clinic;
 	
 	/*
 	Mapping needs to be added here
@@ -81,6 +92,24 @@ public class Examination {
 	public void setPrice(double price) {
 		this.price = price;
 	}
+
+	public Patient getPatient() {
+		return patient;
+	}
+
+	public void setPatient(Patient patient) {
+		this.patient = patient;
+	}
+
+	public Clinic getClinic() {
+		return clinic;
+	}
+
+	public void setClinic(Clinic clinic) {
+		this.clinic = clinic;
+	}
+	
+	
 	
 	
 }
