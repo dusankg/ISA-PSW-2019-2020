@@ -93,6 +93,11 @@ const router = new Router({
       path: "/NurseHomePage/:id",
       name: "NurseHomePage",
       component: () => import("./components/NurseHomePageComponent")
+    },
+    {
+      path: "/doctorHomePage/:id",
+      name: "DoctorHomePage",
+      component: () => import("./components/HomePageDoctorComponent")
     }
   ]
 });

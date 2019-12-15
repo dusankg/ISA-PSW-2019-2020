@@ -144,7 +144,7 @@ export default {
     if(ispravno == true){
         //Axios.get("http://localhost:8082/api/patients/all")
         console.log("Nasao")
-        if (temp.role == 'ClinicalCenterAdministrator' || temp.role == "Nurse"){
+        if (temp.role == 'ClinicalCenterAdministrator' || temp.role == "Nurse" || temp.role == 'doctor'){
           this.$router.push('/'+uloga+'HomePage/'+ indexNadjenog) 
         }else {
           this.$router.push('/'+uloga+'HomePage?id='+ indexNadjenog) 

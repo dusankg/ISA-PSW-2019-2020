@@ -29,6 +29,9 @@ import axios from "axios";
                     </tr>
                 </tbody>
             </table>
+            <div v-if="message" class="alert alert-success">
+                {{message}} 
+            </div>
         </div>
 
         <div>
@@ -59,7 +62,7 @@ import axios from "axios";
 </template>
 
 <script>
-import MedicalRoomService from '../service/MedicalRoomService'
+import MedicalRoomService from '../service/MedicalRoomService';
 import Axios from 'axios';
 export default {
     name: "ListMedicalRooms",
@@ -67,8 +70,8 @@ export default {
         return {
             medicalrooms: [],
             message: null,
-            operational: undefined,
-            reserved: undefined,
+            operational: false,
+            reserved: false,
             roomCodeName: undefined,
             date: undefined
         };
@@ -93,12 +96,12 @@ export default {
             this.refreshMedicalRooms();
         },
         deleteRoomClicked(id){
+            var temp = MedicalRoomService.retrieveRoom(id);
             MedicalRoomService.deleteRoom(id).then(response => {
-                var del = this.medicalrooms.getElementById(id); 
-                if(!del.reserved){
-                    this.message = `Cannot delete room because it is already reserved`
+                if(temp.reserved){
+                    //this.message = `Cannot delete room because it is already reserved`;
                 } else {
-                    this.message = `Deleted room successfully`;
+                    //this.message = `Deleted room successfully`;
                 }
                 this.refreshMedicalRooms();
                 response.message

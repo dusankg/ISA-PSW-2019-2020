@@ -48,7 +48,7 @@ Vue.use(Vuelidate);
         </fieldset>
         <button class="btn btn-success" type="submit">Save</button>
       </form>
-      <button class="btn btn-success" v-on:click="updateClinicClicked(id)">Update</button>
+      <button class="btn btn-success" v-on:click="updateClinicClicked()">Update</button>
     </div>
   </div>
 
@@ -115,19 +115,12 @@ export default {
           this.name = res.data.name,
           this.adress = res.data.adress,
           this.description = res.data.description,
+          //important line, here is saved id of clinic we're updating 
           this.id = id;
       });
     },
 
-    deleteClinicForEdit(id){
-      ClinicCenterService.deleteClinic(id).then(response => {
-        this.refreshClinics();
-        //only to avoid errors
-         response.message;
-      });
-    },
-
-    updateClinicClicked(id){
+    updateClinicClicked(){
       var t = {
           "id":this.id,
           "name":this.name,
@@ -136,8 +129,8 @@ export default {
           "gradeSum":0,
           "gradeNumber":0
       }
-      this.deleteClinicForEdit(id);
-      Axios.post(`http://localhost:8082/api/clinics`, t);
+      
+      Axios.put("http://localhost:8082/api/clinics", t);
       this.refreshClinics();
     }
 

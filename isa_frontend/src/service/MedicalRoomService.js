@@ -6,8 +6,12 @@ class MedicalRoomService{
     }
 
     deleteRoom(id){
-        return axios.delete(`http://localhost:8082/api/medicalrooms/${id}`)
+        return axios.delete(`http://localhost:8082/api/medicalrooms/${id}`);
     }
+
+    retrieveRoom(id){
+        return axios.get(`http://localhost:8082/api/medicalrooms/${id}`);
+      }
 }
 
 export default new MedicalRoomService();
