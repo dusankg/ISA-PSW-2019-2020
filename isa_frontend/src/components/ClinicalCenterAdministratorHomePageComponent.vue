@@ -1,5 +1,22 @@
 <template>
+
+
   <div class="container">
+
+    
+    <button @click="()=>$router.push('/EnterClinicalCenterAdministrator')">Add administrator of clinical center  </button>
+    <br>
+    <br>
+    <button @click="()=>$router.push('/clinics')"> Add clinic  </button>
+    <br>
+    <br>
+    <button @click="()=>$router.push('/doctors')"> Add doctor  </button>
+    <br>
+    <br>
+    <button @click="()=>$router.push('/medicalRooms')"> Add rooms  </button>
+    <br>
+    <br>
+
     <h3>All non accepted patients</h3>
     <div class="container">
       <table class="table">
@@ -24,7 +41,8 @@
             <td>
               <form @submit="deletePatient(patient.id, poruka)">
                   <button class="btn btn-success" type = "submit">Reject</button>
-                  <label>  Reason: </label>
+                  
+                  <label> Reason: </label>
                   <input type="text" class="form-control" v-model="poruka" required>
                </form>
             </td>
@@ -33,6 +51,8 @@
         </tbody>
       </table>
     </div>
+
+
     </div>
 </template>
 
@@ -97,3 +117,9 @@ export default {
   
 }
 </script>
+
+<style>
+@import url(https://unpkg.com/bootstrap@4.1.0/dist/css/bootstrap.min.css);
+
+
+</style>
