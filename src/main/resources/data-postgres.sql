@@ -30,3 +30,6 @@ insert into nurse(name, surname, email, password, adress, city, state, phone) va
 insert into prescription (name, validated) values ('Bromazepam',false);
 insert into prescription (name, validated) values ('Fervex',true);
 insert into prescription (name, validated) values ('Loperamid',false);
+
+insert into examination_type(typename) values ('Ocni pregled');
+insert into examination_type(typename) values ('Ginekoloski pregled');

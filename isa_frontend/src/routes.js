@@ -98,6 +98,16 @@ const router = new Router({
       path: "/doctorHomePage/:id",
       name: "DoctorHomePage",
       component: () => import("./components/HomePageDoctorComponent")
+    },
+    {
+      path:"/examinationtypes",
+      name: "ListExaminationsComponent",
+      component: () => import("./components/ListExaminationTypesComponent")
+    },
+    {
+      path: "/addexaminationtype", 
+      name: "AddExaminationTypeComponent",
+      component: () => import("./components/AddExaminationTypeComponent")
     }
   ]
 });
