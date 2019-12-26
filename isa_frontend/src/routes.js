@@ -101,12 +101,12 @@ const router = new Router({
     },
     {
       path:"/examinationtypes",
-      name: "ListExaminationsComponent",
+      name: "ListExaminationTypesComponent",
       component: () => import("./components/ListExaminationTypesComponent")
     },
     {
-      path: "/addexaminationtype", 
-      name: "AddExaminationTypeComponent",
+      path: "/addexaminationtype/:id", 
+      name: "ExaminationTypeComponent",
       component: () => import("./components/AddExaminationTypeComponent")
     }
   ]
