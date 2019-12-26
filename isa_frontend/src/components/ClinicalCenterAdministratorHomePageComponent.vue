@@ -16,6 +16,9 @@
     <button @click="()=>$router.push('/medicalRooms')"> Add rooms  </button>
     <br>
     <br>
+    <button @click="()=>$router.push('/examinationtypes')"> View and manage examination types </button>
+    <br>
+    <br>
 
     <h3>All non accepted patients</h3>
     <div class="container">

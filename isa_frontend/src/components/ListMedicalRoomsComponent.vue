@@ -48,7 +48,7 @@ import axios from "axios";
                     </fieldset>
                     <fieldset class="form-group">
                         <label>CodeName</label>
-                        <input type="text" class="form-control" v-model="roomCodeName">
+                        <input type="text" class="form-control" v-model="roomCodeName" required>
                     </fieldset>
                     <fieldset class="form-group">
                         <label>Date</label>
@@ -96,19 +96,26 @@ export default {
             this.refreshMedicalRooms();
         },
         deleteRoomClicked(id){
-            var temp = MedicalRoomService.retrieveRoom(id);
-            MedicalRoomService.deleteRoom(id).then(response => {
-                if(temp.reserved){
-                    //this.message = `Cannot delete room because it is already reserved`;
+            var res;
+            MedicalRoomService.retrieveRoom(id).then(response => {
+                res = response.data.reserved;
+                if(res){
+                    this.message = `Cannot delete room because it is already reserved`;
                 } else {
-                    //this.message = `Deleted room successfully`;
+                    this.message = `Deleted room successfully`;
                 }
+            });
+
+            MedicalRoomService.deleteRoom(id).then(response => {
                 this.refreshMedicalRooms();
                 response.message
             });
         }
     },
     created() {
+        this.refreshMedicalRooms();
+    }, 
+    mounted() {
         this.refreshMedicalRooms();
     }
 };
