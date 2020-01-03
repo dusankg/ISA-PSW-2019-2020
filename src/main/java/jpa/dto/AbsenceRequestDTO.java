@@ -1,30 +1,23 @@
-package jpa.modeli;
+package jpa.dto;
 
 import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import jpa.modeli.AbsenceRequest;
 
-@Entity
-public class AbsenceRequest {
-	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+public class AbsenceRequestDTO {
 	private Long id;
-	
-	@Column(name = "startingdate")
 	private Date startingDate;
-	
-	@Column(name = "endingdate")
 	private Date endingDate;
 	
-	public AbsenceRequest() {}
+	public AbsenceRequestDTO() {}
 	
-	public AbsenceRequest(Date startingDate, Date endingDate) {
+	public AbsenceRequestDTO(AbsenceRequest absenceRequest) {
+		this(absenceRequest.getId(), absenceRequest.getStartingDate(), absenceRequest.getEndingDate());
+	}
+	
+	public AbsenceRequestDTO(Long id, Date startingDate, Date endingDate) {
 		super();
+		this.id = id;
 		this.startingDate = startingDate;
 		this.endingDate = endingDate;
 	}
@@ -33,7 +26,7 @@ public class AbsenceRequest {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
