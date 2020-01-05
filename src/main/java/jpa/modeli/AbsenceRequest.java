@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 
 @Entity
 public class AbsenceRequest {
@@ -20,6 +21,9 @@ public class AbsenceRequest {
 	
 	@Column(name = "endingdate")
 	private Date endingDate;
+	
+	@OneToOne
+	private Doctor doctor;
 	
 	public AbsenceRequest() {}
 	
@@ -53,5 +57,12 @@ public class AbsenceRequest {
 		this.endingDate = endingDate;
 	}
 	
-	
+	public Doctor getDoctor() {
+		return doctor;
+	}
+
+	public void setDoctor(Doctor doctor) {
+		this.doctor = doctor;
+	}
+
 }

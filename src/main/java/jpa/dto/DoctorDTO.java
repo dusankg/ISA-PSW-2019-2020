@@ -22,7 +22,8 @@ public class DoctorDTO {
 	private int phone;
 	//private Set<Patient>patient=new HashSet<Patient>();
 	// private Set<Examination> examinations=new HashSet<Examination>();
-public DoctorDTO() {
+	
+	public DoctorDTO() {
 		
 	}
 		
@@ -163,4 +164,5 @@ public DoctorDTO() {
 			this.clinic = clinic;
 		}
 		*/
+		
 }

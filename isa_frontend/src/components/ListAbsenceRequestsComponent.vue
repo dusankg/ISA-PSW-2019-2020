@@ -13,10 +13,23 @@
           <tbody>
               <tr v-for="absencerequest in absencerequests" v-bind:key="absencerequest.id">
                   <td>{{absencerequest.id}}</td>
-                  <td>{{}}</td>
+                  <td>{{absencerequests.doctorId}}</td>
                   <td>{{absencerequest.startingDate}}</td>
                   <td>{{absencerequest.endingDate}}</td>
-                  <td></td>
+                  <td>
+                      <button class="btn btn-success" v-on:click="acceptRequest(absencerequest.id)">
+                          Accept
+                      </button>
+                  </td>
+                  <td>
+                      <form @submit="declineRequest(patient.id, message)">
+                            <button class="btn btn-warning" type="submit">
+                                Decline
+                            </button>
+                            <label> Reason for declining request: </label>
+                            <input type="text" class="form-control" v-model="message" required>  
+                      </form>
+                  </td>
               </tr>
           </tbody>
       </table>
@@ -25,6 +38,7 @@
 
 <script>
 import AbsenceRequestService from '../service/AbsenceRequestService'
+import Axios from 'axios';
 export default {
     name:"ListAbsenceRequests",
     data(){
@@ -37,6 +51,12 @@ export default {
             AbsenceRequestService.retrieveAllAbsenceRequests().then(response =>{
                 this.absencerequests = response.data;
             });
+        },
+        acceptRequest(idx){
+            Axios.get('http://localhost:8082/api/doctors/accept/' + idx)
+        },
+        declineRequest(idx, message){
+            Axios.get('http://localhost:8082/api/doctors/decline/' + idx + "/" + message)
         }
     },
     created(){
