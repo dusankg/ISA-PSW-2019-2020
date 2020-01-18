@@ -2,6 +2,7 @@ package jpa.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,7 +17,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import jpa.dto.ExaminationDTO;
 import jpa.dto.ExaminationTypeDTO;
+import jpa.modeli.Examination;
 import jpa.modeli.ExaminationType;
 import jpa.service.ExaminationTypeService;
 
@@ -94,4 +97,22 @@ public class ExaminationTypeController {
 		}
 	}
 
+	@GetMapping(value = "/{typeId}/examinations")
+	public ResponseEntity<List<ExaminationDTO>> getExaminationsOfType(@PathVariable Long typeId){
+		ExaminationType examinationType = examinationTypeService.findOne(typeId);
+		Set<Examination> examinations = examinationType.getExaminations();
+		List<ExaminationDTO> examinationsDTO = new ArrayList<>();
+		for(Examination e : examinations) {
+			ExaminationDTO examinationDTO = new ExaminationDTO();
+			examinationDTO.setId(e.getId());
+			examinationDTO.setDate(e.getDate());
+			examinationDTO.setDuration(e.getDuration());
+			examinationDTO.setPrice(e.getPrice());
+			
+			examinationsDTO.add(examinationDTO);
+		}
+		return new ResponseEntity<>(examinationsDTO, HttpStatus.OK);
+		
+	}
+	
 }

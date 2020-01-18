@@ -42,6 +42,13 @@ import axios from "axios";
               <label>Price</label>
               <input type="number" class="form-control" v-model="price">   
             </fieldset>
+            <fieldset class="form-group">
+              <label>Type of examination</label>
+              <select class="form-control" @change="changedType($event)">
+                <option value="" selected disabled>Choose type</option>
+                <option v-for="examinationType in examinationTypes" :value="examinationType.id" :key="examinationType.id">{{examinationType.typeName}}</option>
+              </select>
+            </fieldset>
             <button class="btn btn-success" type="submit">Save</button>
           </form>
       </div>
@@ -51,6 +58,7 @@ import axios from "axios";
 
 <script>
 import ExaminationService from '../service/ExaminationService';
+import ExaminationTypeService from '../service/ExaminationTypeService';
 import Axios from 'axios';
 export default {
   name: "ListExaminations",
@@ -60,7 +68,9 @@ export default {
         message: null,
         date: undefined,
         duration: undefined,
-        price: undefined
+        price: undefined,
+        examinationTypes: [],
+        selectedType: undefined
     };
   },
   methods: {
@@ -79,11 +89,20 @@ export default {
       }
       Axios.post("http://localhost:8082/api/examinations", temp);
       this.refreshExaminations();
+    },
+    retrieveExaminationTypesForSelect(){
+        ExaminationTypeService.retrieveAllExaminationTypes().then(response =>{
+            this.examinationTypes = response.data;
+        });
+    },
+    changedType(event){
+      this.selectedType = event.target.options[event.target.options.selectedIndex].text;
     }
     
   },
-  created() {
+  mounted() {
     this.refreshExaminations();
+    this.retrieveExaminationTypesForSelect();
   }
 
 };

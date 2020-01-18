@@ -106,4 +106,6 @@ public class ExaminationController {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 	}
+	
+	
 }

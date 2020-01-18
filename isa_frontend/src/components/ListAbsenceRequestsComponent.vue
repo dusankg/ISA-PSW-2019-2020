@@ -13,7 +13,7 @@
           <tbody>
               <tr v-for="absencerequest in absencerequests" v-bind:key="absencerequest.id">
                   <td>{{absencerequest.id}}</td>
-                  <td>{{absencerequests.doctorId}}</td>
+                  <td>{{getDoctorName(absencerequest.id)}}</td>
                   <td>{{absencerequest.startingDate}}</td>
                   <td>{{absencerequest.endingDate}}</td>
                   <td>
@@ -22,7 +22,7 @@
                       </button>
                   </td>
                   <td>
-                      <form @submit="declineRequest(patient.id, message)">
+                      <form @submit="declineRequest(absencerequest.id, message)">
                             <button class="btn btn-warning" type="submit">
                                 Decline
                             </button>
@@ -44,6 +44,9 @@ export default {
     data(){
         return{
             absencerequests: [],
+            message: "",
+            doctorWhoSentMe: undefined,
+            doctorName: "",
         }
     },
     methods:{
@@ -53,10 +56,24 @@ export default {
             });
         },
         acceptRequest(idx){
-            Axios.get('http://localhost:8082/api/doctors/accept/' + idx)
+            Axios.get('http://localhost:8082/api/doctors/accept/' + idx);
+            AbsenceRequestService.deleteAbsenceRequest(idx);
+            this.refreshAbsenceRequests();
         },
         declineRequest(idx, message){
-            Axios.get('http://localhost:8082/api/doctors/decline/' + idx + "/" + message)
+            var p = message;
+            Axios.get('http://localhost:8082/api/doctors/decline/' + idx + "/" + p);
+            AbsenceRequestService.deleteAbsenceRequest(idx);
+            this.refreshAbsenceRequests();
+        },
+        getDoctorName: function(idx){
+            //var doctorName = "pera";
+            AbsenceRequestService.retrieveDoctorThatSentRequest(idx).then(response =>{
+                this.doctorWhoSentMe = response.data;
+
+            });
+            //doctorName = this.doctorWhoSentMe.name;
+            //return doctorName;   
         }
     },
     created(){

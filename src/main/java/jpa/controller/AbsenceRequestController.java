@@ -17,7 +17,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import jpa.dto.AbsenceRequestDTO;
+import jpa.dto.DoctorDTO;
 import jpa.modeli.AbsenceRequest;
+import jpa.modeli.Doctor;
 import jpa.service.AbsenceRequestService;
 
 @RestController
@@ -96,5 +98,14 @@ public class AbsenceRequestController {
 		}
 	}
 
-	
+	@GetMapping(value = "/{id}/doctor")	
+	public ResponseEntity<DoctorDTO> getAbsenceRequestDoctor(@PathVariable Long id){
+		
+		AbsenceRequest absenceRequest = absenceRequestService.findOne(id);
+		
+		Doctor doctor = absenceRequest.getDoctor();
+		DoctorDTO doctorDTO = new DoctorDTO(doctor);
+		
+		return new ResponseEntity<>(doctorDTO, HttpStatus.OK);
+	}
 }
