@@ -2,11 +2,10 @@ package jpa.controller;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -17,17 +16,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import jpa.dto.AbsenceRequestDTO;
 import jpa.dto.DoctorDTO;
+import jpa.modeli.AbsenceRequest;
 import jpa.modeli.Doctor;
 import jpa.service.DoctorService;
-
-
-import jpa.dto.DoctorDTO;
-import jpa.modeli.Doctor;
-import jpa.service.DoctorService;
+import jpa.service.EmailService;
 
 @RestController
 @CrossOrigin(origins = { "http://localhost:3000", "http://localhost:4200", "http://localhost:8080" })
@@ -37,6 +33,11 @@ public class DoctorController {
 	
 	@Autowired
 	private DoctorService doctorService;
+	
+	@Autowired
+	private EmailService emailService;
+	
+	private Logger logger = LoggerFactory.getLogger(DoctorController.class);
 	
 	@GetMapping(value = "/all")
 	public ResponseEntity<List<DoctorDTO>> getAllDoctors(){
@@ -120,15 +121,47 @@ public class DoctorController {
 		}
 	}
 
+	@GetMapping(value = "/{doctorId}/absencerequest")	
+	public ResponseEntity<AbsenceRequestDTO> getDoctorsAbsenceRequest(@PathVariable Long doctorId){
+		
+		Doctor doctor = doctorService.findOne(doctorId);
+		
+		AbsenceRequest absenceRequest = doctor.getAbsenceRequest();
+		AbsenceRequestDTO absenceRequestDTO = new AbsenceRequestDTO(absenceRequest);
+		
+		return new ResponseEntity<>(absenceRequestDTO, HttpStatus.OK);
+	}
 	
+	@GetMapping(value = "/accept/{id}")
+	public ResponseEntity<Void> acceptRequest(@PathVariable Long id){
+		Doctor doctor = doctorService.findOne(id);
+		
+		if(doctor != null) {
+			try {
+				emailService.sendNotificationAccept(doctor);
+			} catch(Exception e) {
+				logger.info("Error while sending email!");
+			}
+			return new ResponseEntity<>(HttpStatus.OK);
+		}else{
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+	}
 	
-	
-
-	
-
-	
-	
-	
-
+	@GetMapping(value = "/decline/{id}/{message}")
+	public ResponseEntity<Void> declineRequest(@PathVariable Long id, @PathVariable String message){
+		Doctor doctor = doctorService.findOne(id);
+		
+		if(doctor != null) {
+			try {
+				emailService.sendNotificationDecline(doctor, message);
+			} catch(Exception e) {
+				logger.info("Error while sending email!");
+			}
+			return new ResponseEntity<>(HttpStatus.OK);
+		}else{
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+	}
 	
 }

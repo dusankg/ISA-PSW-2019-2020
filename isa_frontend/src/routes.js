@@ -108,6 +108,16 @@ const router = new Router({
       path: "/addexaminationtype/:id", 
       name: "ExaminationTypeComponent",
       component: () => import("./components/AddExaminationTypeComponent")
+    },
+    {
+      path: "/absencerequests",
+      name: "ListAbsenceRequestsComponent",
+      component: () => import("./components/ListAbsenceRequestsComponent")
+    },
+    {
+      path: "/addabsencerequest/:id", 
+      name: "CreateAbsenceRequestComponent",
+      component: () => import("./components/CreateAbsenceRequestComponent")
     }
   ]
 });
