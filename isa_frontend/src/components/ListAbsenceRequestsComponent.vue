@@ -44,7 +44,6 @@ export default {
     data(){
         return{
             absencerequests: [],
-            message: "",
             doctorWhoSentMe: undefined,
             doctorName: "",
         }

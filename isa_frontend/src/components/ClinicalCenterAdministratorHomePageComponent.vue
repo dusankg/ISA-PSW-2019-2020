@@ -22,6 +22,9 @@
     <button @click="()=>$router.push('/absencerequests')"> Respond to existing absence requests </button>
     <br>
     <br>
+    <button @click="()=>$router.push(`/editadministrator/${this.$route.params.id}`)"> Change personal information </button>
+    <br>
+    <br>
     
 
     <h3>All non accepted patients</h3>
@@ -84,7 +87,6 @@ export default {
           validated: true
         },
         message: null,
-        INSTRUCTOR: "all"
     };
   },
   methods: {
