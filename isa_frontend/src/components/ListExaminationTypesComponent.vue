@@ -13,12 +13,12 @@
                 <td>{{examinationtype.id}}</td>
                 <td>{{examinationtype.typeName}}</td>
                 <td>
-                    <button class="brn btn-success" v-on:click="editExaminationTypeClicked(examinationtype.id)">
+                    <button class="btn btn-success" v-on:click="editExaminationTypeClicked(examinationtype.id)">
                         Edit
                     </button>
                 </td>
                 <td>
-                    <button class="brn btn-warning" v-on:click="deleteExaminationTypeClicked(examinationtype.id)">
+                    <button class="btn btn-warning" v-on:click="deleteExaminationTypeClicked(examinationtype.id)">
                         Delete
                     </button>
                 </td>

@@ -118,6 +118,11 @@ const router = new Router({
       path: "/addabsencerequest/:id", 
       name: "CreateAbsenceRequestComponent",
       component: () => import("./components/CreateAbsenceRequestComponent")
+    }, 
+    {
+      path: "/editadministrator/:id",
+      name: "EditAdministratorComponent",
+      component: () => import("./components/EditAdministratorComponent")
     }
   ]
 });
