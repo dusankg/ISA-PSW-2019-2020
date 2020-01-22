@@ -1,5 +1,8 @@
 package jpa.modeli;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -7,6 +10,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 @Entity
@@ -37,8 +42,8 @@ public class Doctor {
 	@Column(name = "state")
 	private String state;
 	
-	//@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	//private Clinic clinic;
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	private Clinic clinic;
 	
 	@Column(name = "phone")
 	private int phone;
@@ -46,8 +51,9 @@ public class Doctor {
 	//@OneToMany(mappedBy = "patient", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	//private Set<Patient>patient=new HashSet<Patient>();
 	
-	//@OneToMany(mappedBy = "examination", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	//private Set<Examination> examinations=new HashSet<Examination>();
+	//check if mappedBy is necessary
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private Set<Examination> examinations=new HashSet<Examination>();
 	
 	@OneToOne(mappedBy = "doctor", fetch = FetchType.EAGER)
 	private AbsenceRequest absenceRequest;
@@ -157,7 +163,15 @@ public class Doctor {
 		this.phone = phone;
 	}
 
+	public Set<Examination> getExaminations() {
+		return examinations;
+	}
 
+
+	public void setExaminations(Set<Examination> examinations) {
+		this.examinations = examinations;
+	}
+	
 /*	public Set<Patient> getPatient() {
 		return patient;
 	}
@@ -167,17 +181,6 @@ public class Doctor {
 		this.patient = patient;
 	}
 
-
-	public Set<Examination> getExaminations() {
-		return examinations;
-	}
-
-
-	public void setExaminations(Set<Examination> examinations) {
-		this.examinations = examinations;*/
-	//}
-
-	/*
 	public Clinic getClinic() {
 		return clinic;
 	}

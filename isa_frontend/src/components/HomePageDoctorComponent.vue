@@ -1,11 +1,13 @@
 <template>
   <div>
       <h1>Doctor home page</h1>
-      <p><button @click="()=>$router.push('/examinations')"> View and manage examinations  </button></p>
-      <p><button @click="()=>$router.push('/diagnosis')"> View and manage diagnosis  </button></p>
-      <p><button @click="()=>$router.push('/medicalrooms')"> View and manage medical rooms  </button></p>
-      <p><button @click="()=>$router.push('/patients')"> View and manage patients  </button></p>
-      <p><button @click="()=>$router.push('/addabsencerequest/id')"> Create new absence request  </button></p>
+      <ul>  
+        <li><router-link to="/patients">List of patients</router-link></li>        
+        <li><router-link to="/examinations">Examinations</router-link></li>
+        <li><router-link to="/diagnosis">Diagnosis</router-link></li>
+        <li><router-link to="/addabsencerequest/id">Create new absence request</router-link></li>
+        <li><router-link :to="{name: 'editdoctor', params: { id: this.id }}">See personal profile</router-link></li>
+      </ul>
   </div>
 </template>
 
@@ -20,5 +22,31 @@ export default {
 </script>
 
 <style>
+/*Navigation bar*/
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: rgb(29, 168, 64);
+}
+
+li {
+  float: left;
+}
+
+li a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+li a:hover {
+  background-color: rgb(10, 78, 14);
+  text-decoration: none;
+  color: white;
+}
 
 </style>

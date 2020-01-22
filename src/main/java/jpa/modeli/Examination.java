@@ -37,13 +37,14 @@ public class Examination {
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private ExaminationType type;
 	
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	private Doctor doctor;
+	
 	/*
 	Mapping needs to be added here
 	@Column(name = "room")
 	private MedicalRoom room;
 	
-	@Column(name = "doctor")
-	private Doctor doctor;
 	*/
 	
 	public Examination() {}
@@ -116,6 +117,13 @@ public class Examination {
 	public void setType(ExaminationType type) {
 		this.type = type;
 	}
-	
+
+	public Doctor getDoctor() {
+		return doctor;
+	}
+
+	public void setDoctor(Doctor doctor) {
+		this.doctor = doctor;
+	}
 	
 }
