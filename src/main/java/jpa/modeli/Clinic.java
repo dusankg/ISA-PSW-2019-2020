@@ -1,7 +1,6 @@
 package jpa.modeli;
 
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -40,8 +39,8 @@ public class Clinic {
 	@Column(name="Examinations", nullable = true)
 	private Set<Examination> examinations = new HashSet<Examination>();
 	
-	//@OneToMany(mappedBy = "clinic", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	//private Set<Doctor> doctors = new HashSet<Doctor>();
+	@OneToMany(mappedBy = "clinic", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private Set<Doctor> doctors = new HashSet<Doctor>();
 	
 	//@OneToMany(mappedBy = "clinic", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	//private Set<MedicalRoom> rooms=new HashSet<MedicalRoom>();
@@ -142,15 +141,14 @@ public class Clinic {
 		this.examinations = examinations;
 	}
 
-	
-/*	public Set<Doctor> getDoctors() {
+		public Set<Doctor> getDoctors() {
 		return doctors;
 	}
 
 	public void setDoctors(Set<Doctor> doktori) {
 		this.doctors = doktori;
 	}
-
+/*
 	public Set<MedicalRoom> getRooms() {
 		return rooms;
 	}

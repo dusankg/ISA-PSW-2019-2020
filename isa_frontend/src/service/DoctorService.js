@@ -7,7 +7,11 @@ class DoctorService {
   }
 
   deleteDoctor(id){
-    return axios.delete(`http://localhost:8082/api/doctors/${id}`)
+    return axios.delete(`http://localhost:8082/api/doctors/${id}`);
+  }
+
+  retrieveDoctor(id){
+    return axios.get(`http://localhost:8082/api/doctors/${id}`);
   }
 }
 

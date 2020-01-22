@@ -20,12 +20,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-
-
-
-
 import jpa.dto.ClinicDTO;
+import jpa.dto.DoctorDTO;
 import jpa.modeli.Clinic;
+import jpa.modeli.Doctor;
 import jpa.service.ClinicService;
 
 @RestController
@@ -155,18 +153,27 @@ public class ClinicController {
 	}
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+	@GetMapping(value = "/{clinicId}/doctors")
+	public ResponseEntity<List<DoctorDTO>> getClinicDoctors(@PathVariable Long clinicId) {
+		Clinic clinic = clinicService.findOne(clinicId);
+		Set<Doctor> doctors = clinic.getDoctors();
+		List<DoctorDTO> doctorsDTO = new ArrayList<>();
+		for (Doctor d : doctors) {
+			DoctorDTO doctorDTO = new DoctorDTO();
+			doctorDTO.setId(d.getId());
+			doctorDTO.setName(d.getName());
+			doctorDTO.setSurname(d.getSurname());
+			doctorDTO.setPassword(d.getPassword());
+			doctorDTO.setEmail(d.getEmail());
+			doctorDTO.setAdress(d.getAdress());
+			doctorDTO.setCity(d.getCity());
+			doctorDTO.setState(d.getState());
+			doctorDTO.setPhone(d.getPhone());
+
+			doctorsDTO.add(doctorDTO);
+		}
+		return new ResponseEntity<>(doctorsDTO, HttpStatus.OK);
+	}
 	
 	
 	

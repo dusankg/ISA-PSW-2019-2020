@@ -123,6 +123,11 @@ const router = new Router({
       path: "/editadministrator/:id",
       name: "EditAdministratorComponent",
       component: () => import("./components/EditAdministratorComponent")
+    }, 
+    {
+      path: '/editdoctor/:id',
+      name: 'editdoctor',
+      component: () => import("./components/EditDoctorComponent")
     }
   ]
 });
