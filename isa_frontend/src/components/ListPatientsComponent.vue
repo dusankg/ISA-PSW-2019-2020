@@ -10,10 +10,10 @@ import axios from "axios"
       <table class="table">
         <thead>
           <tr>
-            <th>Id</th>
-            <th>Name</th>
-            <th>Surname</th>
-            <th>LBO</th>
+            <th @click="sortById()">Id</th>
+            <th @click="sortByName()">Name</th>
+            <th @click="sortBySurname()">Surname</th>
+            <th @click="sortByLBO()">LBO</th>
           </tr>
         </thead>
         <tbody>
@@ -32,6 +32,7 @@ import axios from "axios"
       </table>
     </div>
     <div>
+
     <h3>Add new Patient</h3>
     <div class="container">
       <form @submit="validateAndSubmit">
@@ -105,7 +106,8 @@ export default {
         lbo: undefined,
         searchName: "",
         searchSurname: "",
-        searchLBO: ""
+        searchLBO: "",
+        currentSortDir: "desc"
         
     };
   },
@@ -150,10 +152,46 @@ export default {
 
     }this.refreshPatients();
   },
-  patientProfileClicked(id){
-    this.$router.push(`/patientprofile/${id}`);  
-  }
-
+    patientProfileClicked(id){
+      this.$router.push(`/patientprofile/${id}`);  
+    },
+    // Sorting functions
+    sortById(){
+      if(this.currentSortDir === "desc"){
+        this.patients.sort((a, b) => a.id > b.id ? 1 : -1);
+        this.currentSortDir = "asc";
+      }else{
+        this.patients.sort((a, b) => a.id < b.id ? 1 : -1);
+        this.currentSortDir = "desc";
+      }
+    },
+    sortByName(){
+      if(this.currentSortDir === "desc"){
+        this.patients.sort((a, b) => a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1);
+        this.currentSortDir = "asc";
+      }else{
+        this.patients.sort((a, b) => a.name.toLowerCase() < b.name.toLowerCase() ? 1 : -1);
+        this.currentSortDir = "desc";
+      }
+    },
+    sortBySurname(){
+      if(this.currentSortDir === "desc"){
+        this.patients.sort((a, b) => a.surname.toLowerCase() > b.surname.toLowerCase() ? 1 : -1);
+        this.currentSortDir = "asc";
+      }else{
+        this.patients.sort((a, b) => a.surname.toLowerCase() < b.surname.toLowerCase() ? 1 : -1);
+        this.currentSortDir = "desc";
+      }
+    },
+    sortByLBO(){
+      if(this.currentSortDir === "desc"){
+        this.patients.sort((a, b) => a.lbo > b.lbo ? 1 : -1);
+        this.currentSortDir = "asc";
+      }else{
+        this.patients.sort((a, b) => a.lbo < b.lbo ? 1 : -1);
+        this.currentSortDir = "desc";
+      }
+    }
 
   },
   computed: {
@@ -168,7 +206,8 @@ export default {
         }
 
       });
-    }
+    },
+    
   },
   created() {
     this.refreshPatients();

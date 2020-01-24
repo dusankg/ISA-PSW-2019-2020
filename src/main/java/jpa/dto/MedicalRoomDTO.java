@@ -10,20 +10,22 @@ public class MedicalRoomDTO {
 	private Boolean operational;
 	private Boolean reserved;
 	private String roomCodeName;
+	private Integer roomNumber;
 	private Date date; 
 	
 	public MedicalRoomDTO() {}
 	
 	public MedicalRoomDTO(MedicalRoom medicalRoom){
-		this(medicalRoom.getId(), medicalRoom.getOperational(), medicalRoom.getReserved(), medicalRoom.getRoomCodeName(), medicalRoom.getDate());
+		this(medicalRoom.getId(), medicalRoom.getOperational(), medicalRoom.getReserved(), medicalRoom.getRoomCodeName(), medicalRoom.getRoomNumber(), medicalRoom.getDate());
 	}
 	
-	public MedicalRoomDTO(Long id, Boolean operational, Boolean reserved, String roomCodeName, Date date) {
+	public MedicalRoomDTO(Long id, Boolean operational, Boolean reserved, String roomCodeName, Integer roomNumber, Date date) {
 		super();
 		this.id = id;
 		this.operational = operational;
 		this.reserved = reserved;
 		this.roomCodeName = roomCodeName;
+		this.roomNumber = roomNumber;
 		this.date = date;
 	}
 
@@ -57,6 +59,14 @@ public class MedicalRoomDTO {
 
 	public void setRoomCodeName(String roomCodeName) {
 		this.roomCodeName = roomCodeName;
+	}
+	
+	public Integer getRoomNumber() {
+		return roomNumber;
+	}
+
+	public void setRoomNumber(Integer roomNumber) {
+		this.roomNumber = roomNumber;
 	}
 
 	public Date getDate() {

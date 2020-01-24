@@ -62,6 +62,7 @@ public class MedicalRoomController {
 		medicalRoom.setOperational(medicalRoomDTO.getOperational());
 		medicalRoom.setReserved(medicalRoomDTO.getReserved());
 		medicalRoom.setRoomCodeName(medicalRoomDTO.getRoomCodeName());
+		medicalRoom.setRoomNumber(medicalRoomDTO.getRoomNumber());
 		medicalRoom.setDate(medicalRoomDTO.getDate());
 		
 		medicalRoom = medicalRoomService.save(medicalRoom);
@@ -81,6 +82,7 @@ public class MedicalRoomController {
 		medicalRoom.setOperational(medicalRoomDTO.getOperational());
 		medicalRoom.setReserved(medicalRoomDTO.getReserved());
 		medicalRoom.setRoomCodeName(medicalRoomDTO.getRoomCodeName());
+		medicalRoom.setRoomNumber(medicalRoomDTO.getRoomNumber());
 		medicalRoom.setDate(medicalRoomDTO.getDate());
 
 		medicalRoom = medicalRoomService.save(medicalRoom);
