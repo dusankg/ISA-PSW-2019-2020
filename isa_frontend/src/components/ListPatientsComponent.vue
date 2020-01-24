@@ -4,19 +4,29 @@ import axios from "axios"
   <div class="container">
     <h3>All Patients</h3>
     <div class="container">
+      <input type="text" class="form-control" v-model="searchName" placeholder="Search patient by name"/>
+      <input type="text" class="form-control" v-model="searchSurname" placeholder="Search patient by surname"/>
+      <input type="text" class="form-control" v-model="searchLBO" placeholder="Search patient by LBO"/>
       <table class="table">
         <thead>
           <tr>
             <th>Id</th>
             <th>Name</th>
             <th>Surname</th>
+            <th>LBO</th>
           </tr>
         </thead>
         <tbody>
-          <tr v-for="patient in patients" v-bind:key="patient.id">
+          <tr v-for="patient in filteredPatients" v-bind:key="patient.id">
             <td>{{patient.id}}</td>
             <td>{{patient.name}}</td>
             <td>{{patient.surname}}</td>
+            <td>{{patient.lbo}}</td>
+            <td>
+              <button class="btn btn-success" v-on:click="patientProfileClicked(patient.id)">
+                Profile
+              </button>
+            </td>
           </tr>
         </tbody>
       </table>
@@ -90,7 +100,13 @@ export default {
     return {
         patients: [],
         message: null,
-        INSTRUCTOR: "all"
+        name: "",
+        surname: "",
+        lbo: undefined,
+        searchName: "",
+        searchSurname: "",
+        searchLBO: ""
+        
     };
   },
   methods: {
@@ -133,9 +149,26 @@ export default {
             this.$router.push('/') 
 
     }this.refreshPatients();
+  },
+  patientProfileClicked(id){
+    this.$router.push(`/patientprofile/${id}`);  
   }
 
 
+  },
+  computed: {
+    filteredPatients: function() {
+      return this.patients.filter((patient)=>{
+        if(patient.name.toLowerCase().match(this.searchName.toLowerCase()) &&
+          patient.surname.toLowerCase().match(this.searchSurname.toLowerCase()) &&
+          patient.lbo.toString().match(this.searchLBO)){
+          return true;
+        }else{
+          return false;
+        }
+
+      });
+    }
   },
   created() {
     this.refreshPatients();

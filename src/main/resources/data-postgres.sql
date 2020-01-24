@@ -16,11 +16,11 @@ insert into patient (name, surname, email, password, adress, city, state, phone,
 
 insert into patient (name, surname, email, password, adress, city, state, phone, lbo, validated, accepted) values ('2', '32131313', 'novi.com', '123', '1232131321', '3213123123', '1231231231', 111222333, 111, false, false);
 
-insert into patient (name, surname, email, password, adress, city, state, phone, lbo, validated, accepted) values ('3', '32131313', 'novi.com', '123', '1232131321', '3213123123', '1231231231', 111222333, 111, false, false);
+insert into patient (name, surname, email, password, adress, city, state, phone, lbo, validated, accepted) values ('Pera', 'Peric', 'novi.com', '123', '1232131321', '3213123123', '1231231231', 111222333, 111, false, false);
 
-insert into patient (name, surname, email, password, adress, city, state, phone, lbo, validated, accepted) values ('4', '32131313', 'novi.com', '123', '1232131321', '3213123123', '1231231231', 111222333, 111, false, false);
+insert into patient (name, surname, email, password, adress, city, state, phone, lbo, validated, accepted) values ('Mika', 'Mikic', 'novi.com', '123', '1232131321', '3213123123', '1231231231', 111222333, 112, false, false);
 
-insert into patient (name, surname, email, password, adress, city, state, phone, lbo, validated, accepted) values ('5', '32131313', 'novi.com', '123', '1232131321', '3213123123', '1231231231', 111222333, 111, false, false);
+insert into patient (name, surname, email, password, adress, city, state, phone, lbo, validated, accepted) values ('Zika', 'Haralampijevic', 'novi.com', '123', '1232131321', '3213123123', '1231231231', 111222333, 123, false, false);
 
 insert into examination (date, duration, price) values ('2011-03-05', 45, 1500);
 
