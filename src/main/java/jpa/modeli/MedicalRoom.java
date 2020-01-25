@@ -21,6 +21,8 @@ public class MedicalRoom {
 	private Boolean reserved;
 	@Column(name = "roomCodename", nullable = false)
 	private String roomCodeName;
+	@Column(name = "roomNumber")
+	private Integer roomNumber;
 	@Column(name = "date")
 	private Date date; 
 	//Pocetni trenuci pregleda. Duration cemo dodavati iz objekta klase examination
@@ -28,11 +30,12 @@ public class MedicalRoom {
 	
 	public MedicalRoom() {}
 	
-	public MedicalRoom(Boolean operational, Boolean reserved, String roomCodename, Date date) {
+	public MedicalRoom(Boolean operational, Boolean reserved, String roomCodename, Integer roomNumber, Date date) {
 		super();
 		this.operational = operational;
 		this.reserved = reserved;
 		this.roomCodeName = roomCodename;
+		this.roomNumber = roomNumber;
 		this.date = date;
 	}
 
@@ -66,6 +69,14 @@ public class MedicalRoom {
 
 	public void setRoomCodeName(String roomCodename) {
 		this.roomCodeName = roomCodename;
+	}
+
+	public Integer getRoomNumber() {
+		return roomNumber;
+	}
+
+	public void setRoomNumber(Integer roomNumber) {
+		this.roomNumber = roomNumber;
 	}
 
 	public Date getDate() {

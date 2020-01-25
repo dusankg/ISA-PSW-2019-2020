@@ -11,15 +11,16 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import jpa.dto.ExaminationDTO;
 import jpa.modeli.Examination;
+import jpa.modeli.ExaminationType;
 import jpa.modeli.Patient;
 import jpa.service.ExaminationService;
+import jpa.service.ExaminationTypeService;
 import jpa.service.PatientService;
 
 @RestController
@@ -32,6 +33,8 @@ public class ExaminationController {
 	@Autowired
 	private PatientService patientService;
 
+	@Autowired
+	private ExaminationTypeService examinationTypeService;
 	
 	@GetMapping(value = "/all")
 	public ResponseEntity<List<ExaminationDTO>> getAllExaminations(){
@@ -62,13 +65,25 @@ public class ExaminationController {
 
 	@PostMapping(consumes = "application/json")
 	public ResponseEntity<ExaminationDTO> saveExamination(@RequestBody ExaminationDTO examinationDTO) {
-
+		
+		// a new examination must have examination type defined
+		if(examinationDTO.getType() == null) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		
+		ExaminationType examinationType = examinationTypeService.findOne(examinationDTO.getType().getId());
+		
+		if(examinationType == null) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		
 		Examination examination = new Examination();
 		examination.setId(null);
 		examination.setDate(examinationDTO.getDate());
 		examination.setDuration(examinationDTO.getDuration());
 		examination.setPrice(examinationDTO.getPrice());
-
+		examination.setType(examinationType);
+		
 		examination = examinationService.save(examination);
 		return new ResponseEntity<>(new ExaminationDTO(examination), HttpStatus.CREATED);
 	}

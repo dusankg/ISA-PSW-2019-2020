@@ -20,7 +20,7 @@ public class ExaminationType {
 	@Column(name = "typename")
 	private String typeName;
 	
-	//MappedBy = "type" because in Examination I have field ExaminationType
+	//MappedBy = "type" because in Examination I have field ExaminationType with name type
 	@OneToMany(mappedBy = "type")
 	private Set<Examination> examinations = new HashSet<Examination>();
 	

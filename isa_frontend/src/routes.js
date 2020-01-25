@@ -13,10 +13,7 @@ const router = new Router({
     {
       path: "/patients",
       name: "Patients",
-      component: () => import("./components/ListPatientsComponent")
-         
-      
-                    
+      component: () => import("./components/ListPatientsComponent")                 
       
     },
     {
@@ -126,8 +123,14 @@ const router = new Router({
     }, 
     {
       path: '/editdoctor/:id',
-      name: 'editdoctor',
+      //Name is important in this case because I target link in a different way (because i have link instead a button)
+      name: 'editdoctor', 
       component: () => import("./components/EditDoctorComponent")
+    },
+    {
+      path: '/patientprofile/:id',
+      name: 'patientprofile',
+      component: () => import("./components/PatientProfile")
     }
   ]
 });

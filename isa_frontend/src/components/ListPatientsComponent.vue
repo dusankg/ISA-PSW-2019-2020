@@ -4,24 +4,35 @@ import axios from "axios"
   <div class="container">
     <h3>All Patients</h3>
     <div class="container">
+      <input type="text" class="form-control" v-model="searchName" placeholder="Search patient by name"/>
+      <input type="text" class="form-control" v-model="searchSurname" placeholder="Search patient by surname"/>
+      <input type="text" class="form-control" v-model="searchLBO" placeholder="Search patient by LBO"/>
       <table class="table">
         <thead>
           <tr>
-            <th>Id</th>
-            <th>Name</th>
-            <th>Surname</th>
+            <th @click="sortById()">Id</th>
+            <th @click="sortByName()">Name</th>
+            <th @click="sortBySurname()">Surname</th>
+            <th @click="sortByLBO()">LBO</th>
           </tr>
         </thead>
         <tbody>
-          <tr v-for="patient in patients" v-bind:key="patient.id">
+          <tr v-for="patient in filteredPatients" v-bind:key="patient.id">
             <td>{{patient.id}}</td>
             <td>{{patient.name}}</td>
             <td>{{patient.surname}}</td>
+            <td>{{patient.lbo}}</td>
+            <td>
+              <button class="btn btn-success" v-on:click="patientProfileClicked(patient.id)">
+                Profile
+              </button>
+            </td>
           </tr>
         </tbody>
       </table>
     </div>
     <div>
+
     <h3>Add new Patient</h3>
     <div class="container">
       <form @submit="validateAndSubmit">
@@ -90,7 +101,14 @@ export default {
     return {
         patients: [],
         message: null,
-        INSTRUCTOR: "all"
+        name: "",
+        surname: "",
+        lbo: undefined,
+        searchName: "",
+        searchSurname: "",
+        searchLBO: "",
+        currentSortDir: "desc"
+        
     };
   },
   methods: {
@@ -133,9 +151,63 @@ export default {
             this.$router.push('/') 
 
     }this.refreshPatients();
-  }
+  },
+    patientProfileClicked(id){
+      this.$router.push(`/patientprofile/${id}`);  
+    },
+    // Sorting functions
+    sortById(){
+      if(this.currentSortDir === "desc"){
+        this.patients.sort((a, b) => a.id > b.id ? 1 : -1);
+        this.currentSortDir = "asc";
+      }else{
+        this.patients.sort((a, b) => a.id < b.id ? 1 : -1);
+        this.currentSortDir = "desc";
+      }
+    },
+    sortByName(){
+      if(this.currentSortDir === "desc"){
+        this.patients.sort((a, b) => a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1);
+        this.currentSortDir = "asc";
+      }else{
+        this.patients.sort((a, b) => a.name.toLowerCase() < b.name.toLowerCase() ? 1 : -1);
+        this.currentSortDir = "desc";
+      }
+    },
+    sortBySurname(){
+      if(this.currentSortDir === "desc"){
+        this.patients.sort((a, b) => a.surname.toLowerCase() > b.surname.toLowerCase() ? 1 : -1);
+        this.currentSortDir = "asc";
+      }else{
+        this.patients.sort((a, b) => a.surname.toLowerCase() < b.surname.toLowerCase() ? 1 : -1);
+        this.currentSortDir = "desc";
+      }
+    },
+    sortByLBO(){
+      if(this.currentSortDir === "desc"){
+        this.patients.sort((a, b) => a.lbo > b.lbo ? 1 : -1);
+        this.currentSortDir = "asc";
+      }else{
+        this.patients.sort((a, b) => a.lbo < b.lbo ? 1 : -1);
+        this.currentSortDir = "desc";
+      }
+    }
 
+  },
+  computed: {
+    filteredPatients: function() {
+      return this.patients.filter((patient)=>{
+        if(patient.name.toLowerCase().match(this.searchName.toLowerCase()) &&
+          patient.surname.toLowerCase().match(this.searchSurname.toLowerCase()) &&
+          patient.lbo.toString().match(this.searchLBO)){
+          return true;
+        }else{
+          return false;
+        }
 
+      });
+    },
+    
   },
   created() {
     this.refreshPatients();

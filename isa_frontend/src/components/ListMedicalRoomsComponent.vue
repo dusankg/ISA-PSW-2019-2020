@@ -4,22 +4,27 @@ import axios from "axios";
     <div class="container">
         <h3>All rooms</h3>
         <div class="container">
+        <input type="text" class="form-control" v-model="searchName" placeholder="Search room by name"/>
+        <input type="text" class="form-control" v-model="searchNumber" placeholder="Search room by number"/>
+        <input type="text" class="form-control" v-model="searchDate" placeholder="Search room by date"/>
             <table class="table">
                 <thead>
                     <tr>
-                        <th>Id</th>
+                        <th @click="sortById()">Id</th>
                         <th>Operational</th>
                         <th>Reserved</th>
-                        <th>CodeName</th>
-                        <th>Date</th>
+                        <th @click="sortByName()">CodeName</th>
+                        <th @click="sortByNumber()">Room number</th>
+                        <th @click="sortByDate()">Date</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="medicalroom in medicalrooms" v-bind:key="medicalroom.id">
+                    <tr v-for="medicalroom in filteredMedicalRooms" v-bind:key="medicalroom.id">
                         <td>{{medicalroom.id}}</td>
                         <td>{{medicalroom.operational}}</td>
                         <td>{{medicalroom.reserved}}</td>
                         <td>{{medicalroom.roomCodeName}}</td>
+                        <td>{{medicalroom.roomNumber}}</td>
                         <td>{{medicalroom.date}}</td>
                         <td>
                             <button class="btn btn-warning" v-on:click=deleteRoomClicked(medicalroom.id)>
@@ -51,6 +56,10 @@ import axios from "axios";
                         <input type="text" class="form-control" v-model="roomCodeName" required>
                     </fieldset>
                     <fieldset class="form-group">
+                        <label>Number</label>
+                        <input type="number" class="form-control" v-model="roomNumber" required>
+                    </fieldset>
+                    <fieldset class="form-group">
                         <label>Date</label>
                         <input type="date" class="form-control" v-model="date">
                     </fieldset>
@@ -72,8 +81,13 @@ export default {
             message: null,
             operational: false,
             reserved: false,
-            roomCodeName: undefined,
-            date: undefined
+            roomCodeName: "",
+            roomNumber: undefined,
+            date: undefined,
+            searchName: "",
+            searchNumber: "", 
+            searchDate: "",
+            currentSortDir: "desc"
         };
     },
     methods: {
@@ -89,6 +103,7 @@ export default {
                 "operational":this.operational,
                 "reserved":this.reserved,
                 "roomCodeName":this.roomCodeName,
+                "roomNumber":this.roomNumber,
                 "date":this.date
             }
 
@@ -109,6 +124,56 @@ export default {
             MedicalRoomService.deleteRoom(id).then(response => {
                 this.refreshMedicalRooms();
                 response.message
+            });
+        },
+        // methods for sorting
+        sortById(){
+            if(this.currentSortDir === "desc"){
+                this.medicalrooms.sort((a, b) => a.id > b.id ? 1 : -1);
+                this.currentSortDir = "asc";
+            }else{
+                this.medicalrooms.sort((a, b) => a.id < b.id ? 1 : -1);
+                this.currentSortDir = "desc";
+            }
+        },
+        sortByName(){
+            if(this.currentSortDir === "desc"){
+                this.medicalrooms.sort((a, b) => a.roomCodeName.toLowerCase() > b.roomCodeName.toLowerCase() ? 1 : -1);
+                this.currentSortDir = "asc";
+            }else{
+                this.medicalrooms.sort((a, b) => a.roomCodeName.toLowerCase() < b.roomCodeName.toLowerCase() ? 1 : -1);
+                this.currentSortDir = "desc";
+            }
+        },
+        sortByNumber(){
+            if(this.currentSortDir === "desc"){
+                this.medicalrooms.sort((a, b) => a.roomNumber > b.roomNumber ? 1 : -1);
+                this.currentSortDir = "asc";
+            }else{
+                this.medicalrooms.sort((a, b) => a.roomNumber < b.roomNumber ? 1 : -1);
+                this.currentSortDir = "desc";
+            }
+        },
+        sortByDate(){
+            if(this.currentSortDir === "desc"){
+                this.medicalrooms.sort((a, b) => a.date > b.date ? 1 : -1);
+                this.currentSortDir = "asc";
+            }else{
+                this.medicalrooms.sort((a, b) => a.date < b.date ? 1 : -1);
+                this.currentSortDir = "desc";
+            }
+        }
+    },
+    computed: {
+        filteredMedicalRooms: function() {
+            return this.medicalrooms.filter((medicalroom)=>{
+                if(medicalroom.roomCodeName.toLowerCase().match(this.searchName.toLowerCase()) &&
+                    medicalroom.roomNumber.toString().match(this.searchNumber) &&
+                    medicalroom.date.toString().match(this.searchDate)){
+                    return true;
+                }else{
+                    return false;
+                }
             });
         }
     },
