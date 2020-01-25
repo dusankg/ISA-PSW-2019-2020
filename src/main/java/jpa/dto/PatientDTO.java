@@ -22,6 +22,10 @@ public class PatientDTO {
 	public PatientDTO() {
 		
 	}
+	public PatientDTO(String email,String password){
+		this.email=email;
+		this.password=password;
+	}
 	
 	
 	public PatientDTO(Long id2, String name2, String surname2, String email2, String password2, String adress2,

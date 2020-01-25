@@ -22,7 +22,7 @@ insert into patient (name, surname, email, password, adress, city, state, phone,
 
 insert into patient (name, surname, email, password, adress, city, state, phone, lbo, validated, accepted) values ('5', '32131313', 'novi.com', '123', '1232131321', '3213123123', '1231231231', 111222333, 111, false, false);
 
-insert into examination (date, duration, price) values ('2011-03-05', 45, 1500);
+insert into examination (clinic_id,date, duration, price) values (1,'2011-03-05', 45, 1500);
 
 insert into nurse(name, surname, email, password, adress, city, state, phone) values ('nurse', 'nursic','nurse.com', '123', 'NTP', 'Nju Nau', 'Makedonija', 333);
 insert into nurse(name, surname, email, password, adress, city, state, phone) values ('druga', 'drugic','druga.com', '123', 'NTP', 'Nju Nau', 'Makedonija', 333);

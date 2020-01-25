@@ -40,6 +40,8 @@ Vue.use(Vuelidate);
 import PatientService from '../service/PatientService';
 import DoctorService from '../service/DoctorService';
 import Axios from 'axios';
+
+
 //import Axios from 'axios';
 export default {
   name: "Login",
@@ -147,7 +149,14 @@ export default {
         if (temp.role == 'ClinicalCenterAdministrator' || temp.role == "Nurse" || temp.role == 'doctor'){
           this.$router.push('/'+uloga+'HomePage/'+ indexNadjenog) 
         }else {
-          this.$router.push('/'+uloga+'HomePage?id='+ indexNadjenog) 
+           Axios.get('http://localhost:8082/api/patients/'+indexNadjenog, {withCredentials: true}).then(response =>{
+             
+            alert('usao' + response.data);
+
+             this.$router.push('/patientHomePage') 
+
+           })
+        
         }
         
     }
