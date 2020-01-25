@@ -19,8 +19,6 @@ insert into patient (name, surname, email, password, adress, city, state, phone,
 insert into patient (name, surname, email, password, adress, city, state, phone, lbo, validated, accepted) values ('Mika', 'Mikic', 'novi.com', '123', '1232131321', '3213123123', '1231231231', 111222333, 112, false, false);
 insert into patient (name, surname, email, password, adress, city, state, phone, lbo, validated, accepted) values ('Zika', 'Haralampijevic', 'novi.com', '123', '1232131321', '3213123123', '1231231231', 111222333, 123, false, false);
 
-insert into examination (date, duration, price) values ('2011-03-05', 45, 1500);
-
 insert into nurse(name, surname, email, password, adress, city, state, phone) values ('nurse', 'nursic','nurse.com', '123', 'NTP', 'Nju Nau', 'Makedonija', 333);
 insert into nurse(name, surname, email, password, adress, city, state, phone) values ('druga', 'drugic','druga.com', '123', 'NTP', 'Nju Nau', 'Makedonija', 333);
 
@@ -30,6 +28,8 @@ insert into prescription (name, validated) values ('Loperamid',false);
 
 insert into examination_type(typename) values ('Ocni pregled');
 insert into examination_type(typename) values ('Ginekoloski pregled');
+
+insert into examination (date, duration, price, type_id) values ('2011-03-05', 45, 1500, 1);
 
 insert into absence_request(startingdate, endingdate, doctor_id) values ('2019-05-05', '2019-09-09', 1);
 insert into absence_request(startingdate, endingdate, doctor_id) values ('2000-05-05', '2010-09-09', 2);

@@ -35,7 +35,7 @@
                 <label>Lbo</label>
                 <input type="text" class="form-control" v-model="lbo" disabled>
             </fieldset>
-            <!--For now this button don't have functionality-->
+            <!--For now this buttons doesn't have functionality-->
             <button class="btn btn-success" type="submit">Start examination</button>
             <button class="btn btn-success" type="submit">View medical record</button>
         </form>

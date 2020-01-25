@@ -1,15 +1,16 @@
 <template>
   <div class="container">
     <h3>Examination types</h3>
+    <input type="text" class="form-control" v-model="searchName" placeholder="Search examination type by name"/>
     <table class="table">
         <thead>
             <tr>
-                <th>Id</th>
-                <th>Name</th>
+                <th @click="sortById()">Id</th>
+                <th @click="sortByName()">Name</th>
             </tr>
         </thead>
         <tbody>
-            <tr v-for="examinationtype in examinationtypes" v-bind:key="examinationtype.id">
+            <tr v-for="examinationtype in filteredExaminationTypes" v-bind:key="examinationtype.id">
                 <td>{{examinationtype.id}}</td>
                 <td>{{examinationtype.typeName}}</td>
                 <td>
@@ -36,6 +37,8 @@ export default {
     data(){
         return{
             examinationtypes: [],
+            searchName: "",
+            currentSortDir: "desc"
         }
     },
     methods: {
@@ -53,6 +56,36 @@ export default {
             ExaminationTypeService.deleteExaminationType(id).then(response => {
                 this.refreshExaminationTypes();
                 response.message
+            });
+        },
+        // methods for sorting
+        sortById(){
+            if(this.currentSortDir === "desc"){
+                this.examinationtypes.sort((a, b) => a.id > b.id ? 1 : -1);
+                this.currentSortDir = "asc";
+            }else{
+                this.examinationtypes.sort((a, b) => a.id < b.id ? 1 : -1);
+                this.currentSortDir = "desc";
+            }
+        },
+        sortByName(){
+            if(this.currentSortDir === "desc"){
+                this.examinationtypes.sort((a, b) => a.typeName.toLowerCase() > b.typeName.toLowerCase() ? 1 : -1);
+                this.currentSortDir = "asc";
+            }else{
+                this.examinationtypes.sort((a, b) => a.typeName.toLowerCase() < b.typeName.toLowerCase() ? 1 : -1);
+                this.currentSortDir = "desc";
+            }
+        }
+    },
+    computed: {
+        filteredExaminationTypes: function(){
+            return this.examinationtypes.filter((examinationtype)=>{
+                if(examinationtype.typeName.toLowerCase().match(this.searchName.toLowerCase())){
+                    return true;
+                }else{
+                    return false;
+                }
             });
         }
     },

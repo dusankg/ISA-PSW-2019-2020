@@ -14,6 +14,7 @@ import axios from "axios";
             <th>Date</th>
             <th>Duration</th>
             <th>Price</th>
+            <th>Type</th>
           </tr>
         </thead>
         <tbody>
@@ -22,6 +23,7 @@ import axios from "axios";
             <td>{{examination.date}}</td>
             <td>{{examination.duration}}</td>
             <td>{{examination.price}}</td>
+            <td>{{examination.type.typeName}}</td>
           </tr>
         </tbody>
       </table>
@@ -44,7 +46,7 @@ import axios from "axios";
             </fieldset>
             <fieldset class="form-group">
               <label>Type of examination</label>
-              <select class="form-control" @change="changedType($event)">
+              <select class="form-control" @change="changedType($event)" required>
                 <option value="" selected disabled>Choose type</option>
                 <option v-for="examinationType in examinationTypes" :value="examinationType.id" :key="examinationType.id">{{examinationType.typeName}}</option>
               </select>
@@ -70,7 +72,8 @@ export default {
         duration: undefined,
         price: undefined,
         examinationTypes: [],
-        selectedType: undefined
+        selectedType: undefined,
+        selectedTypeName: ""
     };
   },
   methods: {
@@ -82,10 +85,12 @@ export default {
     },
     validateAndSubmit(e){
       e.preventDefault();
+
       var temp={
         "date":this.date,
         "duration":this.duration,
         "price":this.price,
+        "type": this.selectedType
       }
       Axios.post("http://localhost:8082/api/examinations", temp);
       this.refreshExaminations();
@@ -96,7 +101,11 @@ export default {
         });
     },
     changedType(event){
-      this.selectedType = event.target.options[event.target.options.selectedIndex].text;
+      this.selectedTypeName = event.target.options[event.target.options.selectedIndex].text;
+      // event.target.value -> id of selected examination type
+      ExaminationTypeService.retrieveExaminationType(event.target.value).then(response =>{
+        this.selectedType = response.data;
+      });
     }
     
   },
