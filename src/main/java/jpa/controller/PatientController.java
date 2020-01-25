@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -45,7 +47,7 @@ import jpa.service.PatientService;
 
 
 	@RestController
-	@CrossOrigin(origins = { "http://localhost:3000", "http://localhost:4200", "http://localhost:8080" })
+	@CrossOrigin(origins = { "http://localhost:3000", "http://localhost:4200", "http://localhost:8080" }, allowCredentials= "true")
 	@RequestMapping(value = "api/patients")
 public class PatientController {
 		private Logger logger = LoggerFactory.getLogger(PatientController.class);
@@ -90,7 +92,8 @@ public class PatientController {
 		}
 
 		@GetMapping(value = "/{id}")
-		public ResponseEntity<PatientDTO> getPatient(@PathVariable Long id) {
+		public ResponseEntity<PatientDTO> getPatient(@PathVariable Long id, HttpSession Session) {
+			System.out.println("ulazis u test?");
 
 			Patient Patient = patientService.findOne(id);
 
@@ -98,9 +101,29 @@ public class PatientController {
 			if (Patient == null) {
 				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 			}
-
+			Session.setAttribute("role", "PATIENT");
+			Session.setAttribute("id",id);
+			System.out.println(Session.getAttribute("role"));
 			return new ResponseEntity<>(new PatientDTO(Patient), HttpStatus.OK);
 		}
+		
+		/*@GetMapping(value = "/login")
+		public ResponseEntity<PatientDTO> getUser(@RequestBody PatientDTO patient,HttpSession Session) {
+			System.out.println("ulazis u test?");
+			System.out.println(patient.getId());
+			Patient Patient = patientService.findOne(patient.getId());
+
+			
+			if (Patient == null) {
+				System.out.println("test null ?");
+				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			}
+			Session.setAttribute("role", "PATIENT");
+
+			return new ResponseEntity<>(new PatientDTO(Patient), HttpStatus.OK);
+		}*/
+		
+		
 
 		@PostMapping(consumes = "application/json")
 		public ResponseEntity<PatientDTO> savePatient(@RequestBody PatientDTO PatientDTO) {

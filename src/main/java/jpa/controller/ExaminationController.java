@@ -3,6 +3,8 @@ package jpa.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +26,7 @@ import jpa.service.ExaminationTypeService;
 import jpa.service.PatientService;
 
 @RestController
-@CrossOrigin(origins = {"http://localhost:3000", "http://localhost:4200", "http://localhost:8080"})
+@CrossOrigin(origins = {"http://localhost:3000", "http://localhost:4200", "http://localhost:8080"},allowCredentials= "true")
 @RequestMapping(value = "api/examinations")
 public class ExaminationController {
 
@@ -37,7 +39,7 @@ public class ExaminationController {
 	private ExaminationTypeService examinationTypeService;
 	
 	@GetMapping(value = "/all")
-	public ResponseEntity<List<ExaminationDTO>> getAllExaminations(){
+	public ResponseEntity<List<ExaminationDTO>> getAllExaminations(HttpSession Session){
 		List<Examination> examinations = examinationService.findAll();
 		
 		//convert examinations to DTOs
@@ -49,6 +51,20 @@ public class ExaminationController {
 		return new ResponseEntity<>(examinationsDTO, HttpStatus.OK);
 	}
 	
+	@GetMapping(value = "/allByClinic")
+	public ResponseEntity<List<ExaminationDTO>> getAllExaminationss(HttpSession Session){
+		List<Examination> examinations = examinationService.findAll();
+		
+		//convert examinations to DTOs
+		List<ExaminationDTO> examinationsDTO = new ArrayList<>();
+		System.out.println(Session.getAttribute("selectedClinicId"));
+		for (Examination e : examinations) {
+			if(Session.getAttribute("selectedClinicId")==e.getClinic().getId())
+			examinationsDTO.add(new ExaminationDTO(e));
+		}
+		
+		return new ResponseEntity<>(examinationsDTO, HttpStatus.OK);
+	}
 	
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<ExaminationDTO> getExamination(@PathVariable Long id) {
@@ -88,14 +104,14 @@ public class ExaminationController {
 		return new ResponseEntity<>(new ExaminationDTO(examination), HttpStatus.CREATED);
 	}
 
-	@GetMapping(value = "reserve/{id1}/{id2}")
-	public ResponseEntity<ExaminationDTO> updateExamination(@PathVariable Long id1 ,@PathVariable Long id2 ) {
+	@GetMapping(value = "reserve/{id1}")
+	public ResponseEntity<ExaminationDTO> updateExamination(@PathVariable Long id1,HttpSession Session ) {
 		System.out.println("ARE YOU HEREEEEE???");
 		// an examination must exist
 		System.out.println(id1);
-		System.out.println(id2);
+
 		Examination examination = examinationService.findOne(id1);
-		Patient patient = patientService.findOne(id2);
+		Patient patient = patientService.findOne((Long)Session.getAttribute("ID"));
 		if (examination == null) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}

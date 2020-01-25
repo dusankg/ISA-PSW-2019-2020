@@ -35,8 +35,8 @@ public class Clinic {
 	
 	@Column(name = "gradeNumber", nullable = true)
 	private int gradeNumber;
-	@OneToMany(mappedBy = "clinic", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@Column(name="Examinations", nullable = true)
+	@OneToMany(mappedBy = "clinic", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	//@Column(name="Examinations", nullable = true)
 	private Set<Examination> examinations = new HashSet<Examination>();
 	
 	@OneToMany(mappedBy = "clinic", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -78,11 +78,11 @@ public class Clinic {
 		this.gradeNumber = gradeNumber;
 	}
 
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

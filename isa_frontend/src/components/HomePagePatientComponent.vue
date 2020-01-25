@@ -19,33 +19,14 @@ Vue.use(Vuelidate);
             <td>{{clinic.name}}</td>
             <td>{{clinic.adress}}</td>
             <td>{{clinic.description}}</td>
-          </tr>
-        </tbody>
-      </table>
-      <table class="table">
-        <thead>
-          <tr>
-            <th>Id</th>
-            <th>Date</th>
-            <th>Duration</th>
-            <th>Price</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="examination in examinations" v-bind:key="examination.id">
-            <td>{{examination.id}}</td>
-            <td>{{examination.date}}</td>
-            <td>{{examination.duration}}</td>
-            <td>{{examination.price}}</td>
-            <td>
-              <form @submit="appoint(examination.id)">
-                <button class="btn btn-success" type="submit">Select Examination</button>
+            <td><form @submit.prevent="select(clinic.id)">
+                <button class="btn btn-success" type="submit">Select Clinic</button>
 
-              </form>
-            </td>
+              </form></td>
           </tr>
         </tbody>
       </table>
+     
 
        <form @submit="val">
                 <button class="btn btn-success" type="submit">Edit personal data</button>
@@ -97,16 +78,20 @@ export default {
 
     this.refreshClinics();
       },
-    appoint(id1) {
+    /*appoint(id1) {
       /* eslint-disable no-console */
-      console.log(id1)
+    /*  console.log(id1)
       console.log(this.$route.query.id)
        this.$router.push('/patientHomePage?id='+this.$route.query.id) 
     Axios.get('http://localhost:8082/api/examinations/reserve/' + id1 + '/' + this.$route.query.id)
     
     //this.refreshClinics();
-      },  
-
+      },  */
+      select(id1){
+        /* eslint-disable no-console */
+        Axios.get('http://localhost:8082/api/clinics/select/' + id1,{withCredentials: true})
+        this.$router.push('/ClinicExaminationsPatient',{withCredentials: true}) ;
+      },
 
 
 

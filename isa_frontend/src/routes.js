@@ -22,6 +22,13 @@ const router = new Router({
       component: () => import("./components/HomePagePatientComponent")
     },
     {
+      path: "/ClinicExaminationsPatient",
+      name: "Examinations2",
+      component: () => import("./components/ListExaminationsPatientComponent")
+    },
+
+
+    {
       path: "/EditPersonalData",
       name: "EditPersonalData",
       component: () => import("./components/EditPersonalDataComponent")

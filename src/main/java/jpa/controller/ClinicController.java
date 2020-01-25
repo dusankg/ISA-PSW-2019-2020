@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,13 +23,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import jpa.dto.ClinicDTO;
+import jpa.dto.ExaminationDTO;
 import jpa.dto.DoctorDTO;
 import jpa.modeli.Clinic;
+import jpa.modeli.Examination;
+import jpa.modeli.Patient;
 import jpa.modeli.Doctor;
 import jpa.service.ClinicService;
 
 @RestController
-@CrossOrigin(origins = { "http://localhost:3000", "http://localhost:4200", "http://localhost:8080" })
+@CrossOrigin(origins = { "http://localhost:3000", "http://localhost:4200", "http://localhost:8080" }, allowCredentials = "true")
 @RequestMapping(value = "api/clinics")
 public class ClinicController {
 
@@ -35,8 +40,9 @@ public class ClinicController {
 	private ClinicService clinicService;
 	
 	@GetMapping(value = "/all")
-	public ResponseEntity<List<ClinicDTO>> getAllClinics() {
-
+	public ResponseEntity<List<ClinicDTO>> getAllClinics(HttpSession Session) {
+		System.out.println(Session.getAttribute("role"));
+		if(Session.getAttribute("role").equals("PATIENT")){
 		List<Clinic> clinics = clinicService.findAll();
 
 		// convert clinics to DTOs
@@ -46,6 +52,26 @@ public class ClinicController {
 		}
 
 		return new ResponseEntity<>(clinicDTO, HttpStatus.OK);
+		}else{
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+	}
+	@GetMapping(value = "select/{id1}")
+	public ResponseEntity<Long> updateExamination(@PathVariable Long id1,HttpSession Session ) {
+	
+	
+		System.out.println(id1);
+		
+		Clinic clinic = clinicService.findOne(id1);
+		
+		if (clinic == null) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		
+
+		Session.setAttribute("selectedClinicId", id1);
+		System.out.println(Session.getAttribute("selectedClinicId"));
+		return new ResponseEntity<>(id1, HttpStatus.OK);
 	}
 	
 	@GetMapping
@@ -80,7 +106,7 @@ public class ClinicController {
 	public ResponseEntity<ClinicDTO> saveClinic(@RequestBody ClinicDTO clinicDTO) {
 
 		Clinic clinic = new Clinic();
-		clinic.setId(222);
+		clinic.setId(222L);
 		clinic.setName(clinicDTO.getName());
 		clinic.setAdress(clinicDTO.getAdress());
 		clinic.setDescription(clinicDTO.getDescription());
