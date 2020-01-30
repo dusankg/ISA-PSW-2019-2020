@@ -138,6 +138,11 @@ const router = new Router({
       path: '/patientprofile/:id',
       name: 'patientprofile',
       component: () => import("./components/PatientProfile")
+    },
+    {
+      path: '/editnurse/:id',
+      name: 'editnurse',
+      component: () => import("./components/EditNurseComponent")
     }
   ]
 });

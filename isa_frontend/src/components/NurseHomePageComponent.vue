@@ -34,7 +34,7 @@
           <label>Phone: </label>
           <label>{{ this.sestra.phone }}</label>
         </fieldset>
-     
+        <button v-on:click="editNurseClicked()">Change personal information</button>
     </div>
 
     <h3>All non validated prescriptions</h3>
@@ -99,14 +99,19 @@ export default {
     Axios.get('http://localhost:8082/api/prescriptions/validate/' + index)
     this.refreshPrescriptions
     this.$forceUpdate();
-  }
+  },
+  editNurseClicked(){
+    this.$router.push(`/editnurse/${this.$route.params.id}`);
+  },
 
   },
- 
   created() {
     this.refreshPrescriptions();
     this.refreshNurse();
     
+  }, 
+  mounted(){
+    this.refreshNurse();
   }
   
 

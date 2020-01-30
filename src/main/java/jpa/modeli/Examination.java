@@ -56,7 +56,6 @@ public class Examination {
 		this.duration = duration;
 		this.price = price;
 		/*
-		this.type = type;
 		this.room = room;
 		this.doctor = doctor;
 		*/

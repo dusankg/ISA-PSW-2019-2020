@@ -8,11 +8,15 @@ public class AbsenceRequestDTO {
 	private Long id;
 	private Date startingDate;
 	private Date endingDate;
+	private DoctorDTO doctor;
 	
 	public AbsenceRequestDTO() {}
 	
 	public AbsenceRequestDTO(AbsenceRequest absenceRequest) {
-		this(absenceRequest.getId(), absenceRequest.getStartingDate(), absenceRequest.getEndingDate());
+		this.id = absenceRequest.getId();
+		this.startingDate = absenceRequest.getStartingDate();
+		this.endingDate = absenceRequest.getEndingDate();
+		this.doctor = new DoctorDTO(absenceRequest.getDoctor());
 	}
 	
 	public AbsenceRequestDTO(Long id, Date startingDate, Date endingDate) {
@@ -20,6 +24,7 @@ public class AbsenceRequestDTO {
 		this.id = id;
 		this.startingDate = startingDate;
 		this.endingDate = endingDate;
+		this.doctor = new DoctorDTO();
 	}
 
 	public Long getId() {
@@ -44,6 +49,14 @@ public class AbsenceRequestDTO {
 
 	public void setEndingDate(Date endingDate) {
 		this.endingDate = endingDate;
+	}
+
+	public DoctorDTO getDoctor() {
+		return doctor;
+	}
+
+	public void setDoctor(DoctorDTO doctorDTO) {
+		this.doctor = doctorDTO;
 	}
 	
 	

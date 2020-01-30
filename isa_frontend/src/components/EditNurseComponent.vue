@@ -41,25 +41,24 @@
           </fieldset>
           <button class="btn btn-success" type="submit">Save</button>
         </form>
-        <button @click="returnHP()">Return without saving</button>
+        <button @click="returnToHP()">Return without saving</button>
       </div>
-    </div>
-
+    </div>  
 </template>
 
 <script>
-import DoctorService from '../service/DoctorService';
+import NurseService from '../service/NurseService';
 export default {
-    name: "EditDoctors",
+name: "EditNurse",
     data() {
          return {
-            name: undefined,
-            surname: undefined,
-            password: undefined,
-            email: undefined,
-            adress: undefined,
-            city: undefined, 
-            state: undefined,
+            name: '',
+            surname: '',
+            password: '',
+            email: '',
+            adress: '',
+            city: '', 
+            state: '',
             phone: undefined
         };
     },
@@ -82,11 +81,11 @@ export default {
               "state": this.state,
               "phone":this.phone
             }
-            DoctorService.editDoctor(temp);
-            this.$router.push(`/doctorHomePage/${this.id}`);
+            NurseService.editNurse(temp);
+            this.$router.push(`/nurseHomePage/${this.id}`);
         },
-        getDoctor(){
-            DoctorService.retrieveDoctor(this.id).then(response => {
+        getNurse(){
+            NurseService.retrieveNurse(this.id).then(response => {
                 this.name = response.data.name;
                 this.surname = response.data.surname;
                 this.password = response.data.password;
@@ -97,12 +96,12 @@ export default {
                 this.phone = response.data.phone;
             });
         },
-        returnHP(){
-          this.$router.push(`/doctorHomePage/${this.id}`);
+        returnToHP(){
+          this.$router.push(`/nurseHomePage/${this.id}`);
         }
     },
     mounted(){
-        this.getDoctor();
+        this.getNurse();
     }
 }
 </script>
