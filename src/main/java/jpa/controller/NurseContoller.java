@@ -11,13 +11,12 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import jpa.dto.DoctorDTO;
 import jpa.dto.NurseDTO;
-import jpa.modeli.Doctor;
 import jpa.modeli.Nurse;
 import jpa.service.NurseService;
 
@@ -30,7 +29,7 @@ public class NurseContoller {
 	private NurseService nurseService;
 	
 	@GetMapping(value = "/all")
-	public ResponseEntity<List<NurseDTO>> getAllDoctors(){
+	public ResponseEntity<List<NurseDTO>> getAllNurses(){
 		List<Nurse> nurses = nurseService.findAll();
 		
 		
@@ -44,7 +43,7 @@ public class NurseContoller {
 	
 	
 	@GetMapping(value = "/{id}")
-	public ResponseEntity<NurseDTO> getDoctor(@PathVariable Long id) {
+	public ResponseEntity<NurseDTO> getNurse(@PathVariable Long id) {
 
 		Nurse nurse = nurseService.findOne(id);
 
@@ -74,6 +73,28 @@ public class NurseContoller {
 		nurse = nurseService.save(nurse);
 		
 		return new ResponseEntity<>(new NurseDTO(nurse), HttpStatus.CREATED);
+	}
+	
+	@PutMapping(consumes = "application/json")
+	public ResponseEntity<NurseDTO> updateNurse(@RequestBody NurseDTO nurseDTO){
+		
+		Nurse nurse = nurseService.findOne(nurseDTO.getId());
+		
+		if(nurse == null) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		
+		nurse.setName(nurseDTO.getName());
+		nurse.setSurname(nurseDTO.getSurname());
+		nurse.setEmail(nurseDTO.getEmail());
+		nurse.setPassword(nurseDTO.getPassword());
+		nurse.setAdress(nurseDTO.getAdress());
+		nurse.setCity(nurseDTO.getCity());
+		nurse.setState(nurseDTO.getState());
+		nurse.setPhone(nurseDTO.getPhone());
+		
+		nurse = nurseService.save(nurse);
+		return new ResponseEntity<>(new NurseDTO(nurse), HttpStatus.OK);
 	}
 	
 	@DeleteMapping(value = "/{id}")
