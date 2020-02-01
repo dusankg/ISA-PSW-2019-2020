@@ -8,9 +8,9 @@ insert into diagnosis(name) values ('Sifilis');
 
 insert into clinical_center_administrator (name, surname, email, password, adress, city, state, phone, validated) values ('12313131', '32131313', 'dusan.com', '123', '1232131321', '3213123123', '1231231231', 111222333, true);
 
-insert into medical_room (operational, reserved, room_codename, room_number, date) values (true, false, 'Soba333', 15, '1999-05-05');
-insert into medical_room (operational, reserved, room_codename, room_number, date) values (true, true, 'Soba mala', 18, '2000-05-05');
-insert into medical_room (operational, reserved, room_codename, room_number, date) values (false, false, 'Laboratorija', 21, '2010-05-05');
+insert into medical_room (operational, reserved, room_codename, room_number, date, clinic_id) values (true, false, 'Soba333', 15, '1999-05-05', 1);
+insert into medical_room (operational, reserved, room_codename, room_number, date, clinic_id) values (true, true, 'Soba mala', 18, '2000-05-05', 1);
+insert into medical_room (operational, reserved, room_codename, room_number, date, clinic_id) values (false, false, 'Laboratorija', 21, '2010-05-05', 1);
 
 insert into patient (name, surname, email, password, adress, city, state, phone, lbo, validated, accepted) values ('1', '32131313', 'novi.com', '123', '1232131321', '3213123123', '1231231231', 111222333, 111, false, false);
 insert into patient (name, surname, email, password, adress, city, state, phone, lbo, validated, accepted) values ('Prihvaceni', '32131313', 'prihvaceni.com', '123', '1232131321', '3213123123', '1231231231', 111222333, 111, true, true);

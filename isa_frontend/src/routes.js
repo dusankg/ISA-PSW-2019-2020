@@ -143,6 +143,11 @@ const router = new Router({
       path: '/editnurse/:id',
       name: 'editnurse',
       component: () => import("./components/EditNurseComponent")
+    },
+    {
+      path: '/editroom/:id',
+      name: 'editroom',
+      component: () => import("./components/EditMedicalRoomComponent")
     }
   ]
 });

@@ -12,6 +12,10 @@ class MedicalRoomService{
     retrieveRoom(id){
         return axios.get(`http://localhost:8082/api/medicalrooms/${id}`);
     }
+
+    editRoom(room){
+        return axios.put("http://localhost:8082/api/medicalrooms", room);
+    }
 }
 
 export default new MedicalRoomService();

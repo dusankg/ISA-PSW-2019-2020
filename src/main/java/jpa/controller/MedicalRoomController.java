@@ -17,7 +17,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import jpa.dto.MedicalRoomDTO;
+import jpa.modeli.Clinic;
 import jpa.modeli.MedicalRoom;
+import jpa.service.ClinicService;
 import jpa.service.MedicalRoomService;
 
 @RestController
@@ -28,11 +30,14 @@ public class MedicalRoomController {
 	@Autowired
 	private MedicalRoomService medicalRoomService;
 	
+	@Autowired
+	private ClinicService clinicService;
+	
 	@GetMapping(value = "/all")
 	public ResponseEntity<List<MedicalRoomDTO>>getAllMedicalRooms(){
 		List<MedicalRoom> medicalRooms = medicalRoomService.findAll();
 		
-		//convert medicalrooms to DTO
+		//convert medical rooms to DTO
 		List<MedicalRoomDTO> medicalRoomsDTO = new ArrayList<>();
 			for (MedicalRoom mr : medicalRooms) {
 				medicalRoomsDTO.add(new MedicalRoomDTO(mr));
@@ -57,6 +62,17 @@ public class MedicalRoomController {
 	@PostMapping(consumes = "application/json")
 	public ResponseEntity<MedicalRoomDTO> saveMedicalRoom(@RequestBody MedicalRoomDTO medicalRoomDTO) {
 
+		// new room must have clinic defined
+		if(medicalRoomDTO.getClinic() == null) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		
+		Clinic clinic = clinicService.findOne(medicalRoomDTO.getClinic().getId());
+		
+		if(clinic == null) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		
 		MedicalRoom medicalRoom = new MedicalRoom();
 		medicalRoom.setId(0);
 		medicalRoom.setOperational(medicalRoomDTO.getOperational());
@@ -64,6 +80,7 @@ public class MedicalRoomController {
 		medicalRoom.setRoomCodeName(medicalRoomDTO.getRoomCodeName());
 		medicalRoom.setRoomNumber(medicalRoomDTO.getRoomNumber());
 		medicalRoom.setDate(medicalRoomDTO.getDate());
+		medicalRoom.setClinic(clinic);
 		
 		medicalRoom = medicalRoomService.save(medicalRoom);
 		return new ResponseEntity<>(new MedicalRoomDTO(medicalRoom), HttpStatus.CREATED);
@@ -84,7 +101,7 @@ public class MedicalRoomController {
 		medicalRoom.setRoomCodeName(medicalRoomDTO.getRoomCodeName());
 		medicalRoom.setRoomNumber(medicalRoomDTO.getRoomNumber());
 		medicalRoom.setDate(medicalRoomDTO.getDate());
-
+		
 		medicalRoom = medicalRoomService.save(medicalRoom);
 		return new ResponseEntity<>(new MedicalRoomDTO(medicalRoom), HttpStatus.OK);
 	}
