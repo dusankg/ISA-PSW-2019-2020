@@ -2,11 +2,14 @@ package jpa.modeli;
 
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class MedicalRoom {
@@ -27,6 +30,8 @@ public class MedicalRoom {
 	private Date date; 
 	//Pocetni trenuci pregleda. Duration cemo dodavati iz objekta klase examination
 	//private Set<Occupation>occupations=new HashSet<Occupation>();
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	private Clinic clinic;
 	
 	public MedicalRoom() {}
 	
@@ -86,6 +91,15 @@ public class MedicalRoom {
 	public void setDate(Date date) {
 		this.date = date;
 	}
+
+	public Clinic getClinic() {
+		return clinic;
+	}
+
+	public void setClinic(Clinic clinic) {
+		this.clinic = clinic;
+	}
+	
 	
 	
 	/*

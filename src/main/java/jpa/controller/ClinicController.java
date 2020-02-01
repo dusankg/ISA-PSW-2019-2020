@@ -23,12 +23,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import jpa.dto.ClinicDTO;
-import jpa.dto.ExaminationDTO;
 import jpa.dto.DoctorDTO;
+import jpa.dto.MedicalRoomDTO;
 import jpa.modeli.Clinic;
-import jpa.modeli.Examination;
-import jpa.modeli.Patient;
 import jpa.modeli.Doctor;
+import jpa.modeli.MedicalRoom;
 import jpa.service.ClinicService;
 
 @RestController
@@ -202,8 +201,24 @@ public class ClinicController {
 	}
 	
 	
-	
-	
+	@GetMapping(value = "/{clinicId}/rooms")
+	public ResponseEntity<List<MedicalRoomDTO>> getRoomsOfClinic(@PathVariable Long clinicId){
+		Clinic clinic = clinicService.findOne(clinicId);
+		Set<MedicalRoom> medicalRooms = clinic.getRooms();
+		List<MedicalRoomDTO> medicalRoomsDTO = new ArrayList<>();
+		for(MedicalRoom mr : medicalRooms) {
+			MedicalRoomDTO medicalRoomDTO = new MedicalRoomDTO();
+			medicalRoomDTO.setId(mr.getId());
+			medicalRoomDTO.setReserved(mr.getReserved());
+			medicalRoomDTO.setOperational(mr.getOperational());
+			medicalRoomDTO.setRoomCodeName(mr.getRoomCodeName());
+			medicalRoomDTO.setRoomNumber(mr.getRoomNumber());
+			medicalRoomDTO.setDate(mr.getDate());
+			
+			medicalRoomsDTO.add(medicalRoomDTO);
+		}
+		return new ResponseEntity<>(medicalRoomsDTO, HttpStatus.OK);
+	} 
 	
 	
 }
