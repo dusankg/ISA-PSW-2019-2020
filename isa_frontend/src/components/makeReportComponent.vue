@@ -29,6 +29,8 @@ import axios from "axios";
             </fieldset>
             <button class="btn btn-success" type="submit">Save</button>
           </form>
+          <br/>
+          <button @click="()=>$router.push(`/addexamination`)">Schedule new examination or operation</button>
       </div>
     </div>
 

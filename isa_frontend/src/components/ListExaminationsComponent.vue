@@ -21,9 +21,11 @@ import axios from "axios";
           <tr v-for="examination in examinations" v-bind:key="examination.id">
             <td>{{examination.id}}</td>
             <td>{{examination.date}}</td>
+            <td>{{examination.startHour}}</td>
             <td>{{examination.duration}}</td>
             <td>{{examination.price}}</td>
             <td>{{examination.type.typeName}}</td>
+            <td>{{examination.doctor.name}}</td>
           </tr>
         </tbody>
       </table>

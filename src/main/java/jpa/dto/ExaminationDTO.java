@@ -8,70 +8,87 @@ public class ExaminationDTO {
 
 	private Long id;
 	private Date date;
-	private double duration;
+	private Integer startTime;
+	private Integer endTime;
 	private double price;
+	private Boolean accepted;
+	private Boolean operation;
 	private PatientDTO patient;
 	private ClinicDTO clinic;
 	private ExaminationTypeDTO type;
+	private DoctorDTO doctor;
 	/*
 	private MedicalRoom room;
-	private Doctor doctor;
 	*/
 	
 	public ExaminationDTO() {}
 	
 	public ExaminationDTO(Examination examination) {
-		if(examination.getPatient()==null || examination.getClinic()==null){
+		if(examination.getPatient()==null || examination.getClinic()==null || examination.getDoctor() == null){
 			
 			this.id=examination.getId();
 			this.date=examination.getDate();
-			this.duration=examination.getDuration();
+			this.startTime = examination.getStartTime();
+			this.endTime=examination.getEndTime();
 			this.price=examination.getPrice();
+			this.accepted = examination.getAccepted();
+			this.operation = examination.getOperation();
 			this.patient=new PatientDTO();
 			this.clinic=new ClinicDTO();
 			this.type = new ExaminationTypeDTO(examination.getType());
+			this.doctor = new DoctorDTO();
 			
 		}
 		else{
 			this.id=examination.getId();
 			this.date=examination.getDate();
-			this.duration=examination.getDuration();
+			this.startTime = examination.getStartTime();
+			this.endTime=examination.getEndTime();
 			this.price=examination.getPrice();
+			this.accepted = examination.getAccepted();
+			this.operation = examination.getOperation();
 			this.patient=new PatientDTO(examination.getPatient());
 			this.clinic=new ClinicDTO(examination.getClinic());
 			this.type = new ExaminationTypeDTO(examination.getType());
+			this.doctor = new DoctorDTO(examination.getDoctor());
 		}
 	}
 	
-	public ExaminationDTO(Long id, Date date, double duration, double price) {
+	public ExaminationDTO(Long id, Date date, Integer startTime, Integer endTime, double price, Boolean accepted, Boolean operation) {
 		super();
 		this.id = id;
 		this.date = date;
-		this.duration = duration;
+		this.startTime = startTime;
+		this.endTime = endTime;
 		this.price = price;
+		this.accepted = accepted;
+		this.operation = operation;
 		this.patient = new PatientDTO();
 		this.clinic = new ClinicDTO();
 		this.type = new ExaminationTypeDTO();
+		this.doctor = new DoctorDTO();
 		/*
 		this.room = room;
-		this.doctor = doctor;
 		*/
 	}
 	
 	
 	
-	public ExaminationDTO(Long id, Date date, double duration, double price,PatientDTO patient,ClinicDTO clinic) {
+	public ExaminationDTO(Long id, Date date, Integer startTime, Integer endTime, double price, Boolean accepted, Boolean operation, PatientDTO patient,ClinicDTO clinic, DoctorDTO doctor) {
 		super();
 		this.id = id;
 		this.date = date;
-		this.duration = duration;
+		this.startTime = startTime;
+		this.endTime = endTime;
 		this.price = price;
+		this.accepted = accepted;
+		this.operation = operation;
 		this.patient = patient;
 		this.clinic = clinic;
+		this.doctor = doctor;
 		/*
 		this.type = type;
 		this.room = room;
-		this.doctor = doctor;
 		*/
 	}
 
@@ -90,13 +107,21 @@ public class ExaminationDTO {
 	public void setDate(Date date) {
 		this.date = date;
 	}
-
-	public double getDuration() {
-		return duration;
+	
+	public Integer getStartTime() {
+		return startTime;
 	}
 
-	public void setDuration(double duration) {
-		this.duration = duration;
+	public void setStartTime(Integer startTime) {
+		this.startTime = startTime;
+	}
+
+	public Integer getEndTime() {
+		return endTime;
+	}
+
+	public void setEndTime(Integer endTime) {
+		this.endTime = endTime;
 	}
 
 	public double getPrice() {
@@ -105,6 +130,22 @@ public class ExaminationDTO {
 
 	public void setPrice(double price) {
 		this.price = price;
+	}
+	
+	public Boolean getAccepted() {
+		return accepted;
+	}
+
+	public void setAccepted(Boolean accepted) {
+		this.accepted = accepted;
+	}
+
+	public Boolean getOperation() {
+		return operation;
+	}
+
+	public void setOperation(Boolean operation) {
+		this.operation = operation;
 	}
 
 	public ExaminationTypeDTO getType() {
@@ -122,6 +163,15 @@ public class ExaminationDTO {
 	public void setPatient(PatientDTO patient) {
 		this.patient = patient;
 	}
+
+	public DoctorDTO getDoctor() {
+		return doctor;
+	}
+
+	public void setDoctor(DoctorDTO doctor) {
+		this.doctor = doctor;
+	}
+	
 	
 	
 }

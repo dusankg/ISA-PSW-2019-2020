@@ -21,9 +21,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import jpa.dto.ExaminationDTO;
+import jpa.modeli.Doctor;
 import jpa.modeli.Examination;
 import jpa.modeli.ExaminationType;
 import jpa.modeli.Patient;
+import jpa.service.DoctorService;
 import jpa.service.EmailService;
 import jpa.service.ExaminationService;
 import jpa.service.ExaminationTypeService;
@@ -42,6 +44,9 @@ public class ExaminationController {
 	private EmailService emailService;
 	@Autowired
 	private ExaminationTypeService examinationTypeService;
+	
+	@Autowired
+	private DoctorService doctorService;
 	
 	@GetMapping(value = "/all")
 	public ResponseEntity<List<ExaminationDTO>> getAllExaminations(HttpSession Session){
@@ -123,9 +128,19 @@ public class ExaminationController {
 		Examination examination = new Examination();
 		examination.setId(null);
 		examination.setDate((Date) examinationDTO.getDate());
-		examination.setDuration(examinationDTO.getDuration());
+		examination.setStartTime(examinationDTO.getStartTime());
+		examination.setEndTime(examinationDTO.getEndTime());
 		examination.setPrice(examinationDTO.getPrice());
+		examination.setAccepted(examinationDTO.getAccepted());
+		examination.setOperation(examinationDTO.getOperation());
 		examination.setType(examinationType);
+
+		// Maybe not ideal solution check if Examination can exist without doctor
+		Doctor doctor;
+		if(examinationDTO.getDoctor() != null) {
+			doctor = doctorService.findOne(examinationDTO.getDoctor().getId());
+			examination.setDoctor(doctor);
+		}
 		
 		examination = examinationService.save(examination);
 		return new ResponseEntity<>(new ExaminationDTO(examination), HttpStatus.CREATED);
