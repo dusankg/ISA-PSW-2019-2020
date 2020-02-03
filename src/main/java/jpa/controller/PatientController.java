@@ -126,19 +126,22 @@ public class PatientController {
 		
 
 		@PostMapping(consumes = "application/json")
-		public ResponseEntity<PatientDTO> savePatient(@RequestBody PatientDTO PatientDTO) {
+		public ResponseEntity<PatientDTO> savePatient(@RequestBody PatientDTO patientDTO) {
 
 			Patient Patient = new Patient();
 			Patient.setId(111L);
-			Patient.setName(PatientDTO.getName());
-			Patient.setSurname(PatientDTO.getSurname());
-			Patient.setEmail(PatientDTO.getEmail());
-			Patient.setPassword(PatientDTO.getPassword());
-			Patient.setAdress(PatientDTO.getAdress());
-			Patient.setCity(PatientDTO.getCity());
-			Patient.setState(PatientDTO.getState());
-			Patient.setPhone(PatientDTO.getPhone());
-			Patient.setLbo(PatientDTO.getLbo());
+			Patient.setName(patientDTO.getName());
+			Patient.setSurname(patientDTO.getSurname());
+			Patient.setEmail(patientDTO.getEmail());
+			Patient.setPassword(patientDTO.getPassword());
+			Patient.setAdress(patientDTO.getAdress());
+			Patient.setCity(patientDTO.getCity());
+			Patient.setState(patientDTO.getState());
+			Patient.setPhone(patientDTO.getPhone());
+			Patient.setLbo(patientDTO.getLbo());
+			Patient.setWeight(patientDTO.getWeight());
+			Patient.setHeight(patientDTO.getHeight());
+			Patient.setBloodType(patientDTO.getBloodType());
 			// for registration
 	/*		try{    
 				BufferedWriter out = new BufferedWriter( 
@@ -179,9 +182,32 @@ public class PatientController {
 			Patient.setPhone(patientDTO.getPhone());
 			Patient.setLbo(patientDTO.getLbo());
 
+			Patient.setWeight(patientDTO.getWeight());
+			Patient.setHeight(patientDTO.getHeight());
+			Patient.setBloodType(patientDTO.getBloodType());
+			
 			Patient = patientService.save(Patient);
 			return new ResponseEntity<>(new PatientDTO(Patient), HttpStatus.OK);
 		}
+		
+		
+		@PutMapping(value = "/updateMedicalRedord", consumes = "application/json")
+		public ResponseEntity<PatientDTO> updateMedicalRecord(@RequestBody PatientDTO patientDTO) {
+
+			Patient Patient = patientService.findOne(patientDTO.getId());
+
+			if (Patient == null) {
+				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			}
+
+			Patient.setWeight(patientDTO.getWeight());
+			Patient.setHeight(patientDTO.getHeight());
+			Patient.setBloodType(patientDTO.getBloodType());
+			
+			Patient = patientService.save(Patient);
+			return new ResponseEntity<>(new PatientDTO(Patient), HttpStatus.OK);
+		}
+		
 
 		@DeleteMapping(value = "/{id}")
 		public ResponseEntity<Void> deletePatient(@PathVariable Long id) {

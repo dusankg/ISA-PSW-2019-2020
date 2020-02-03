@@ -7,6 +7,9 @@
     <button @click="()=>$router.push('/EnterClinicalCenterAdministrator')">Add administrator of clinical center  </button>
     <br>
     <br>
+    <button @click="()=>$router.push(`/EnterClinicalAdministrator`)"> Add clinical administrator </button>
+    <br>
+    <br>
     <button @click="()=>$router.push('/clinics')"> Add clinic  </button>
     <br>
     <br>
@@ -24,6 +27,7 @@
     <br>
     <button @click="()=>$router.push(`/editadministrator/${this.$route.params.id}`)"> Change personal information </button>
     <br>
+    
     <br>
     
 

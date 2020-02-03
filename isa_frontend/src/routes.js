@@ -59,6 +59,11 @@ const router = new Router({
       component: () => import("./components/EnterClinicalCenterAdministratorComponent")
     },
     {
+      path: "/EnterClinicalAdministrator",
+      name: "EnterClinicalAdministrator",
+      component: () => import("./components/EnterClinicalAdministrator")
+    },
+    {
       path: "/ValidateClinicalCenterAdministrator/:id",
       name: "ValidateClinicalCenterAdministrator",
       component: () => import("./components/ValidateClinicalCenterAdministratorComponent")
@@ -143,6 +148,11 @@ const router = new Router({
       path: '/editnurse/:id',
       name: 'editnurse',
       component: () => import("./components/EditNurseComponent")
+    },
+    { // Pravljenje reporta za pacijenta koji je izabran sa liste 
+      path: '/makeReport/:id',
+      name: 'makeReport',
+      component: () => import("./components/makeReportComponent")
     },
     {
       path: '/editroom/:id',

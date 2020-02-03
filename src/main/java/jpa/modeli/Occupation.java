@@ -2,38 +2,43 @@ package jpa.modeli;
 
 import java.util.Date;
 
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+
+@Entity
 public class Occupation {
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+	
+	@Column(name = "startingDate")
 	private Date startingTime;
-	private Date endingTime;
+	@Column(name = "duration")
 	private int durationMinutes;
+
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	private MedicalRoom medicalRoom;
 	
-	@SuppressWarnings("deprecation")
-	public Occupation(Date pocetak, Date kraj) {
+	public Occupation() {
 		super();
-		this.startingTime = pocetak;
-		this.endingTime = kraj;
-		this.durationMinutes = kraj.getMinutes() - pocetak.getMinutes();
 	}
-	
-	@SuppressWarnings("deprecation")
 	public Occupation(Date pocetak, int duration) {
 		super();
 		this.startingTime = pocetak;
 		this.durationMinutes = duration;
-		this.endingTime.setMinutes(pocetak.getMinutes() + durationMinutes);
 	}
-
 	public Date getPocetak() {
 		return startingTime;
 	}
 	public void setPocetak(Date pocetak) {
 		this.startingTime = pocetak;
-	}
-	public Date getKraj() {
-		return endingTime;
-	}
-	public void setKraj(Date kraj) {
-		this.endingTime = kraj;
 	}
 	public int getDurationMinutes() {
 		return durationMinutes;

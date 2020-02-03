@@ -12,6 +12,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
 
@@ -44,12 +45,21 @@ public class Patient {
 	@Column(name="accepted", nullable = false)
 	private boolean accepted;
 	
+	@Column(name = "height")
+	private Integer height;
+	
+	@Column(name = "weight")
+	private Integer weight;
+	
+	@Column(name = "bloodType")
+	private String bloodType;
+	
+	
 	@OneToMany(mappedBy = "patient", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<Examination> examinations = new HashSet<Examination>();
 	
-	
-	
-	
+	@OneToMany(mappedBy = "patient", fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
+	private Set<ExaminationReport> examinationReport = new HashSet<ExaminationReport>();
 	
 	//@ManyToMany
 	//@JoinTable(name = "diagnosed", joinColumns = @JoinColumn(name = "diagnosis_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "patient_id", referencedColumnName = "id"))
@@ -78,6 +88,28 @@ public class Patient {
 		this.validated = false;
 		this.accepted = false;
 	}
+	
+	public Patient(Long id, String name, String surname, String email, String password, String adress, String city,
+			String state, int phone, int lbo, boolean validated, boolean accepted, int height, int weight,
+			String bloodType) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.surname = surname;
+		this.email = email;
+		this.password = password;
+		this.adress = adress;
+		this.city = city;
+		this.state = state;
+		this.phone = phone;
+		this.lbo = lbo;
+		this.validated = validated;
+		this.accepted = accepted;
+		this.height = height;
+		this.weight = weight;
+		this.bloodType = bloodType;
+	}
+
 	public Long getId() {
 		return id;
 	}
@@ -145,9 +177,6 @@ public class Patient {
 		return "insert into patient (name, surname, email, password, adress, city, state, phone, lbo) values ('"+getName()+"', '"+getSurname()+"', '"+getEmail()+"', '"+getPassword()+"', '"+getAdress()+"', '"+getCity()+"', '"+getState()+"', "+getPhone()+", "+getLbo()+");";     
 
 	}
-	
-	
-	
 
 	public Set<Examination> getExaminations() {
 		return examinations;
@@ -171,6 +200,39 @@ public class Patient {
 
 	public void setAccepted(boolean accepted) {
 		this.accepted = accepted;
+	}
+
+	public Integer getHeight() {
+		return height;
+	}
+
+	public void setHeight(int height) {
+		this.height = height;
+	}
+
+	public Integer getWeight() {
+		return weight;
+	}
+
+	public void setWeight(int weight) {
+		this.weight = weight;
+	}
+
+	public String getBloodType() {
+		return bloodType;
+	}
+
+	public void setBloodType(String bloodType) {
+		this.bloodType = bloodType;
+	}
+
+
+	public Set<ExaminationReport> getExaminationReport() {
+		return examinationReport;
+	}
+
+	public void setExaminationReport(Set<ExaminationReport> examinationReport) {
+		this.examinationReport = examinationReport;
 	}
 
 	

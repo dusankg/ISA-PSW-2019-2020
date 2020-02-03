@@ -41,7 +41,7 @@ public class ClinicController {
 	@GetMapping(value = "/all")
 	public ResponseEntity<List<ClinicDTO>> getAllClinics(HttpSession Session) {
 		System.out.println(Session.getAttribute("role"));
-		if(Session.getAttribute("role").equals("PATIENT")){
+		if(Session.getAttribute("role").equals("PATIENT")){ //izmeni da mogu da doprem i kada sam administrator
 		List<Clinic> clinics = clinicService.findAll();
 
 		// convert clinics to DTOs
@@ -93,7 +93,6 @@ public class ClinicController {
 
 		Clinic clinic = clinicService.findOne(id);
 
-		// studen must exist
 		if (clinic == null) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}

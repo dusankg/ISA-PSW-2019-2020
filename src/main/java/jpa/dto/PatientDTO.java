@@ -2,6 +2,8 @@ package jpa.dto;
 
 
 
+import javax.persistence.Column;
+
 import jpa.modeli.Patient;
 
 public class PatientDTO {
@@ -17,7 +19,9 @@ public class PatientDTO {
 	private int lbo;
 	private boolean validated;
 	private boolean accepted;
-	
+	private Integer height;
+	private Integer weight;
+	private String bloodType;
 	
 	public PatientDTO() {
 		
@@ -44,6 +48,28 @@ public class PatientDTO {
 		this.accepted = false;
 	}
 	
+	public PatientDTO(Long id, String name, String surname, String email, String password, String adress, String city,
+			String state, int phone, int lbo, boolean validated, boolean accepted, Integer height, Integer weight,
+			String bloodType) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.surname = surname;
+		this.email = email;
+		this.password = password;
+		this.adress = adress;
+		this.city = city;
+		this.state = state;
+		this.phone = phone;
+		this.lbo = lbo;
+		this.validated = validated;
+		this.accepted = accepted;
+		this.height = height;
+		this.weight = weight;
+		this.bloodType = bloodType;
+	}
+	
+	
 	public PatientDTO(Patient patient) {
 		this.id=patient.getId();
 		this.name=patient.getName();
@@ -57,6 +83,9 @@ public class PatientDTO {
 		this.lbo=patient.getLbo();
 		this.validated = patient.isValidated();
 		this.accepted = patient.isAccepted();
+		this.weight = patient.getWeight();
+		this.height = patient.getHeight();
+		this.bloodType = patient.getBloodType();
 	}
 
 
@@ -177,6 +206,24 @@ public class PatientDTO {
 
 	public void setAccepted(boolean accepted) {
 		this.accepted = accepted;
+	}
+	public Integer getHeight() {
+		return height;
+	}
+	public void setHeight(int height) {
+		this.height = height;
+	}
+	public Integer getWeight() {
+		return weight;
+	}
+	public void setWeight(int weight) {
+		this.weight = weight;
+	}
+	public String getBloodType() {
+		return bloodType;
+	}
+	public void setBloodType(String bloodType) {
+		this.bloodType = bloodType;
 	}
 
 

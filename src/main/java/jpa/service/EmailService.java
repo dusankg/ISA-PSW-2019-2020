@@ -8,6 +8,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import jpa.modeli.ClinicalAdministrator;
 import jpa.modeli.ClinicalCenterAdministrator;
 import jpa.modeli.Doctor;
 import jpa.modeli.Patient;
@@ -42,6 +43,23 @@ public class EmailService {
 	
 	@Async
 	public void sendNotificaitionAsync(ClinicalCenterAdministrator admin) throws MailException, InterruptedException {
+
+
+		System.out.println("Slanje emaila...");
+
+		SimpleMailMessage mail = new SimpleMailMessage();
+		mail.setTo("isapswgrupa11@gmail.com");
+		mail.setFrom(env.getProperty("spring.mail.username"));
+		mail.setSubject("Validacija administratora: " + admin.getName());
+		mail.setText("Pozdrav " + admin.getName() + ",\n\n Klikom na link ces potvrditi svoju registraciju: " + "http://localhost:8080/ValidateClinicalCenterAdministrator/"+admin.getId());
+		//mail.setText("http://localhost:8082/api/clinicalCenterAdministrators/validate/"+admin.getId());
+		javaMailSender.send(mail);
+
+		System.out.println("Email poslat!");
+	}
+	
+	@Async
+	public void sendNotificaitionAsync(ClinicalAdministrator admin) throws MailException, InterruptedException {
 
 
 		System.out.println("Slanje emaila...");
