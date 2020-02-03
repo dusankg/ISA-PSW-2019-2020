@@ -21,7 +21,9 @@ import org.springframework.web.bind.annotation.RestController;
 import jpa.dto.AbsenceRequestDTO;
 import jpa.dto.DoctorDTO;
 import jpa.modeli.AbsenceRequest;
+import jpa.modeli.Clinic;
 import jpa.modeli.Doctor;
+import jpa.service.ClinicService;
 import jpa.service.DoctorService;
 import jpa.service.EmailService;
 
@@ -33,6 +35,9 @@ public class DoctorController {
 	
 	@Autowired
 	private DoctorService doctorService;
+	
+	@Autowired
+	private ClinicService clinicService;
 	
 	@Autowired
 	private EmailService emailService;
@@ -70,6 +75,16 @@ public class DoctorController {
 	@PostMapping(consumes = "application/json")
 	public ResponseEntity<DoctorDTO> saveDoctor(@RequestBody DoctorDTO doctorDTO) {
 
+		if(doctorDTO.getClass() == null) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		
+		Clinic clinic = clinicService.findOne(doctorDTO.getClinic().getId());
+		
+		if(clinic == null) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		
 		Doctor doctor = new Doctor();
 		doctor.setId(222);
 		doctor.setName(doctorDTO.getName());
@@ -80,6 +95,9 @@ public class DoctorController {
 		doctor.setCity(doctorDTO.getCity());
 		doctor.setState(doctorDTO.getState());
 		doctor.setPhone(doctorDTO.getPhone());
+		doctor.setWorkHourStart(doctorDTO.getWorkHourStart());
+		doctor.setWorkHourFinish(doctorDTO.getWorkHourFinish());
+		doctor.setClinic(clinic);
 		
 		doctor = doctorService.save(doctor);
 		return new ResponseEntity<>(new DoctorDTO(doctor), HttpStatus.CREATED);
@@ -103,6 +121,8 @@ public class DoctorController {
 		doctor.setCity(doctorDTO.getCity());
 		doctor.setState(doctorDTO.getState());
 		doctor.setPhone(doctorDTO.getPhone());
+		doctor.setWorkHourStart(doctorDTO.getWorkHourStart());
+		doctor.setWorkHourFinish(doctorDTO.getWorkHourFinish());
 
 		doctor = doctorService.save(doctor);
 		return new ResponseEntity<>(new DoctorDTO(doctor), HttpStatus.OK);

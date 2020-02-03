@@ -18,6 +18,10 @@ class ClinicCenterService {
     return axios.put(`http://localhost:8082/api/clinics/${id}`, clinic);
   }
 
+  editClinic(clinic){
+    return axios.put("http://localhost:8082/api/clinics", clinic);
+  }
+
   deleteClinic(id){
     return axios.delete(`http://localhost:8082/api/clinics/${id}`)
   }

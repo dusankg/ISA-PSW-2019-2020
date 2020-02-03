@@ -1,12 +1,6 @@
 package jpa.dto;
 
-import java.util.HashSet;
-import java.util.Set;
-
-import jpa.modeli.Clinic;
 import jpa.modeli.Doctor;
-import jpa.modeli.Examination;
-import jpa.modeli.Patient;
 
 public class DoctorDTO {
 		
@@ -18,8 +12,10 @@ public class DoctorDTO {
 	private String adress;
 	private String city;
 	private String state;
-	//private Clinic clinic;
 	private int phone;
+	private Integer workHourStart;
+	private Integer workHourFinish;
+	private ClinicDTO clinic;
 	//private Set<Patient>patient=new HashSet<Patient>();
 	// private Set<Examination> examinations=new HashSet<Examination>();
 	
@@ -28,11 +24,22 @@ public class DoctorDTO {
 	}
 		
 	public DoctorDTO(Doctor doctor) {
-		this(doctor.getId(), doctor.getName(), doctor.getSurname(), doctor.getEmail(), doctor.getPassword(), doctor.getAdress(), doctor.getCity(), doctor.getState(), doctor.getPhone());
+		this.id = doctor.getId();
+		this.name = doctor.getName();
+		this.surname = doctor.getSurname();
+		this.email = doctor.getEmail();
+		this.password = doctor.getPassword();
+		this.adress = doctor.getAdress();
+		this.city = doctor.getCity();
+		this.state = doctor.getState();
+		this.phone = doctor.getPhone();
+		this.workHourStart = doctor.getWorkHourStart();
+		this.workHourFinish = doctor.getWorkHourFinish();
+		this.clinic = new ClinicDTO(doctor.getClinic());
 	}
 	
 	public DoctorDTO(Long id,String name, String surname, String email, String password, String adress, String city, String state,
-		int phone) {
+		int phone, Integer workHourStart, Integer workHourFinish) {
 		super();
 		this.id=id;
 		this.name = name;
@@ -43,6 +50,9 @@ public class DoctorDTO {
 		this.city = city;
 		this.state = state;
 		this.phone = phone;
+		this.workHourStart = workHourStart;
+		this.workHourFinish = workHourFinish;
+		this.clinic = new ClinicDTO();
 	}
 
 
@@ -135,6 +145,31 @@ public class DoctorDTO {
 			this.phone = phone;
 		}
 
+		public Integer getWorkHourStart() {
+			return workHourStart;
+		}
+
+		public void setWorkHourStart(Integer workHourStart) {
+			this.workHourStart = workHourStart;
+		}
+
+		public Integer getWorkHourFinish() {
+			return workHourFinish;
+		}
+
+		public void setWorkHourFinish(Integer workHourFinish) {
+			this.workHourFinish = workHourFinish;
+		}
+		
+		public ClinicDTO getClinic() {
+			return clinic;
+		}
+
+
+		public void setClinic(ClinicDTO clinic) {
+			this.clinic = clinic;
+		}
+		
 		/*
 		public Set<Patient> getPatient() {
 			return patient;
@@ -154,15 +189,7 @@ public class DoctorDTO {
 		public void setExaminations(Set<Examination> examinations) {
 			this.examinations = examinations;
 		}
-		 
-		public Clinic getClinic() {
-			return clinic;
-		}
-
-
-		public void setClinic(Clinic clinic) {
-			this.clinic = clinic;
-		}
-		*/
+		*/ 
+		
 		
 }

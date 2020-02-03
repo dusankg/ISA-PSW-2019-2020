@@ -42,6 +42,12 @@ public class Doctor {
 	@Column(name = "state")
 	private String state;
 	
+	@Column(name = "workHourStart")
+	private Integer workHourStart;
+	
+	@Column(name = "workHourFinish")
+	private Integer workHourFinish;
+	
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Clinic clinic;
 	
@@ -61,7 +67,7 @@ public class Doctor {
 	public Doctor() {}
 	
 	public Doctor(String name, String surname, String email, String password, String adress, String city, String state,
-			int phone) {
+			int phone, Integer workHourStart, Integer workHourFinish) {
 		super();
 		this.name = name;
 		this.surname = surname;
@@ -71,6 +77,8 @@ public class Doctor {
 		this.city = city;
 		this.state = state;
 		this.phone = phone;
+		this.workHourStart = workHourStart;
+		this.workHourFinish = workHourFinish;
 	}
 
 
@@ -163,6 +171,22 @@ public class Doctor {
 		this.phone = phone;
 	}
 
+	public Integer getWorkHourStart() {
+		return workHourStart;
+	}
+
+	public void setWorkHourStart(Integer workHourStart) {
+		this.workHourStart = workHourStart;
+	}
+
+	public Integer getWorkHourFinish() {
+		return workHourFinish;
+	}
+
+	public void setWorkHourFinish(Integer workHourFinish) {
+		this.workHourFinish = workHourFinish;
+	}
+
 	public Set<Examination> getExaminations() {
 		return examinations;
 	}
@@ -181,6 +205,7 @@ public class Doctor {
 		this.patient = patient;
 	}
 
+	*/
 	public Clinic getClinic() {
 		return clinic;
 	}
@@ -189,7 +214,6 @@ public class Doctor {
 	public void setClinic(Clinic clinic) {
 		this.clinic = clinic;
 	}
-	*/
 	
 	public AbsenceRequest getAbsenceRequest() {
 		return absenceRequest;

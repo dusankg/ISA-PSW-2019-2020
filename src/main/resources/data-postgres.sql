@@ -1,8 +1,9 @@
 
-insert into clinic (name, adress, description, grade_sum, grade_number) values ('Urologija','blabla', 'opis', 0.0, 0);
+insert into clinic (name, adress, description, grade_sum, grade_number, longitude, latitude) values ('Urologija','blabla', 'opis', 0.0, 0, 19.821, 45.014);
+insert into clinic (name, adress, description, grade_sum, grade_number, longitude, latitude) values ('Infektivna klinika','JNA', 'klinika za infektivne i tropske bolesti', 0.0, 0, 19.823, 45.25);
 
-insert into doctor(name, surname, email, password, adress, city, state, phone,clinic_id) values ('DrMr', 'MrDr','drmd.com', '123', 'NTP', 'Nju Nau', 'Makedonija', 333,1);
-insert into doctor(name, surname, email, password, adress, city, state, phone) values ('Doctor', 'House','house.com', '123', 'plainsborough', 'make', 'USA', 988);
+insert into doctor(name, surname, email, password, adress, city, state, phone, work_hour_start, work_hour_finish, clinic_id) values ('DrMr', 'MrDr','drmd.com', '123', 'NTP', 'Nju Nau', 'Makedonija', 333, 7, 15, 1);
+insert into doctor(name, surname, email, password, adress, city, state, phone, work_hour_start, work_hour_finish, clinic_id) values ('Doctor', 'House','house.com', '123', 'plainsborough', 'make', 'USA', 988, 7, 15, 2);
 
 insert into diagnosis(name) values ('Sifilis');
 

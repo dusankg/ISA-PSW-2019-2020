@@ -14,11 +14,11 @@ import axios from "axios";
             <th>Name</th>
             <th>Surname</th>
             <th>Email</th>
-            <th>Password</th>
             <th>Adress</th>
             <th>City</th>
             <th>State</th>
             <th>Phone</th>
+            <th>Clinic</th>
           </tr>
         </thead>
         <tbody>
@@ -27,11 +27,11 @@ import axios from "axios";
             <td>{{doctor.name}}</td>
             <td>{{doctor.surname}}</td>
             <td>{{doctor.email}}</td>
-            <td>{{doctor.password}}</td>
             <td>{{doctor.adress}}</td>
             <td>{{doctor.city}}</td>
             <td>{{doctor.state}}</td>
             <td>{{doctor.phone}}</td>
+            <td>{{doctor.clinic.name}}</td>
             <td>
               <button class="btn btn-warning" v-on:click=deleteDoctorClicked(doctor.id)>
                 Delete 
@@ -78,7 +78,22 @@ import axios from "axios";
             <label>Phone</label>
             <input type="text" class="form-control" v-model="phone">   
           </fieldset>
-          <button class="btn btn-success" type="submit">Save</button>
+          <fieldset class="form-group">
+            <label>Start of work hour</label>
+            <input type="number" class="form-control" v-model="workHourStart">   
+          </fieldset>
+          <fieldset class="form-group">
+            <label>End of work hour</label>
+            <input type="number" class="form-control" v-model="workHourFinish">   
+          </fieldset>
+          <fieldset class="form-group">
+            <label>Clinic</label>
+            <select class="form-control" @change="changedClinic($event)" required>
+                <option value="" selected disabled>Choose clinic</option>
+                <option v-for="clinic in clinics" :value="clinic.id" :key="clinic.id">{{clinic.name}}</option>
+              </select>
+          </fieldset>
+          <button class="btn btn-success" type="submit">Add</button>
         </form>
       </div>
     </div>
@@ -88,6 +103,7 @@ import axios from "axios";
 
 <script>
 import DoctorService from '../service/DoctorService';
+import ClinicService from '../service/ClinicCenterService';
 import Axios from 'axios';
 export default {
   name: "ListDoctors",
@@ -102,7 +118,12 @@ export default {
         adress: undefined,
         city: undefined, 
         state: undefined,
-        phone: undefined
+        phone: undefined,
+        workHourStart: undefined,
+        workHourFinish: undefined,
+        clinics: [],
+        selectedClinic: undefined,
+        selectedClinicName: "",
     };
   },
   methods: {
@@ -122,7 +143,10 @@ export default {
         "adress":this.adress,
         "city":this.city,
         "state":this.state,
-        "phone":this.phone
+        "phone":this.phone,
+        "workHourStart": this.workHourStart,
+        "workHourFinish": this.workHourFinish,
+        "clinic":this.selectedClinic
       }
       this.name = "",
       this.surname = "",
@@ -131,7 +155,9 @@ export default {
       this.adress = "",
       this.city = "",
       this.state = "",
-      this.phone = 0
+      this.phone = 0,
+      this.workHourStart = 0,
+      this.workHourFinish = 0,
       Axios.post("http://localhost:8082/api/doctors", temp);
       this.refreshDoctors();
     },
@@ -142,10 +168,22 @@ export default {
         //only to avoid errors
         response.message 
       });
+    },
+    retrieveClinicsForSelect(){
+      ClinicService.retrieveAllClinics().then(response => {
+        this.clinics = response.data;
+      });
+    },
+    changedClinic(event){
+      this.selectedClinicName = event.target.options[event.target.options.selectedIndex].text;
+      ClinicService.retrieveClinic(event.target.value).then(response => {
+        this.selectedClinic = response.data;
+      });
     }
   },
   created() {
     this.refreshDoctors();
+    this.retrieveClinicsForSelect();
   }
 
 };

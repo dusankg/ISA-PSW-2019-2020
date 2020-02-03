@@ -39,16 +39,23 @@ Vue.use(Vuelidate);
           <input type="text" class="form-control" v-model="name" required>
         </fieldset>
         <fieldset class="form-group">
-          <label>Adress</label>
+          <label>Address</label>
           <input type="text" class="form-control" v-model="adress" required>
         </fieldset>
         <fieldset class="form-group">
           <label>Description</label>
           <input type="text" class="form-control" v-model="description">
         </fieldset>
-        <button class="btn btn-success" type="submit">Save</button>
+        <fieldset class="form-group">
+          <label>Longitude</label>
+          <input type="number" class="form-control" v-model="longitude">
+        </fieldset>
+        <fieldset class="form-group">
+          <label>Latitude</label>
+          <input type="number" class="form-control" v-model="latitude">
+        </fieldset>  
+        <button class="btn btn-success" type="submit">Add</button>
       </form>
-      <button class="btn btn-success" v-on:click="updateClinicClicked()">Update</button>
     </div>
   </div>
 
@@ -69,6 +76,8 @@ export default {
         name: undefined,
         adress: undefined,
         description: undefined,
+        longitude: undefined,
+        latitude: undefined,
         id: undefined
     };
   },
@@ -97,7 +106,9 @@ export default {
           "adress":this.adress,
           "description":this.description,
           "gradeSum":0,
-          "gradeNumber":0
+          "gradeNumber":0,
+          "longitude": this.longitude,
+          "latitude": this.latitude
         }
         this.name = ""
         this.adress = ""
@@ -111,37 +122,17 @@ export default {
     },
 
     editClinicClicked(id){
-      ClinicCenterService.retrieveClinic(id).then(res => {
-          this.name = res.data.name,
-          this.adress = res.data.adress,
-          this.description = res.data.description,
-          //important line, here is saved id of clinic we're updating 
-          this.id = id;
-      });
+      this.$router.push(`/editclinic/${id}`)
     },
 
-    updateClinicClicked(){
-      var t = {
-          "id":this.id,
-          "name":this.name,
-          "adress":this.adress,
-          "description":this.description,
-          "gradeSum":0,
-          "gradeNumber":0
-      }
-      
-      Axios.put("http://localhost:8082/api/clinics", t);
-      this.refreshClinics();
-    }
-
   },
-
   created() {
     this.refreshClinics();
-  }
+  },
   
 };
 </script>
 
 <style>
+
 </style>

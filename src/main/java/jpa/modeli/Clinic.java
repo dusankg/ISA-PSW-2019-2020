@@ -32,10 +32,17 @@ public class Clinic {
 	private String description;
 	
 	@Column(name = "gradeSum", nullable = true)
-	private double gradeSum; // average is gradeSum devided by gradeNumber
+	private double gradeSum; // average is gradeSum divided by gradeNumber
 	
 	@Column(name = "gradeNumber", nullable = true)
 	private int gradeNumber;
+	
+	@Column(name = "longitude")
+	private double longitude;
+	
+	@Column(name = "latitude")
+	private double latitude;
+	
 	
 	@OneToMany(mappedBy = "clinic", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	//@Column(name="Examinations", nullable = true)
@@ -66,22 +73,26 @@ public class Clinic {
 		super();
 	}
 
-	public Clinic(String name, String adress, String description) {
+	public Clinic(String name, String adress, String description, double longitude, double latitude) {
 		super();
 		this.name = name;
 		this.adress = adress;
 		this.description = description;
 		this.gradeSum = 0;
 		this.gradeNumber = 1;
+		this.longitude = longitude;
+		this.latitude = latitude;
 	}
 	
-	public Clinic(String name, String adress, String description, double gradeSum, int gradeNumber) {
+	public Clinic(String name, String adress, String description, double gradeSum, int gradeNumber, double longitude, double latitude) {
 		super();
 		this.name = name;
 		this.adress = adress;
 		this.description = description;
 		this.gradeSum = gradeSum;
 		this.gradeNumber = gradeNumber;
+		this.longitude = longitude;
+		this.latitude = latitude;
 	}
 
 	public Long getId() {
@@ -138,6 +149,22 @@ public class Clinic {
 		} else return 100;
 		
 	}
+	
+	public double getLongitude() {
+		return longitude;
+	}
+
+	public void setLongitude(double longitude) {
+		this.longitude = longitude;
+	}
+
+	public double getLatitude() {
+		return latitude;
+	}
+
+	public void setLatitude(double latitude) {
+		this.latitude = latitude;
+	}
 
 	public Set<Examination> getExaminations() {
 		return examinations;
@@ -147,7 +174,7 @@ public class Clinic {
 		this.examinations = examinations;
 	}
 
-		public Set<Doctor> getDoctors() {
+	public Set<Doctor> getDoctors() {
 		return doctors;
 	}
 

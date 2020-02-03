@@ -178,6 +178,16 @@ const router = new Router({
       path: '/editroom/:id',
       name: 'editroom',
       component: () => import("./components/EditMedicalRoomComponent")
+    },
+    {
+      path: '/addexamination',
+      name: 'addexamination',
+      component: () => import("./components/AddExaminationDoctorComponent")
+    },
+    {
+      path: '/editclinic/:id',
+      name: 'editclinic',
+      component: () => import("./components/EditClinicComponent")
     }
   ]
 });

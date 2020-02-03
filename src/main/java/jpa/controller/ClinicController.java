@@ -192,6 +192,8 @@ public class ClinicController {
 		clinic.setDescription(clinicDTO.getDescription());
 		clinic.setGradeSum(clinicDTO.getGradeSum());
 		clinic.setGradeNumber(clinicDTO.getGradeNumber());
+		clinic.setLongitude(clinicDTO.getLongitude());
+		clinic.setLatitude(clinicDTO.getLatitude());
 		
 		System.out.println("********* Prosledjeni naziv klinike: " + clinicDTO.getName()+ " ***************");
 
@@ -216,6 +218,8 @@ public class ClinicController {
 		clinic.setDescription(clinicDTO.getDescription());
 		clinic.setGradeSum(clinicDTO.getGradeSum());
 		clinic.setGradeNumber(clinicDTO.getGradeNumber());
+		clinic.setLongitude(clinicDTO.getLongitude());
+		clinic.setLatitude(clinicDTO.getLatitude());
 
 		System.out.println("********* Upadateovani naziv klinike: " + clinicDTO.getName()+ " ***************");
 		
@@ -275,6 +279,8 @@ public class ClinicController {
 			doctorDTO.setCity(d.getCity());
 			doctorDTO.setState(d.getState());
 			doctorDTO.setPhone(d.getPhone());
+			doctorDTO.setWorkHourStart(d.getWorkHourStart());
+			doctorDTO.setWorkHourFinish(d.getWorkHourFinish());
 
 			doctorsDTO.add(doctorDTO);
 		}

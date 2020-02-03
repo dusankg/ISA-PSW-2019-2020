@@ -1,6 +1,6 @@
 package jpa.dto;
 
-import java.util.Date;
+import java.sql.Date;
 
 import jpa.modeli.MedicalRoom;
 

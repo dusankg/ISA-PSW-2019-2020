@@ -1,6 +1,6 @@
 package jpa.dto;
 
-import java.util.Date;
+import java.sql.Date;
 
 import jpa.modeli.Examination;
 
@@ -113,6 +113,14 @@ public class ExaminationDTO {
 
 	public void setType(ExaminationTypeDTO type) {
 		this.type = type;
+	}
+
+	public PatientDTO getPatient() {
+		return patient;
+	}
+
+	public void setPatient(PatientDTO patient) {
+		this.patient = patient;
 	}
 	
 	
