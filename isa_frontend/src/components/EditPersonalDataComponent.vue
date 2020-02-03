@@ -66,11 +66,20 @@ import axios from "axios"
 import PatientService from '../service/PatientService';
 import Axios from 'axios';
 export default {
-  name: "ListPatients",
+  name: "EditPatients",
   data() {
     return {
-        patients: [],
-        patient: [],
+        id : undefined,
+        name: undefined,
+        surname: undefined,
+        password: undefined,
+        email: undefined,
+        adress: undefined,
+        city: undefined, 
+        state: undefined,
+        phone: undefined,
+        ispravno : undefined,
+        lbo : undefined,
         message: null,
         INSTRUCTOR: "all"
     };
@@ -80,39 +89,30 @@ export default {
         PatientService.retrieveAllPatients() 
             .then(response => {
                 this.patients = response.data;
-                var i
-        var index=this.$route.query.id
+              
+       
         
-        for(i=0; i<this.patients.length; i++){
+        
       /* eslint-disable no-console */
         console.log("**************************")
       //  console.log(index)
       //  console.log(this.patients[i].id)
       //  console.log(this.patients[i].email)
       //  console.log(this.patients.length)
-        if(index==this.patients[i].id){
-           this.patient.name=this.patients[i].name;
-           this.patient.surname=this.patients[i].surname;
-           this.patient.email=this.patients[i].email;
-           this.patient.adress=this.patients[i].adress;
-           this.patient.city=this.patients[i].city;
-           this.patient.state=this.patients[i].state;
-           this.patient.phone=this.patients[i].phone;
-           this.patient.lbo=this.patients[i].lbo;
-        }
+      
         
        
       
-    }console.log(this.patient.name)
+   
         });
         
 
     },
     validateAndSubmit(e) {
     e.preventDefault();
-    var iii = this.$route.query.id
+   
     var temp={
-      "id":iii,
+      "id":this.id,
       "name":this.name,
       "surname":this.surname,
       "email":this.email,
@@ -124,33 +124,37 @@ export default {
       "lbo": this.lbo
     }
     
-    //var patientPom
-    var ispravno = true
     
     
-    var i
-    for(i=0; i<this.patients.length; i++){
-      /* eslint-disable no-console */
-        console.log("**************************")
-       if(this.name==this.patients[i].name){
-           ispravno = false
-           console.log("Vec postoji ovakav cika")
-        }
-      
-    }
 
 
-    if(this.password==this.password2 && ispravno){
+    if(this.password==this.password2 ){
     Axios.put("http://localhost:8082/api/patients", temp);
-            this.$router.push('/patientHomePage?id='+ iii) 
+            this.$router.push('/patientHomePage') 
 
     }this.refreshPatients();
+  },
+  getPatient(){
+    PatientService.retrievePatient( {withCredentials: true}).then(response => {
+      this.id = response.data.id;
+      this.name = response.data.name;
+      this.surname = response.data.surname;
+      this.password = response.data.password;
+      this.email = response.data.email;
+      this.adress = response.data.adress;
+      this.city = response.data.city;
+      this.state = response.data.state;
+      this.phone = response.data.phone;
+      this.lbo = response.data.phone;
+     });
+
+    
   }
 
 
   },
-  created() {
-    this.refreshPatients();
+  mounted() {
+    this.getPatient();
   }
 
 };

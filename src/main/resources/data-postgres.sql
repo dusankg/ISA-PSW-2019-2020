@@ -1,7 +1,7 @@
 
 insert into clinic (name, adress, description, grade_sum, grade_number) values ('Urologija','blabla', 'opis', 0.0, 0);
 
-insert into doctor(name, surname, email, password, adress, city, state, phone) values ('DrMr', 'MrDr','drmd.com', '123', 'NTP', 'Nju Nau', 'Makedonija', 333);
+insert into doctor(name, surname, email, password, adress, city, state, phone,clinic_id) values ('DrMr', 'MrDr','drmd.com', '123', 'NTP', 'Nju Nau', 'Makedonija', 333,1);
 insert into doctor(name, surname, email, password, adress, city, state, phone) values ('Doctor', 'House','house.com', '123', 'plainsborough', 'make', 'USA', 988);
 
 insert into diagnosis(name) values ('Sifilis');
@@ -29,7 +29,7 @@ insert into prescription (name, validated) values ('Loperamid',false);
 insert into examination_type(typename) values ('Ocni pregled');
 insert into examination_type(typename) values ('Ginekoloski pregled');
 
-insert into examination (date, duration, price, type_id) values ('2011-03-05', 45, 1500, 1);
+insert into examination (date, duration, price, type_id,clinic_id,doctor_id) values ('2020-02-01', 45, 1500, 1,1,1);
 
 insert into absence_request(startingdate, endingdate, doctor_id) values ('2019-05-05', '2019-09-09', 1);
 insert into absence_request(startingdate, endingdate, doctor_id) values ('2000-05-05', '2010-09-09', 2);

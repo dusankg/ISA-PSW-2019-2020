@@ -40,7 +40,6 @@ public class Clinic {
 	@OneToMany(mappedBy = "clinic", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	//@Column(name="Examinations", nullable = true)
 	private Set<Examination> examinations = new HashSet<Examination>();
-	
 	@OneToMany(mappedBy = "clinic", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<Doctor> doctors = new HashSet<Doctor>();
 	

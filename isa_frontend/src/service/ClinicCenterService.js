@@ -6,7 +6,10 @@ class ClinicCenterService {
   retrieveAllClinics() {
     return axios.get("http://localhost:8082/api/clinics/all", {withCredentials: true});
   }
+  retrieveAllClinicsFiltered(date,type) {
+    return axios.get('http://localhost:8082/api/clinics/allFiltered/'+date+'/'+type, {withCredentials: true});
 
+  }
   retrieveClinic(id){
     return axios.get(`http://localhost:8082/api/clinics/${id}`);
   }
@@ -18,6 +21,9 @@ class ClinicCenterService {
   deleteClinic(id){
     return axios.delete(`http://localhost:8082/api/clinics/${id}`)
   }
+  retrieveDoctorsOfClinic(date,type,id){
+    return  axios.get('http://localhost:8082/api/clinics/select/'+date+'/'+type+'/' + id,{withCredentials: true})
+}
 }
 
 

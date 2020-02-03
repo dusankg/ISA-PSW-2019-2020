@@ -7,15 +7,18 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import jpa.modeli.ClinicalAdministrator;
 import jpa.modeli.ClinicalCenterAdministrator;
 import jpa.modeli.Doctor;
+import jpa.modeli.Examination;
 import jpa.modeli.Patient;
 
 
 
 @Service
+@CrossOrigin( allowCredentials= "true")
 public class EmailService {
 
 	@Autowired
@@ -39,6 +42,25 @@ public class EmailService {
 		javaMailSender.send(mail);
 
 		System.out.println("Email poslat!");
+	}
+	@Async
+	public void sendNotificaitionAsyncReserve(Patient patient,Examination examination) throws MailException, InterruptedException {
+
+		if(examination.getPatient()==null){
+		System.out.println("Slanje emaila...");
+
+		SimpleMailMessage mail = new SimpleMailMessage();
+		mail.setTo("isapswgrupa11@gmail.com");
+		mail.setFrom(env.getProperty("spring.mail.username"));
+		mail.setSubject("Validacija pacijenta: " + patient.getName());
+		mail.setText("Pozdrav " + patient.getName() + ",\n\n Vas zahtev za pregled. Ovde ce se aktivirati  "+ "http://localhost:8082/api/examinations/reserve/" + examination.getId());
+		javaMailSender.send(mail);
+
+		System.out.println("Email poslat!");
+		}
+		else{
+			System.out.println("vec rezervisan");
+		}
 	}
 	
 	@Async

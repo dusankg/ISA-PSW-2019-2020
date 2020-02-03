@@ -47,7 +47,7 @@ export default {
   },
   methods: {
     refreshExaminations() {
-        ExaminationService.retrieveAllExaminationsOfSelectedClinic()
+        ExaminationService.retrieveAllNonReservedExaminations({withCredentials: true})
             .then(response => {
                 this.examinations = response.data;
         });
@@ -56,8 +56,8 @@ export default {
       /* eslint-disable no-console */
       console.log(id1)
       console.log(this.$route.query.id)
+    Axios.get('http://localhost:8082/api/examinations/sendVerificationMail/' + id1,{withCredentials: true} )
        this.$router.push('/patientHomePage') 
-    Axios.get('http://localhost:8082/api/examinations/reserve/' + id1,{withCredentials: true} )
     
     //this.refreshClinics();
       }, 

@@ -75,6 +75,21 @@ public class PatientController {
 
 			return new ResponseEntity<>(patientsDTO, HttpStatus.OK);
 		}
+		
+		
+	/*	@GetMapping(value = "/isNameTaken/{name}")
+		public ResponseEntity<Boolean> getNameTaken(@PathVariable String name,HttpSession Session) {
+
+			List<Patient> patients = patientService.findAll();
+
+			// convert Patients to DTOs
+			List<PatientDTO> patientsDTO = new ArrayList<>();
+			for (Patient p : patients) {
+			
+			}
+
+			return new ResponseEntity<>(patientsDTO, HttpStatus.OK);
+		}*/
 
 		@GetMapping
 		public ResponseEntity<List<PatientDTO>> getPatientsPage(Pageable page) {
@@ -104,6 +119,24 @@ public class PatientController {
 			Session.setAttribute("role", "PATIENT");
 			Session.setAttribute("id",id);
 			System.out.println(Session.getAttribute("role"));
+			System.out.println(Session.getAttribute("id"));
+			return new ResponseEntity<>(new PatientDTO(Patient), HttpStatus.OK);
+		}
+		
+		
+		
+		@GetMapping(value = "/loggedPatient")
+		public ResponseEntity<PatientDTO> getLoggedPatient(HttpSession Session) {
+			
+			System.out.println(Session.getAttribute("id"));
+			Patient Patient = patientService.findOne((Long)Session.getAttribute("id"));
+
+			
+			if (Patient == null) {
+				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			}
+			
+		
 			return new ResponseEntity<>(new PatientDTO(Patient), HttpStatus.OK);
 		}
 		

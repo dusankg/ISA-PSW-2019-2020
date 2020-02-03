@@ -1,5 +1,6 @@
 package jpa.controller;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -27,6 +28,7 @@ import jpa.dto.DoctorDTO;
 import jpa.dto.MedicalRoomDTO;
 import jpa.modeli.Clinic;
 import jpa.modeli.Doctor;
+import jpa.modeli.Examination;
 import jpa.modeli.MedicalRoom;
 import jpa.service.ClinicService;
 
@@ -46,17 +48,75 @@ public class ClinicController {
 
 		// convert clinics to DTOs
 		List<ClinicDTO> clinicDTO = new ArrayList<>();
+		
 		for (Clinic c : clinics) {
 			clinicDTO.add(new ClinicDTO(c));
 		}
-
+		
 		return new ResponseEntity<>(clinicDTO, HttpStatus.OK);
 		}else{
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 	}
-	@GetMapping(value = "select/{id1}")
-	public ResponseEntity<Long> updateExamination(@PathVariable Long id1,HttpSession Session ) {
+	
+	
+	
+	
+	@GetMapping(value = "/allFiltered/{date}/{type}")
+	public ResponseEntity<List<ClinicDTO>> getAllFilteredClinics(@PathVariable Date date,@PathVariable String type,HttpSession Session) {
+		System.out.println(Session.getAttribute("role"));
+		if(Session.getAttribute("role").equals("PATIENT")){
+		
+			List<Clinic> clinics = clinicService.findAll();
+
+		// convert clinics to DTOs
+		List<ClinicDTO> clinicDTO = new ArrayList<>();
+		System.out.println(date);
+		System.out.println(type);
+		//System.out.println((Date) Session.getAttribute("filterDate"));
+		for (Clinic c : clinics) {
+			boolean nasao_kliniku=false;
+			boolean slobodan_doktor=true;
+			for(Doctor d : c.getDoctors()){
+			
+				for(Examination e : d.getExaminations()){
+					System.out.println("ULAZIS OVDE??");
+					if(e.getDate().compareTo(date)==0 ){
+						if(e.getPatient()!=null){
+						slobodan_doktor=false;}
+						if(!type.equals("")){
+						if(!e.getType().getTypeName().toLowerCase().contains(type.toLowerCase())){
+							slobodan_doktor=false;}}
+					}}
+				if(slobodan_doktor==true && nasao_kliniku==false){
+					clinicDTO.add(new ClinicDTO(c));
+					nasao_kliniku=true;
+				}
+				}
+			
+			
+		}
+		
+		return new ResponseEntity<>(clinicDTO, HttpStatus.OK);
+		}else{
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+	}
+/*	@GetMapping(value = "/filter/{date}/{type}")
+	public ResponseEntity<List<ClinicDTO>> getFiltered(@PathVariable Date date,@PathVariable String type,HttpSession Session) {
+		System.out.println(Session.getAttribute("role"));
+		if(Session.getAttribute("role").equals("PATIENT")){
+		Session.setAttribute("filterDate", date);
+		Session.setAttribute("filterType", type);
+		
+		return new ResponseEntity<>(null, HttpStatus.OK);
+		}else{
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+	}*/
+	
+	@GetMapping(value = "select/{date}/{type}/{id1}")
+	public ResponseEntity<List<DoctorDTO>> updateExamination(@PathVariable Date date,@PathVariable String type,@PathVariable Long id1,HttpSession Session ) {
 	
 	
 		System.out.println(id1);
@@ -67,11 +127,33 @@ public class ClinicController {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 		
-
-		Session.setAttribute("selectedClinicId", id1);
-		System.out.println(Session.getAttribute("selectedClinicId"));
-		return new ResponseEntity<>(id1, HttpStatus.OK);
+		List<DoctorDTO> doctorDTO = new ArrayList<>();
+		
+		
+				for(Doctor d : clinic.getDoctors()){
+					boolean slobodan_doktor=true;
+				
+					for(Examination e : d.getExaminations()){
+					
+						if(e.getDate().compareTo(date)==0 ){
+							if(e.getPatient()!=null){
+							slobodan_doktor=false;}
+							if(!type.equals("")){
+							if(!e.getType().getTypeName().toLowerCase().contains(type.toLowerCase())){
+								slobodan_doktor=false;}}
+						}}
+					if(slobodan_doktor==true){
+						doctorDTO.add(new DoctorDTO(d));
+				
+					}
+					}
+				
+				
+			
+		return new ResponseEntity<>(doctorDTO, HttpStatus.OK);
 	}
+	
+	
 	
 	@GetMapping
 	public ResponseEntity<List<ClinicDTO>> getClinicsPage(Pageable page) {

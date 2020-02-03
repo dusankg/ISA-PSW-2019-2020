@@ -1,10 +1,13 @@
 package jpa.controller;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +24,7 @@ import jpa.dto.ExaminationDTO;
 import jpa.modeli.Examination;
 import jpa.modeli.ExaminationType;
 import jpa.modeli.Patient;
+import jpa.service.EmailService;
 import jpa.service.ExaminationService;
 import jpa.service.ExaminationTypeService;
 import jpa.service.PatientService;
@@ -29,12 +33,13 @@ import jpa.service.PatientService;
 @CrossOrigin(origins = {"http://localhost:3000", "http://localhost:4200", "http://localhost:8080"},allowCredentials= "true")
 @RequestMapping(value = "api/examinations")
 public class ExaminationController {
-
+	private Logger logger = LoggerFactory.getLogger(ExaminationController.class);
 	@Autowired
 	private ExaminationService examinationService;
 	@Autowired
 	private PatientService patientService;
-
+	@Autowired
+	private EmailService emailService;
 	@Autowired
 	private ExaminationTypeService examinationTypeService;
 	
@@ -50,6 +55,25 @@ public class ExaminationController {
 		
 		return new ResponseEntity<>(examinationsDTO, HttpStatus.OK);
 	}
+	@GetMapping(value = "/nonReserved")
+	public ResponseEntity<List<ExaminationDTO>> getAllNonReservedExaminations(HttpSession Session){
+		if(Session.getAttribute("role").equals("PATIENT")){
+		List<Examination> examinations = examinationService.findAll();
+		
+		//convert examinations to DTOs
+		List<ExaminationDTO> examinationsDTO = new ArrayList<>();
+		for (Examination e : examinations) {
+			if(e.getPatient()==null){
+			examinationsDTO.add(new ExaminationDTO(e));
+			}
+		}
+		
+		return new ResponseEntity<>(examinationsDTO, HttpStatus.OK);
+		}
+		else{
+			return new ResponseEntity<>( HttpStatus.UNAUTHORIZED);
+		}
+	}
 	
 	@GetMapping(value = "/allByClinic")
 	public ResponseEntity<List<ExaminationDTO>> getAllExaminationss(HttpSession Session){
@@ -59,8 +83,11 @@ public class ExaminationController {
 		List<ExaminationDTO> examinationsDTO = new ArrayList<>();
 		System.out.println(Session.getAttribute("selectedClinicId"));
 		for (Examination e : examinations) {
-			if(Session.getAttribute("selectedClinicId")==e.getClinic().getId())
-			examinationsDTO.add(new ExaminationDTO(e));
+			if(Session.getAttribute("selectedClinicId")==e.getClinic().getId()){
+				if(e.getPatient()==null){
+				examinationsDTO.add(new ExaminationDTO(e));
+				}
+			}
 		}
 		
 		return new ResponseEntity<>(examinationsDTO, HttpStatus.OK);
@@ -95,7 +122,7 @@ public class ExaminationController {
 		
 		Examination examination = new Examination();
 		examination.setId(null);
-		examination.setDate(examinationDTO.getDate());
+		examination.setDate((Date) examinationDTO.getDate());
 		examination.setDuration(examinationDTO.getDuration());
 		examination.setPrice(examinationDTO.getPrice());
 		examination.setType(examinationType);
@@ -104,6 +131,35 @@ public class ExaminationController {
 		return new ResponseEntity<>(new ExaminationDTO(examination), HttpStatus.CREATED);
 	}
 
+	
+	@GetMapping(value = "/sendVerificationMail/{id1}")
+	public ResponseEntity<Void> acceptPatient(@PathVariable Long id1,HttpSession Session){
+	
+		Patient patient=patientService.findOne((Long)Session.getAttribute("id"));
+		Examination examination=examinationService.findOne(id1);
+		
+		if(patient!=null){
+			
+			// slanje mejla za validaciju
+			try {
+				emailService.sendNotificaitionAsyncReserve(patient,examination);
+			}catch( Exception e ){
+				logger.info("Greska prilikom slanja emaila: " + e.getMessage());
+			}
+			
+			patient.setAccepted(true);
+			patient = patientService.save(patient);
+			System.out.println("Stanje sada: "+ patient.isValidated());
+			return new ResponseEntity<>(HttpStatus.OK);
+		}else{
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
+		}
+		
+	}
+	
+	
+	
 	@GetMapping(value = "reserve/{id1}")
 	public ResponseEntity<ExaminationDTO> updateExamination(@PathVariable Long id1,HttpSession Session ) {
 		System.out.println("ARE YOU HEREEEEE???");
@@ -111,7 +167,7 @@ public class ExaminationController {
 		System.out.println(id1);
 
 		Examination examination = examinationService.findOne(id1);
-		Patient patient = patientService.findOne((Long)Session.getAttribute("ID"));
+		Patient patient = patientService.findOne((Long)Session.getAttribute("id"));
 		if (examination == null) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}

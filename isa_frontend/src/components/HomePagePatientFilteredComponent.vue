@@ -4,9 +4,7 @@ Vue.use(Vuelidate);
   <div class="container">
     <h3>Clinic List</h3>
     <div class="container">
-        
-
-
+      
       <table class="table">
         <thead>
           <tr>
@@ -29,10 +27,7 @@ Vue.use(Vuelidate);
           </tr>
         </tbody>
       </table>
-        <form @submit="instant">
-                <button class="btn btn-success" type="submit">Reserve an existing appointment </button>
-
-      </form>
+     
 
        <form @submit="val">
                 <button class="btn btn-success" type="submit">Edit personal data</button>
@@ -72,7 +67,8 @@ export default {
   },
   methods: {
     refreshClinics() {
-        ClinicCenterService.retrieveAllClinics() 
+        alert(this.$route.query.type);
+        ClinicCenterService.retrieveAllClinicsFiltered(this.$route.query.date,this.$route.query.type,{withCredentials: true}) 
             .then(response => {
                 this.clinics = response.data;
         });
@@ -103,7 +99,7 @@ export default {
       select(id1){
         /* eslint-disable no-console */
         Axios.get('http://localhost:8082/api/clinics/select/' + id1,{withCredentials: true})
-        this.$router.push('/ClinicExaminationsPatient',{withCredentials: true}) ;
+        this.$router.push('/ClinicExaminationsPatient/?date='+this.$route.query.date+'&type='+this.$route.query.type+'&id='+id1,{withCredentials: true}) ;
       },
 
 
@@ -111,7 +107,7 @@ export default {
       val(e){
           e.preventDefault();
           
-            this.$router.push('/EditPersonalData?') 
+            this.$router.push('/EditPersonalData') 
 
       },
       pretraga(e){
@@ -119,10 +115,6 @@ export default {
            
             this.$router.push('/pretragaPatient') 
 
-      },
-      instant(e){
-        e.preventDefault();
-        this.$router.push('/examinationsPatient') 
       }
 
   

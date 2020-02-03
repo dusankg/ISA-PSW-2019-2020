@@ -17,16 +17,36 @@ const router = new Router({
       
     },
     {
+      path: "/requestPatient",
+      name: "requestPatientt",
+      component: () => import("./components/ExaminationRequestPatientComponent")                 
+      
+    },
+    {
       path: "/patientHomePage",
       name: "HomePagePatient",
       component: () => import("./components/HomePagePatientComponent")
     },
     {
-      path: "/ClinicExaminationsPatient",
+      path: "/patientHomePageFiltered",
+      name: "HomePagePatient3",
+      component: () => import("./components/HomePagePatientFilteredComponent")
+    },
+    {
+      path: "/pretragaPatient",
+      name: "HomePagePatient2",
+      component: () => import("./components/pretragaPatientComponent")
+    },
+    {
+      path: "/ExaminationsPatient",
       name: "Examinations2",
       component: () => import("./components/ListExaminationsPatientComponent")
     },
-
+    {
+      path: "/ClinicExaminationsPatient",
+      name: "Examinations23",
+      component: () => import("./components/ListDoctorsPatientComponent")
+    },
 
     {
       path: "/EditPersonalData",
