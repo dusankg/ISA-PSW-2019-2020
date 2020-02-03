@@ -4,16 +4,20 @@
         <div class="container">
           <form @submit="validateAndSubmit">
             <fieldset class="form-group">
+              <input type="checkbox" class="form-check-input" v-model="operation">
+              <label>Check if examination is operation</label>
+            </fieldset>
+            <fieldset class="form-group">
               <label>Date</label>
               <input type="date" class="form-control" v-model="date">
             </fieldset>
             <fieldset class="form-group">
               <label>Start Time</label>
-              <input type="time" class="form-control" v-model="startTime">   
+              <input type="number" class="form-control" v-model="startTime">   
             </fieldset>
             <fieldset class="form-group">
               <label>End Time</label>
-              <input type="time" class="form-control" v-model="endTime">   
+              <input type="number" class="form-control" v-model="endTime">   
             </fieldset>
             <fieldset class="form-group">
               <label>Type of examination</label>
@@ -41,7 +45,8 @@ export default {
         endTime: undefined,
         examinationTypes: [],
         selectedType: undefined,
-        selectedTypeName: ""
+        selectedTypeName: "",
+        operation: false
     };
   },
   methods: {
@@ -52,7 +57,9 @@ export default {
         "date":this.date,
         "startTime":this.startTime,
         "endTime":this.endTime,
-        "type": this.selectedType
+        "type": this.selectedType,
+        "accepted": false,
+        "operation": this.operation
       }
       Axios.post("http://localhost:8082/api/examinations", temp);
     },

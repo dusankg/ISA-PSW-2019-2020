@@ -106,7 +106,10 @@ public class ExaminationTypeController {
 			ExaminationDTO examinationDTO = new ExaminationDTO();
 			examinationDTO.setId(e.getId());
 			examinationDTO.setDate(e.getDate());
-			examinationDTO.setDuration(e.getDuration());
+			examinationDTO.setStartTime(e.getStartTime());
+			examinationDTO.setEndTime(e.getEndTime());
+			examinationDTO.setOperation(e.getOperation());
+			examinationDTO.setAccepted(e.getAccepted());
 			examinationDTO.setPrice(e.getPrice());
 			
 			examinationsDTO.add(examinationDTO);

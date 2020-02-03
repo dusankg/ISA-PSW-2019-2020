@@ -26,11 +26,20 @@ public class Examination {
 	@Column(name = "date")
 	private Date date;
 	
-	@Column(name = "duration")
-	private double duration;
+	@Column(name = "startTime")
+	private Integer startTime;
+	
+	@Column(name = "endTime")
+	private Integer endTime;
 
 	@Column(name = "price")
 	private double price;
+	
+	@Column(name = "accepted")
+	private Boolean accepted;
+	
+	@Column(name = "operation")
+	private Boolean operation;
 	
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private Patient patient;
@@ -53,12 +62,15 @@ public class Examination {
 	
 	public Examination() {}
 	
-	public Examination(Long id, Date date, double duration, double price) {
+	public Examination(Long id, Date date, Integer startTime, Integer endTime, double price, Boolean accepted, Boolean operation) {
 		super();
 		this.id = id;
 		this.date = date;
-		this.duration = duration;
+		this.startTime = startTime;
+		this.endTime = endTime;
 		this.price = price;
+		this.accepted = accepted;
+		this.operation = operation;
 		/*
 		this.room = room;
 		this.doctor = doctor;
@@ -80,13 +92,21 @@ public class Examination {
 	public void setDate(Date date) {
 		this.date = date;
 	}
-
-	public double getDuration() {
-		return duration;
+	
+	public Integer getStartTime() {
+		return startTime;
 	}
 
-	public void setDuration(double duration) {
-		this.duration = duration;
+	public void setStartTime(Integer startTime) {
+		this.startTime = startTime;
+	}
+
+	public Integer getEndTime() {
+		return endTime;
+	}
+
+	public void setEndTime(Integer endTime) {
+		this.endTime = endTime;
 	}
 
 	public double getPrice() {
@@ -95,6 +115,22 @@ public class Examination {
 
 	public void setPrice(double price) {
 		this.price = price;
+	}
+
+	public Boolean getAccepted() {
+		return accepted;
+	}
+
+	public void setAccepted(Boolean accepted) {
+		this.accepted = accepted;
+	}
+
+	public Boolean getOperation() {
+		return operation;
+	}
+
+	public void setOperation(Boolean operation) {
+		this.operation = operation;
 	}
 
 	public Patient getPatient() {
