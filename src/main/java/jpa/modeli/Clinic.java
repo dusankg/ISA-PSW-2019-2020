@@ -11,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 
 
@@ -35,6 +36,7 @@ public class Clinic {
 	
 	@Column(name = "gradeNumber", nullable = true)
 	private int gradeNumber;
+	
 	@OneToMany(mappedBy = "clinic", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	//@Column(name="Examinations", nullable = true)
 	private Set<Examination> examinations = new HashSet<Examination>();
@@ -42,6 +44,11 @@ public class Clinic {
 	@OneToMany(mappedBy = "clinic", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<Doctor> doctors = new HashSet<Doctor>();
 	
+	@OneToMany(mappedBy = "clinic", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private Set<ClinicalAdministrator> administrators = new HashSet<ClinicalAdministrator>();
+	
+	//@OneToMany(mappedBy = "clinic", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	//private Set<MedicalRoom> rooms=new HashSet<MedicalRoom>();
 	@OneToMany(mappedBy = "clinic", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private Set<MedicalRoom> rooms = new HashSet<MedicalRoom>();
 	

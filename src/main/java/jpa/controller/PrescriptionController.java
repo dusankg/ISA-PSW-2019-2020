@@ -9,11 +9,18 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import jpa.dto.ExaminationDTO;
+import jpa.dto.ExaminationReportDTO;
 import jpa.dto.PatientDTO;
 import jpa.dto.PrescriptionDTO;
+import jpa.modeli.Examination;
+import jpa.modeli.ExaminationReport;
+import jpa.modeli.ExaminationType;
 import jpa.modeli.Patient;
 import jpa.modeli.Prescription;
 import jpa.service.PrescriptionService;
@@ -98,6 +105,65 @@ public class PrescriptionController {
 
 		return new ResponseEntity<>(prescriptionDTO, HttpStatus.OK);
 	}
+	
+	@PostMapping(consumes = "application/json")
+	public ResponseEntity<PrescriptionDTO> savePrescription(@RequestBody PrescriptionDTO prescriptionDTO) {
+
+		Prescription prsc = new Prescription();
+		
+		prsc.setId(333l);
+		prsc.setName(prescriptionDTO.getName());
+		prsc.setValidated(false);
+		
+		
+		prsc = service.save(prsc);
+		return new ResponseEntity<>(new PrescriptionDTO(prsc), HttpStatus.CREATED);
+	}
+	
+	
+	@GetMapping(value = "/getPrescriptionByName/{name}")
+	public ResponseEntity<PrescriptionDTO> getByName(@PathVariable String name) {
+		
+		System.out.println("Naziv recepta koji nam je potreban: " + name);
+		Prescription p = null;
+		List<Prescription> prescriptions = service.findAll();
+		
+		for(Prescription prs : prescriptions) {
+			if(prs.getName().equals(name)) {
+				p = prs;
+				System.out.println("ID pronadjenog recepta: " + p.getId());
+			}
+		}
+		
+		// doctor must exist
+		if (p == null) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+		
+		return new ResponseEntity<>(new PrescriptionDTO(p), HttpStatus.OK);
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 }

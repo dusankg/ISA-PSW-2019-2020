@@ -109,7 +109,7 @@ export default {
     }
     
   },
-  mounted() {
+  created() {
     this.refreshExaminations();
     this.retrieveExaminationTypesForSelect();
   }

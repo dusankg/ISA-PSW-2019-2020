@@ -27,6 +27,11 @@ import axios from "axios"
                 Profile
               </button>
             </td>
+            <td>
+              <button class="btn btn-success" v-on:click="makeReportClicked(patient.id)">
+                Make examination report
+              </button>
+            </td>
           </tr>
         </tbody>
       </table>
@@ -152,6 +157,9 @@ export default {
 
     }this.refreshPatients();
   },
+   makeReportClicked(id){
+      this.$router.push(`/makeReport/${id}`);  
+    },
     patientProfileClicked(id){
       this.$router.push(`/patientprofile/${id}`);  
     },

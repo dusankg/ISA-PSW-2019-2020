@@ -11,6 +11,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
@@ -21,18 +22,16 @@ public class Prescription {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@Column(name = "name", nullable = false)
+	@Column(name = "name")
 	private String name;
 	@Column(name = "validated")
 	private boolean validated;
 	
+	// Report koji je povezan sa tim uputom
+	@OneToMany(mappedBy = "prescription", fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
+	private Set<ExaminationReport> examinationReports = new HashSet<ExaminationReport>();
 	
-	
-	public Prescription(boolean validated) {
-		super();
-		this.validated = validated;
-		this.validated = false;
-	}
+
 	public Prescription(String naziv, boolean validated) {
 		super();
 		this.name = naziv;
@@ -64,6 +63,12 @@ public class Prescription {
 	}
 	public void setValidated(boolean validated) {
 		this.validated = validated;
+	}
+	public Set<ExaminationReport> getExaminationReport() {
+		return examinationReports;
+	}
+	public void setExaminationReport(Set<ExaminationReport> examinationReports) {
+		this.examinationReports = examinationReports;
 	}
 	
 	

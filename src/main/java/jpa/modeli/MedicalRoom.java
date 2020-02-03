@@ -1,6 +1,8 @@
 package jpa.modeli;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -10,6 +12,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 @Entity
 public class MedicalRoom {
@@ -32,6 +35,9 @@ public class MedicalRoom {
 	//private Set<Occupation>occupations=new HashSet<Occupation>();
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private Clinic clinic;
+	
+	@OneToMany(mappedBy = "medicalRoom", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private Set<Occupation> administrators = new HashSet<Occupation>();
 	
 	public MedicalRoom() {}
 	

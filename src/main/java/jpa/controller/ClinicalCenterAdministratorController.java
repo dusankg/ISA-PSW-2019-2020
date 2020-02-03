@@ -58,6 +58,8 @@ public class ClinicalCenterAdministratorController {
 		return new ResponseEntity<>(clinicDTO, HttpStatus.OK);
 	}
 	
+	
+	// Da li ovo mora da se pise?
 	@GetMapping
 	public ResponseEntity<List<ClinicalCenterAdministratorDTO>> getAdministratorsPage(Pageable page) {
 

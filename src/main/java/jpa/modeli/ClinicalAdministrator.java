@@ -1,19 +1,53 @@
 package jpa.modeli;
 
-import org.springframework.data.annotation.Id;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
+
+@Entity
 public class ClinicalAdministrator {
 	@Id
-	private long id;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 	
+	@Column(name = "name", nullable = false)
 	private String name;
+	
+	@Column(name = "surname", nullable = false)
 	private String surname;
+	
+	@Column(name = "email", nullable = false)
 	private String email;
+	
+	@Column(name = "password", nullable = false)
 	private String password;
+	
+	@Column(name = "adress", nullable = false)
 	private String adress;
+	
+	@Column(name = "city", nullable = false)
 	private String city;
+	
+	@Column(name = "state", nullable = false)
 	private String state;
+	
+	@Column(name="phone", nullable = false)
 	private int phone;
+	
+	@Column(name="validated", nullable = false)
+	private boolean validated;
+	
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	private Clinic clinic;
+	
 	public ClinicalAdministrator(String name, String surname, String email, String password, String adress, String city,
 			String state, int phone) {
 		super();
@@ -25,6 +59,11 @@ public class ClinicalAdministrator {
 		this.city = city;
 		this.state = state;
 		this.phone = phone;
+		this.validated = false;
+	}
+	
+	public ClinicalAdministrator() {
+		super();
 	}
 	public long getId() {
 		return id;
@@ -79,6 +118,24 @@ public class ClinicalAdministrator {
 	}
 	public void setPhone(int phone) {
 		this.phone = phone;
+	}
+	public boolean isValidated() {
+		return validated;
+	}
+	public void setValidated(boolean validated) {
+		this.validated = validated;
+	}
+
+	public Clinic getClinic() {
+		return clinic;
+	}
+
+	public void setClinic(Clinic clinic) {
+		this.clinic = clinic;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 	
 	

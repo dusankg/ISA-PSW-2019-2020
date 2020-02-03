@@ -33,3 +33,7 @@ insert into examination (date, duration, price, type_id) values ('2011-03-05', 4
 
 insert into absence_request(startingdate, endingdate, doctor_id) values ('2019-05-05', '2019-09-09', 1);
 insert into absence_request(startingdate, endingdate, doctor_id) values ('2000-05-05', '2010-09-09', 2);
+
+insert into clinical_administrator (name, surname, email, password, adress, city, state, phone, validated, clinic_id) values ('12313131', '32131313', 'blanusa.com', '123', '1232131321', '3213123123', '1231231231', 111222333, true, 1);
+
+insert into examination_report(text_report, diagnosis_id, prescription_id, patient_id) values ('IzvestajLekara', 1,  1, 1);

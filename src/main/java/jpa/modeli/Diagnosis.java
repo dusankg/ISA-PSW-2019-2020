@@ -11,6 +11,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
 @Entity
@@ -21,11 +22,10 @@ public class Diagnosis {
 	@Column(name = "name", unique = true, nullable = false)
 	private String name;
 	
-	//@ManyToMany
-		//@JoinTable(name = "diagnosed", joinColumns = @JoinColumn(name = "diagnosis_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "patient_id", referencedColumnName = "id"))
-		//private Set<Diagnosis> diagnosiss = new HashSet<Diagnosis>();
-		//Need to be added after all of the classes have been done correctly
-		
+	@OneToMany(mappedBy = "diagnosis", fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
+	private Set<ExaminationReport> examinationReport = new HashSet<ExaminationReport>();
+	
+
 	public Diagnosis(){
 		
 	}
@@ -49,6 +49,14 @@ public class Diagnosis {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public Set<ExaminationReport> getExaminationReport() {
+		return examinationReport;
+	}
+
+	public void setExaminationReport(Set<ExaminationReport> examinationReport) {
+		this.examinationReport = examinationReport;
 	}
 	
 	
