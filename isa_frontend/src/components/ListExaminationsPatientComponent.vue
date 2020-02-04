@@ -9,17 +9,22 @@ Vue.use(Vuelidate);
           <tr>
             <th>Id</th>
             <th>Date</th>
-            <th>Duration</th>
-            <th>Price</th>
+            <th>StartHour</th>
+            <th>EndHour</th>
+            <th>price</th>
+            <th>typeName</th>
+            <th>Doctor Name</th>
           </tr>
         </thead>
         <tbody>
           <tr v-for="examination in examinations" v-bind:key="examination.id">
             <td>{{examination.id}}</td>
             <td>{{examination.date}}</td>
-            <td>{{examination.startHour}}</td>
-            <td>{{examination.duration}}</td>
+            <td>{{examination.startTime}}</td>
+            <td>{{examination.endTime}}</td>
             <td>{{examination.price}}</td>
+            <td>{{examination.type.typeName}}</td>
+            <td>{{examination.doctor.name}}</td>
             <td>
               <form @submit="appoint(examination.id)">
                 <button class="btn btn-success" type="submit">Select Examination</button>
@@ -48,6 +53,7 @@ export default {
   },
   methods: {
     refreshExaminations() {
+      alert('NESTOOOO');
         ExaminationService.retrieveAllNonReservedExaminations({withCredentials: true})
             .then(response => {
                 this.examinations = response.data;

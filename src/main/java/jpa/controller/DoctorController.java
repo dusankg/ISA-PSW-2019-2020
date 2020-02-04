@@ -86,7 +86,7 @@ public class DoctorController {
 		}
 		
 		Doctor doctor = new Doctor();
-		doctor.setId(222);
+		doctor.setId(222L);
 		doctor.setName(doctorDTO.getName());
 		doctor.setSurname(doctorDTO.getSurname());
 		doctor.setEmail(doctorDTO.getEmail());
