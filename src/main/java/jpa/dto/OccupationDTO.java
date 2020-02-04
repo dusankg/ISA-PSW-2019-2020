@@ -2,12 +2,16 @@ package jpa.dto;
 
 import java.sql.Date;
 
+
+
 import jpa.modeli.Occupation;
 
 public class OccupationDTO {
 
 	private Long id;
 	private Date date;
+	Integer pocetniTrenutak;
+	Integer krajnjiTrenutak;
 	Boolean h7;
 	Boolean h8;
 	Boolean h9;
@@ -26,6 +30,8 @@ public class OccupationDTO {
 
 	public OccupationDTO(Occupation oc) {
 		super();
+		pocetniTrenutak = oc.getPocetniTrenutak();
+		krajnjiTrenutak = oc.getKrajnjiTrenutak();
 		h7 = oc.getH7();
 		h8 = oc.getH8();
 		h9 = oc.getH9();
@@ -46,6 +52,13 @@ public class OccupationDTO {
 		return date;
 	}
 
+
+	public OccupationDTO(Date date, Integer pocetniTrenutak, Integer krajnjiTrenutak) {
+		super();
+		this.date = date;
+		this.pocetniTrenutak = pocetniTrenutak;
+		this.krajnjiTrenutak = krajnjiTrenutak;
+	}
 
 	public void setDate(Date startingDate) {
 		this.date = startingDate;
