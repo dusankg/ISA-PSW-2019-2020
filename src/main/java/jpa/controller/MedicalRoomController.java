@@ -1,8 +1,10 @@
 
 package jpa.controller;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,9 +21,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import jpa.dto.MedicalRoomDTO;
 import jpa.modeli.Clinic;
+import jpa.modeli.Examination;
 import jpa.modeli.MedicalRoom;
+import jpa.modeli.Occupation;
 import jpa.service.ClinicService;
+import jpa.service.ExaminationService;
 import jpa.service.MedicalRoomService;
+import jpa.service.OccupationService;
 
 @RestController
 @CrossOrigin(origins = { "http://localhost:3000", "http://localhost:4200", "http://localhost:8080" })
@@ -34,6 +40,12 @@ public class MedicalRoomController {
 	@Autowired
 	private ClinicService clinicService;
 	
+	@Autowired
+	private OccupationService occupationService;
+	
+	@Autowired
+	private ExaminationService examinationService;
+	
 	@GetMapping(value = "/all")
 	public ResponseEntity<List<MedicalRoomDTO>>getAllMedicalRooms(){
 		List<MedicalRoom> medicalRooms = medicalRoomService.findAll();
@@ -45,6 +57,55 @@ public class MedicalRoomController {
 			}
 		return new ResponseEntity<>(medicalRoomsDTO, HttpStatus.OK);
 	}
+	
+	// prima id od examinationa za koji bi trebalo da se vezu sale
+	@GetMapping(value = "/freeOperationRoom/{idExamination}")
+	public ResponseEntity<List<MedicalRoomDTO>>getFreeOperationRooms(@PathVariable Long idExamination){
+		
+		Examination examination = examinationService.findOne(idExamination);
+		
+		List<MedicalRoom> medicalRooms = medicalRoomService.findAll();
+		
+		//convert medical rooms to DTO
+		List<MedicalRoomDTO> medicalRoomsDTO = new ArrayList<>();
+		
+		for(MedicalRoom room : medicalRooms) {
+			boolean slobodna = true;
+			// IZMENIIII da bude samo za operacione sale
+			//if(room.getOperational()) {
+				Set<Occupation> occupations = room.getOccupations();
+				for(Occupation oc : occupations) { 
+					if( !(!oc.getDate().equals(examination.getDate()) || (examination.getEndTime() <= oc.getPocetniTrenutak() ||  examination.getStartTime() >= oc.getKrajnjiTrenutak()))) { 
+						slobodna = false;
+					} 
+				}
+			//}
+			
+			if(slobodna) {
+				medicalRoomsDTO.add(new MedicalRoomDTO(room));
+			}
+		}
+			
+		return new ResponseEntity<>(medicalRoomsDTO, HttpStatus.OK);
+	}
+	
+
+	
+	@PostMapping(value = "/bookOperationRoom/{id}", consumes = "application/json")
+	public void bookOperationRooms2(@PathVariable Long id, @RequestBody Occupation occupationDTO){
+		
+		MedicalRoom operationRoom = medicalRoomService.findOne(id);
+		
+		Occupation oc = new Occupation(occupationDTO.getDate(), occupationDTO.getPocetniTrenutak(), occupationDTO.getKrajnjiTrenutak());
+
+		oc.setMedicalRoom(operationRoom);
+		oc = occupationService.save(oc);
+				
+			
+		return ;
+	}
+	
+
 	
 
 	@GetMapping(value = "/{id}")

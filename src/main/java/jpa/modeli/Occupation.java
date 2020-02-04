@@ -1,6 +1,6 @@
 package jpa.modeli;
 
-import java.util.Date;
+import java.sql.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -28,10 +28,15 @@ public class Occupation {
 	
 	@Column(name = "startingDate")
 	private Date date; // dan za koji vezujemo zauzece
-	
 	// boolean vrednosti za svaki sat radnog vremena
 	// oznacena vrednost znaci da je zauzece aktivno od tog trenutka,  narednih sat vremena
 	// Ako zauece krece u 7h i traje 3 sata, treba da budu aktivni booleani 7,8,9
+	
+	@Column
+	Integer pocetniTrenutak;
+	@Column 
+	Integer krajnjiTrenutak;
+	
 	@Column
 	Boolean h7;
 	@Column
@@ -61,6 +66,9 @@ public class Occupation {
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private MedicalRoom medicalRoom;
 	
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	private Doctor doctor;
+	
 	public Occupation() {
 		
 		super();
@@ -70,6 +78,12 @@ public class Occupation {
 		this.date = pocetak;
 	}
 	
+	public Occupation(Date date, Integer pocetniTrenutak, Integer krajnjiTrenutak) {
+		super();
+		this.date = date;
+		this.pocetniTrenutak = pocetniTrenutak;
+		this.krajnjiTrenutak = krajnjiTrenutak;
+	}
 	
 	public Occupation(Boolean h7, Boolean h8, Boolean h9, Boolean h10, Boolean h11, Boolean h12, Boolean h13,
 			Boolean h14, Boolean h15, Boolean h16, Boolean h17, Date date) {
@@ -172,7 +186,25 @@ public class Occupation {
 	public void setMedicalRoom(MedicalRoom medicalRoom) {
 		this.medicalRoom = medicalRoom;
 	}
-	
+	public Integer getPocetniTrenutak() {
+		return pocetniTrenutak;
+	}
+	public void setPocetniTrenutak(Integer pocetniTrenutak) {
+		this.pocetniTrenutak = pocetniTrenutak;
+	}
+	public Integer getKrajnjiTrenutak() {
+		return krajnjiTrenutak;
+	}
+	public void setKrajnjiTrenutak(Integer krajnjiTrenutak) {
+		this.krajnjiTrenutak = krajnjiTrenutak;
+	}
+	public Doctor getDoctor() {
+		return doctor;
+	}
+	public void setDoctor(Doctor doctor) {
+		this.doctor = doctor;
+	}
+
 	
 	
 }

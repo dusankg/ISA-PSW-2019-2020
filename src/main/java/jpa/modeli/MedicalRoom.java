@@ -37,7 +37,9 @@ public class MedicalRoom {
 	private Clinic clinic;
 	
 	@OneToMany(mappedBy = "medicalRoom", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	private Set<Occupation> administrators = new HashSet<Occupation>();
+	private Set<Occupation> occupations = new HashSet<Occupation>();
+	
+
 	
 	public MedicalRoom() {}
 	
@@ -50,6 +52,10 @@ public class MedicalRoom {
 		this.date = date;
 	}
 
+	public void addOccupation(Occupation oc) {
+		occupations.add(oc);
+	}
+	
 	public long getId() {
 		return id;
 	}
@@ -104,6 +110,18 @@ public class MedicalRoom {
 
 	public void setClinic(Clinic clinic) {
 		this.clinic = clinic;
+	}
+
+	public Set<Occupation> getOccupations() {
+		return occupations;
+	}
+
+	public void setOccupations(Set<Occupation> occupations) {
+		this.occupations = occupations;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 	
 	

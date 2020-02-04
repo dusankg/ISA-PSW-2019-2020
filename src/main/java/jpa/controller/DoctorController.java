@@ -3,6 +3,8 @@ package jpa.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +30,7 @@ import jpa.service.DoctorService;
 import jpa.service.EmailService;
 
 @RestController
-@CrossOrigin(origins = { "http://localhost:3000", "http://localhost:4200", "http://localhost:8080" })
+@CrossOrigin(origins = { "http://localhost:3000", "http://localhost:4200", "http://localhost:8080"}, allowCredentials= "true")
 @RequestMapping(value = "api/doctors")
 public class DoctorController {
 
@@ -45,7 +47,7 @@ public class DoctorController {
 	private Logger logger = LoggerFactory.getLogger(DoctorController.class);
 	
 	@GetMapping(value = "/all")
-	public ResponseEntity<List<DoctorDTO>> getAllDoctors(){
+	public ResponseEntity<List<DoctorDTO>> getAllDoctors(HttpSession Session){
 		List<Doctor> doctors = doctorService.findAll();
 		
 		//convert doctors to DTOs
