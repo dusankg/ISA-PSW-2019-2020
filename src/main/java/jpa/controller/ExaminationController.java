@@ -72,7 +72,7 @@ public class ExaminationController {
 			examinationsDTO.add(new ExaminationDTO(e));
 			}
 		}
-		
+		System.out.println(examinationsDTO.size());
 		return new ResponseEntity<>(examinationsDTO, HttpStatus.OK);
 		}
 		else{

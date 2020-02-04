@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import jpa.dto.ExaminationDTO;
-import jpa.dto.ExaminationReportDTO;
+
 import jpa.dto.PatientDTO;
 import jpa.dto.PrescriptionDTO;
 import jpa.modeli.Examination;

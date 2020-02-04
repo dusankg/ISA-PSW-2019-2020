@@ -25,6 +25,7 @@ public class Examination {
 	
 	@Column(name = "date")
 	private Date date;
+
 	
 	@Column(name = "startTime")
 	private Integer startTime;

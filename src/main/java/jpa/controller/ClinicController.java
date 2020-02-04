@@ -77,9 +77,12 @@ public class ClinicController {
 		for (Clinic c : clinics) {
 			boolean nasao_kliniku=false;
 			boolean slobodan_doktor=true;
+			boolean usao=false;
 			for(Doctor d : c.getDoctors()){
 			
 				for(Examination e : d.getExaminations()){
+					usao=true;
+					if(e.getAccepted()==true){
 					System.out.println("ULAZIS OVDE??");
 					if(e.getDate().compareTo(date)==0 ){
 						if(e.getPatient()!=null){
@@ -87,8 +90,8 @@ public class ClinicController {
 						if(!type.equals("")){
 						if(!e.getType().getTypeName().toLowerCase().contains(type.toLowerCase())){
 							slobodan_doktor=false;}}
-					}}
-				if(slobodan_doktor==true && nasao_kliniku==false){
+					}}}
+				if(slobodan_doktor==true && nasao_kliniku==false && usao==true){
 					clinicDTO.add(new ClinicDTO(c));
 					nasao_kliniku=true;
 				}
@@ -132,17 +135,19 @@ public class ClinicController {
 		
 				for(Doctor d : clinic.getDoctors()){
 					boolean slobodan_doktor=true;
+					boolean usao = false;
 				
 					for(Examination e : d.getExaminations()){
-					
+						usao=true;
 						if(e.getDate().compareTo(date)==0 ){
+							if(e.getAccepted()==true){
 							if(e.getPatient()!=null){
 							slobodan_doktor=false;}
 							if(!type.equals("")){
 							if(!e.getType().getTypeName().toLowerCase().contains(type.toLowerCase())){
 								slobodan_doktor=false;}}
-						}}
-					if(slobodan_doktor==true){
+						}}}
+					if(slobodan_doktor==true && usao==true){
 						doctorDTO.add(new DoctorDTO(d));
 				
 					}
