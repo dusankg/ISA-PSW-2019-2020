@@ -10,6 +10,7 @@ import axios from "axios";
     <div>
       <h3>Add new examination</h3>
         <div class="container">
+          <form @submit="validateAndSubmit">
           <fieldset class="form-group">
               <label>Date</label>
               <input type="date" class="form-control" v-model="date">
@@ -62,7 +63,8 @@ import axios from "axios";
                 <option v-for="examinationType in examinationTypes" :value="examinationType.id" :key="examinationType.id">{{examinationType.typeName}}</option>
               </select>
             </fieldset>
-
+            <button class="btn btn-primary" type="submit">Send request for scheduling the examination to clinic administrator</button>
+          </form>
       </div>
     </div>
   </div>
@@ -70,7 +72,7 @@ import axios from "axios";
 
 <script>
 import ExaminationTypeService from '../service/ExaminationTypeService';
-//import Axios from 'axios';
+import Axios from 'axios';
 export default {
   name: "ListExaminations",
   data() {
@@ -90,7 +92,25 @@ export default {
         ExaminationTypeService.retrieveAllExaminationTypes().then(response =>{
             this.examinationTypes = response.data;
         });
+    },
+    validateAndSubmit(e){
+      e.preventDefault()
+      var temp={
+        "date":this.date,
+        "startTime":this.startTime,
+        "endTime":this.endTime,
+        "price":0,
+        "accepted":false,
+        "operation":this.operation
+
+
+      }
+            Axios.post("http://localhost:8082/api/examinations", temp,{withCredentials: true});
+
+
+
     }
+
   },
   mounted() {
         this.retrieveExaminationTypesForSelect();

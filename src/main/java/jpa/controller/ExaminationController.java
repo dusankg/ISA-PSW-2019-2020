@@ -112,8 +112,9 @@ public class ExaminationController {
 	}
 
 	@PostMapping(consumes = "application/json")
-	public ResponseEntity<ExaminationDTO> saveExamination(@RequestBody ExaminationDTO examinationDTO) {
+	public ResponseEntity<ExaminationDTO> saveExamination(@RequestBody ExaminationDTO examinationDTO,HttpSession Session) {
 		
+		System.out.println("test ulaz");
 		// a new examination must have examination type defined
 		if(examinationDTO.getType() == null) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
