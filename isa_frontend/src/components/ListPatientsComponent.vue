@@ -158,7 +158,7 @@ export default {
     }this.refreshPatients();
   },
    makeReportClicked(id){
-      this.$router.push(`/makeReport/${id}`);  
+      this.$router.push(`/makeReport/${this.$route.params.id}/${id}`);  
     },
     patientProfileClicked(id){
       this.$router.push(`/patientprofile/${id}`);  

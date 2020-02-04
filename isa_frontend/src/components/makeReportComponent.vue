@@ -30,7 +30,8 @@ import axios from "axios";
             <button class="btn btn-success" type="submit">Save</button>
           </form>
           <br/>
-          <button @click="()=>$router.push(`/addexamination`)">Schedule new examination or operation</button>
+          <!--First id in route is doctors id and second is patient's id-->
+          <button @click="()=>$router.push(`/addexamination/${this.$route.params.idd}/${this.$route.params.idp}`)">Schedule new examination or operation</button>
       </div>
     </div>
 
@@ -151,7 +152,7 @@ export default {
   },
   created() {
     this.refreshDiagnosis();
-    Axios.get(`http://localhost:8082/api/patients/${this.$route.params.id}`).then(response => (
+    Axios.get(`http://localhost:8082/api/patients/${this.$route.params.idp}`).then(response => (
       this.patient = response.data,
       this.name = response.data.name,
       this.surname = response.data.surname,

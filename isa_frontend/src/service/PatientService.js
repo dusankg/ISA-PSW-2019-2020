@@ -8,6 +8,11 @@ class PatientService {
  
   }
 
+  // Had to add this to avoid session
+  retrievePatientNormal(id){
+    return axios.get(`http://localhost:8082/api/patients/${id}`)
+  }
+
   retrievePatient(){
     return axios.get(`http://localhost:8082/api/patients//loggedPatient`, {withCredentials: true});
   }

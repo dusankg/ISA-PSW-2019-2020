@@ -125,6 +125,20 @@ public class ExaminationController {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 		
+		// Examination can't exist without doctor, doctor can be changed
+		if(examinationDTO.getDoctor() == null) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		
+		Doctor doctor = doctorService.findOne(examinationDTO.getDoctor().getId());
+		
+		if(doctor == null) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		
+		Patient patient = patientService.findOne(examinationDTO.getPatient().getId());
+		
+		
 		Examination examination = new Examination();
 		examination.setId(null);
 		examination.setDate((Date) examinationDTO.getDate());
@@ -134,12 +148,10 @@ public class ExaminationController {
 		examination.setAccepted(examinationDTO.getAccepted());
 		examination.setOperation(examinationDTO.getOperation());
 		examination.setType(examinationType);
-
-		// Maybe not ideal solution check if Examination can exist without doctor
-		Doctor doctor;
-		if(examinationDTO.getDoctor() != null) {
-			doctor = doctorService.findOne(examinationDTO.getDoctor().getId());
-			examination.setDoctor(doctor);
+		examination.setDoctor(doctor);
+		
+		if(patient != null) {
+			examination.setPatient(patient);
 		}
 		
 		examination = examinationService.save(examination);
@@ -209,5 +221,20 @@ public class ExaminationController {
 		}
 	}
 	
-	
+	// Sending email notification to clinic administrator when doctor wants to schedule request
+	@GetMapping(value = "/send/{id}")
+	public ResponseEntity<Void> acceptRequest(@PathVariable Long id){
+		Examination examination = examinationService.findOne(id);
+		
+		if(examination != null) {
+			try {
+				emailService.sendRequestForSchedulingExamination(examination);
+			} catch(Exception e) {
+				logger.info("Error while sending email!");
+			}
+			return new ResponseEntity<>(HttpStatus.OK);
+		}else{
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+	}
 }

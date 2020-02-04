@@ -175,8 +175,22 @@ public class EmailService {
 		System.out.println("Email je poslat!");
 	}
 	
-	
-	
+	// Email which doctor send clinic admin when he wants to schedule an examination 
+	@Async
+	public void sendRequestForSchedulingExamination(Examination examination) throws MailException, InterruptedException{
+		
+		System.out.println("Slanje emaila... ");
+		
+		SimpleMailMessage mail = new SimpleMailMessage();
+		mail.setTo("isapswgrupa11@gmail.com");
+		mail.setFrom(env.getProperty("spring.mail.username"));
+		mail.setSubject("Molim vas potvrdite zakazivanje pregleda");
+		mail.setText("Pozdrav dragi administratore klinike, želeo bih da zakazem pregled za pacijenta.\n\n Na sledećem linku se nalaze informacije "
+				+ "o pregledu koji želim zakazati:\n" + "http://localhost:8080/respondexamination/"+ examination.getId());
+		javaMailSender.send(mail);
+		
+		System.out.println("Email je poslat!");
+	}
 	
 	
 	

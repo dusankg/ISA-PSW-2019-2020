@@ -30,7 +30,7 @@ insert into prescription (name, validated) values ('Loperamid',false);
 insert into examination_type(typename) values ('Ocni pregled');
 insert into examination_type(typename) values ('Ginekoloski pregled');
 
-insert into examination (date, price, type_id, clinic_id, doctor_id, start_time, end_time, operation, accepted) values ('2020-02-01', 1500, 1, 1, 1, 7, 8, true, false);
+insert into examination (date, price, type_id, clinic_id, doctor_id, patient_id, start_time, end_time, operation, accepted) values ('2020-02-01', 1500, 1, 1, 1, 4, 7, 8, true, false);
 
 insert into absence_request(startingdate, endingdate, doctor_id) values ('2019-05-05', '2019-09-09', 1);
 insert into absence_request(startingdate, endingdate, doctor_id) values ('2000-05-05', '2010-09-09', 2);
