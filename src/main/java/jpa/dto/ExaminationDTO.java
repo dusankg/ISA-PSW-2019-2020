@@ -24,7 +24,7 @@ public class ExaminationDTO {
 	public ExaminationDTO() {}
 	
 	public ExaminationDTO(Examination examination) {
-		if(examination.getPatient()==null || examination.getClinic()==null || examination.getDoctor() == null){
+		if(examination.getPatient()==null || examination.getClinic()==null){
 			
 			this.id=examination.getId();
 			this.date=examination.getDate();
@@ -36,7 +36,7 @@ public class ExaminationDTO {
 			this.patient=new PatientDTO();
 			this.clinic=new ClinicDTO();
 			this.type = new ExaminationTypeDTO(examination.getType());
-			this.doctor = new DoctorDTO();
+			this.doctor = new DoctorDTO(examination.getDoctor());
 			
 		}
 		else{

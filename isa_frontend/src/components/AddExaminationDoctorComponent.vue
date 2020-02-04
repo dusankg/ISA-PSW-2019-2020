@@ -35,6 +35,9 @@
 <script>
 //import ExaminationService from '../service/ExaminationService';
 import ExaminationTypeService from '../service/ExaminationTypeService';
+import DoctorService from '../service/DoctorService';
+//import PatientService from '../service/PatientService';
+import ClinicService from '../service/ClinicCenterService';
 import Axios from 'axios';
 export default {
   name: "AddExamination",
@@ -46,7 +49,11 @@ export default {
         examinationTypes: [],
         selectedType: undefined,
         selectedTypeName: "",
-        operation: false
+        operation: false,
+        doctor: undefined,
+        patient: undefined,
+        clinic: undefined,
+        examinations: []
     };
   },
   methods: {
@@ -59,9 +66,14 @@ export default {
         "endTime":this.endTime,
         "type": this.selectedType,
         "accepted": false,
-        "operation": this.operation
+        "operation": this.operation,
+        "doctor": this.doctor,
+        "patient":this.patient,
+        "price":0,
+        "clinic": this.clinic
       }
       Axios.post("http://localhost:8082/api/examinations", temp);
+      this.getLastAddedExamination();
     },
     retrieveExaminationTypesForSelect(){
         ExaminationTypeService.retrieveAllExaminationTypes().then(response =>{
@@ -74,11 +86,44 @@ export default {
       ExaminationTypeService.retrieveExaminationType(event.target.value).then(response =>{
         this.selectedType = response.data;
       });
+    },
+    retrieveDoctor(){
+      DoctorService.retrieveDoctor(this.$route.params.idd).then(response => {
+        this.doctor = response.data;
+      });
+    },
+    retrievePatient(){
+        Axios.get(`http://localhost:8082/api/patients/${this.$route.params.idp}`).then(response => {
+        this.patient = response.data;
+      });
+    },
+    retrieveClinic(){
+        ClinicService.retrieveClinic(1).then(response => {
+        this.clinic = response.data;
+      });
+    },
+    getLastAddedExamination(){
+        var max = 1;
+        this.examinations.forEach(element => {
+          if(element.id > max){
+            max = element.id;
+          }
+        });
+        Axios.get(`http://localhost:8082/api/examinations/send/${max}`);
+    },
+    getAllExaminations(){
+        Axios.get(`http://localhost:8082/api/examinations/all`).then(response => {
+          this.examinations = response.data;
+        });
     }
     
   },
   mounted() {
     this.retrieveExaminationTypesForSelect();
+    this.retrieveDoctor();
+    this.retrievePatient();
+    this.retrieveClinic();
+    this.getAllExaminations();
   }
 
 }

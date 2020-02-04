@@ -8,7 +8,7 @@
                   <input type="text" class="form-control" v-model="id" disabled>
               </fieldset>
               <fieldset class="form-group">
-                  <label>Staring Date</label>
+                  <label>Starting Date</label>
                   <input type="date" class="form-control" v-model="startingDate">
               </fieldset>
               <fieldset>

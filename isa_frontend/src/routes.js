@@ -170,7 +170,7 @@ const router = new Router({
       component: () => import("./components/EditNurseComponent")
     },
     { // Pravljenje reporta za pacijenta koji je izabran sa liste 
-      path: '/makeReport/:id',
+      path: '/makeReport/:idd/:idp',
       name: 'makeReport',
       component: () => import("./components/makeReportComponent")
     },
@@ -180,7 +180,7 @@ const router = new Router({
       component: () => import("./components/EditMedicalRoomComponent")
     },
     {
-      path: '/addexamination',
+      path: '/addexamination/:idd/:idp',
       name: 'addexamination',
       component: () => import("./components/AddExaminationDoctorComponent")
     },
@@ -190,10 +190,22 @@ const router = new Router({
       component: () => import("./components/EditClinicComponent")
     },
     {
-      path: '/bookOperationRoom/:examinationId',
+      path: '/bookOperationRoom',
       name: 'bookOperationRoom',
       component: () => import("./components/BookOperationRoomComponent")
-    }
+    },
+    // Patients of one doctor, id is of doctor who is logged-in
+    {
+      path: "/patients/:id",
+      name: "patients",
+      component: () => import("./components/ListPatientsComponent")                  
+    },
+    // This component sees clinic admin when doctor send him a request for examination
+    {
+      path: "/respondexamination/:id",
+      name: "respondexamination",
+      component: () => import("./components/RespondExamination")                     
+    } 
   ]
 });
 
