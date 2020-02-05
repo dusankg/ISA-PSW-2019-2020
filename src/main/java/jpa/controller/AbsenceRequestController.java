@@ -18,9 +18,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import jpa.dto.AbsenceRequestDTO;
 import jpa.dto.DoctorDTO;
+import jpa.dto.NurseDTO;
 import jpa.modeli.AbsenceRequest;
 import jpa.modeli.Doctor;
+import jpa.modeli.Nurse;
 import jpa.service.AbsenceRequestService;
+import jpa.service.DoctorService;
+import jpa.service.NurseService;
 
 @RestController
 @CrossOrigin(origins = { "http://localhost:3000", "http://localhost:4200", "http://localhost:8080" })
@@ -29,6 +33,12 @@ public class AbsenceRequestController {
 
 	@Autowired
 	private AbsenceRequestService absenceRequestService;
+	
+	@Autowired
+	private DoctorService doctorService;
+	
+	@Autowired
+	private NurseService nurseService;
 	
 	@GetMapping(value = "/all")
 	public ResponseEntity<List<AbsenceRequestDTO>>getAllAbsenceRequests(){
@@ -59,10 +69,24 @@ public class AbsenceRequestController {
 	@PostMapping(consumes = "application/json")
 	public ResponseEntity<AbsenceRequestDTO> saveAbsenceRequest(@RequestBody AbsenceRequestDTO absenceRequestDTO) {
 
+		if((absenceRequestDTO.getDoctor() == null) && (absenceRequestDTO.getNurse() == null)) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		
 		AbsenceRequest absenceRequest = new AbsenceRequest();
 		//absenceRequest.setId((0));
 		absenceRequest.setStartingDate(absenceRequestDTO.getStartingDate());
 		absenceRequest.setEndingDate(absenceRequestDTO.getEndingDate());
+		
+		if(absenceRequestDTO.getDoctor() != null) {
+			Doctor doctor = doctorService.findOne(absenceRequestDTO.getDoctor().getId());
+			absenceRequest.setDoctor(doctor);
+		}
+
+		if(absenceRequestDTO.getNurse() != null) {
+			Nurse nurse = nurseService.findOne(absenceRequestDTO.getNurse().getId());
+			absenceRequest.setNurse(nurse);
+		}
 		
 		absenceRequest = absenceRequestService.save(absenceRequest);
 		return new ResponseEntity<>(new AbsenceRequestDTO(absenceRequest), HttpStatus.CREATED);
@@ -107,5 +131,16 @@ public class AbsenceRequestController {
 		DoctorDTO doctorDTO = new DoctorDTO(doctor);
 		
 		return new ResponseEntity<>(doctorDTO, HttpStatus.OK);
+	}
+	
+	@GetMapping(value = "/{id}/nurse")	
+	public ResponseEntity<NurseDTO> getAbsenceRequestNurse(@PathVariable Long id){
+		
+		AbsenceRequest absenceRequest = absenceRequestService.findOne(id);
+		
+		Nurse nurse = absenceRequest.getNurse();
+		NurseDTO nurseDTO = new NurseDTO(nurse);
+		
+		return new ResponseEntity<>(nurseDTO, HttpStatus.OK);
 	}
 }

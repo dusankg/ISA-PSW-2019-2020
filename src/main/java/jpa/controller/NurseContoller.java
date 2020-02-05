@@ -3,6 +3,8 @@ package jpa.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,8 +18,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import jpa.dto.AbsenceRequestDTO;
 import jpa.dto.NurseDTO;
+import jpa.modeli.AbsenceRequest;
 import jpa.modeli.Nurse;
+import jpa.service.EmailService;
 import jpa.service.NurseService;
 
 @RestController
@@ -27,6 +32,11 @@ public class NurseContoller {
 
 	@Autowired
 	private NurseService nurseService;
+	
+	@Autowired
+	private EmailService emailService;
+	
+	private Logger logger = LoggerFactory.getLogger(NurseContoller.class);
 	
 	@GetMapping(value = "/all")
 	public ResponseEntity<List<NurseDTO>> getAllNurses(){
@@ -110,7 +120,48 @@ public class NurseContoller {
 		}
 	}
 	
+	@GetMapping(value = "/{nurseId}/absencerequest")	
+	public ResponseEntity<AbsenceRequestDTO> getNersesAbsenceRequest(@PathVariable Long nurseId){
+		
+		Nurse nurse = nurseService.findOne(nurseId);
+		
+		AbsenceRequest absenceRequest = nurse.getAbsenceRequest();
+		AbsenceRequestDTO absenceRequestDTO = new AbsenceRequestDTO(absenceRequest);
+		
+		return new ResponseEntity<>(absenceRequestDTO, HttpStatus.OK);
+	}
 
+	@GetMapping(value = "/accept/{id}")
+	public ResponseEntity<Void> acceptRequest(@PathVariable Long id){
+		Nurse nurse = nurseService.findOne(id);
+		
+		if(nurse != null) {
+			try {
+				emailService.sendNotificationAcceptNurse(nurse);
+			} catch(Exception e) {
+				logger.info("Error while sending email!");
+			}
+			return new ResponseEntity<>(HttpStatus.OK);
+		}else{
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+	}
+	
+	@GetMapping(value = "/decline/{id}/{message}")
+	public ResponseEntity<Void> declineRequest(@PathVariable Long id, @PathVariable String message){
+		Nurse nurse = nurseService.findOne(id);
+		
+		if(nurse != null) {
+			try {
+				emailService.sendNotificationDeclineNurse(nurse, message);
+			} catch(Exception e) {
+				logger.info("Error while sending email!");
+			}
+			return new ResponseEntity<>(HttpStatus.OK);
+		}else{
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+	}
 }
 
 

@@ -35,6 +35,7 @@
           <label>{{ this.sestra.phone }}</label>
         </fieldset>
         <button v-on:click="editNurseClicked()">Change personal information</button>
+        <button v-on:click="createAbsenceRequestClicked()">Create absence request</button>
     </div>
 
     <h3>All non validated prescriptions</h3>
@@ -103,6 +104,9 @@ export default {
   editNurseClicked(){
     this.$router.push(`/editnurse/${this.$route.params.id}`);
   },
+  createAbsenceRequestClicked(){
+    this.$router.push(`/addabsencerequestnurse/${this.$route.params.id}`);
+  }
 
   },
   created() {

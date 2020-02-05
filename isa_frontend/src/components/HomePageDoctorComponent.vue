@@ -4,7 +4,7 @@
       <ul>  
         <li><router-link :to="{name: 'patients', params: { id: this.id }}">List of patients</router-link></li>        
         <li><router-link to="/diagnosis">Diagnosis</router-link></li>
-        <li><router-link to="/addabsencerequest/id">Create new absence request</router-link></li>
+        <li><router-link :to="{name: 'addabsencerequest', params: {id: this.id}}">Create new absence request</router-link></li>
         <li><router-link :to="{name: 'editdoctor', params: { id: this.id }}">See personal profile</router-link></li>
         <li><router-link to="/addexamination">Schedule new examination</router-link></li>
       </ul>

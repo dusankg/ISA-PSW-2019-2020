@@ -24,8 +24,7 @@ public class ExaminationDTO {
 	public ExaminationDTO() {}
 	
 	public ExaminationDTO(Examination examination) {
-		if(examination.getPatient()==null || examination.getClinic()==null){
-			
+		if(examination.getPatient()==null  /*|| examination.getClinic()==null*/){
 			this.id=examination.getId();
 			this.date=examination.getDate();
 			this.startTime = examination.getStartTime();
@@ -48,7 +47,7 @@ public class ExaminationDTO {
 			this.accepted = examination.getAccepted();
 			this.operation = examination.getOperation();
 			this.patient=new PatientDTO(examination.getPatient());
-			this.clinic=new ClinicDTO(examination.getClinic());
+			this.clinic=new ClinicDTO();
 			this.type = new ExaminationTypeDTO(examination.getType());
 			this.doctor = new DoctorDTO(examination.getDoctor());
 		}

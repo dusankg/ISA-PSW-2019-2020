@@ -1,6 +1,6 @@
 package jpa.modeli;
 
-import java.util.Date;
+import java.sql.Date;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -27,6 +27,9 @@ public class AbsenceRequest {
 	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private Doctor doctor;
 	
+	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	private Nurse nurse;
+	
 	public AbsenceRequest() {}
 	
 	public AbsenceRequest(Date startingDate, Date endingDate) {
@@ -39,7 +42,7 @@ public class AbsenceRequest {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -67,4 +70,14 @@ public class AbsenceRequest {
 		this.doctor = doctor;
 	}
 
+	public Nurse getNurse() {
+		return nurse;
+	}
+
+	public void setNurse(Nurse nurse) {
+		this.nurse = nurse;
+	}
+
+	
+	
 }

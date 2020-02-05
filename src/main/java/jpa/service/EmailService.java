@@ -13,6 +13,7 @@ import jpa.modeli.ClinicalAdministrator;
 import jpa.modeli.ClinicalCenterAdministrator;
 import jpa.modeli.Doctor;
 import jpa.modeli.Examination;
+import jpa.modeli.Nurse;
 import jpa.modeli.Patient;
 
 
@@ -144,7 +145,7 @@ public class EmailService {
 		System.out.println("Email poslat!");
 	}
 	
-	//E-mails for absence requests
+	//E-mails for absence requests for doctors
 	@Async
 	public void sendNotificationAccept(Doctor doctor) throws MailException, InterruptedException{
 		
@@ -170,6 +171,37 @@ public class EmailService {
 		mail.setFrom(env.getProperty("spring.mail.username"));
 		mail.setSubject("Vaš zahtev za godišnji odmor je odbijen.");
 		mail.setText("Pozdrav " + doctor.getName() + ",\nVaš zahtev za godišnji odmor je odbijen.\nObrazloženje:\n" + message);
+		javaMailSender.send(mail);
+		
+		System.out.println("Email je poslat!");
+	}
+	
+	//Emails for absence request for nurses
+	@Async
+	public void sendNotificationAcceptNurse(Nurse nurse) throws MailException, InterruptedException{
+		
+		System.out.println("Slanje emaila... ");
+		
+		SimpleMailMessage mail = new SimpleMailMessage();
+		mail.setTo("isapswgrupa11@gmail.com");
+		mail.setFrom(env.getProperty("spring.mail.username"));
+		mail.setSubject("Vaš zahtev za godišnji odmor je prihvaćen");
+		mail.setText("Pozdrav " + nurse.getName() + ",\nVaš zahtev za godišnji odmor je prihvaćen.");
+		javaMailSender.send(mail);
+		
+		System.out.println("Email je poslat!");
+	}
+	
+	@Async
+	public void sendNotificationDeclineNurse(Nurse nurse, String message) throws MailException, InterruptedException{
+		
+		System.out.println("Slanje emaila...");
+		
+		SimpleMailMessage mail = new SimpleMailMessage();
+		mail.setTo("isapswgrupa11@gmail.com");
+		mail.setFrom(env.getProperty("spring.mail.username"));
+		mail.setSubject("Vaš zahtev za godišnji odmor je odbijen.");
+		mail.setText("Pozdrav " + nurse.getName() + ",\nVaš zahtev za godišnji odmor je odbijen.\nObrazloženje:\n" + message);
 		javaMailSender.send(mail);
 		
 		System.out.println("Email je poslat!");
