@@ -1,6 +1,6 @@
 package jpa.dto;
 
-import java.util.Date;
+import java.sql.Date;
 
 import jpa.modeli.AbsenceRequest;
 
@@ -9,6 +9,7 @@ public class AbsenceRequestDTO {
 	private Date startingDate;
 	private Date endingDate;
 	private DoctorDTO doctor;
+	private NurseDTO nurse;
 	
 	public AbsenceRequestDTO() {}
 	
@@ -16,7 +17,12 @@ public class AbsenceRequestDTO {
 		this.id = absenceRequest.getId();
 		this.startingDate = absenceRequest.getStartingDate();
 		this.endingDate = absenceRequest.getEndingDate();
-		this.doctor = new DoctorDTO(absenceRequest.getDoctor());
+		if(absenceRequest.getDoctor() != null) {
+			this.doctor = new DoctorDTO(absenceRequest.getDoctor());
+		} else {
+			this.nurse = new NurseDTO(absenceRequest.getNurse());
+		}
+		
 	}
 	
 	public AbsenceRequestDTO(Long id, Date startingDate, Date endingDate) {
@@ -57,6 +63,14 @@ public class AbsenceRequestDTO {
 
 	public void setDoctor(DoctorDTO doctorDTO) {
 		this.doctor = doctorDTO;
+	}
+
+	public NurseDTO getNurse() {
+		return nurse;
+	}
+
+	public void setNurse(NurseDTO nurse) {
+		this.nurse = nurse;
 	}
 	
 	

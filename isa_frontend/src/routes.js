@@ -145,8 +145,13 @@ const router = new Router({
     },
     {
       path: "/addabsencerequest/:id", 
-      name: "CreateAbsenceRequestComponent",
+      name: "addabsencerequest",
       component: () => import("./components/CreateAbsenceRequestComponent")
+    }, 
+    {
+      path: "/addabsencerequestnurse/:id", 
+      name: "addabsencerequestnurse",
+      component: () => import("./components/CreateAbsenceRequestNurse")
     }, 
     {
       path: "/editadministrator/:id",
@@ -190,7 +195,7 @@ const router = new Router({
       component: () => import("./components/EditClinicComponent")
     },
     {
-      path: '/bookOperationRoom',
+      path: '/bookOperationRoom/:examinationId',
       name: 'bookOperationRoom',
       component: () => import("./components/BookOperationRoomComponent")
     },

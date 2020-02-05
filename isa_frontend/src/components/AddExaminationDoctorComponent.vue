@@ -53,7 +53,7 @@ export default {
         doctor: undefined,
         patient: undefined,
         clinic: undefined,
-        examinations: []
+        examination: undefined
     };
   },
   methods: {
@@ -68,13 +68,17 @@ export default {
         "accepted": false,
         "operation": this.operation,
         "doctor": this.doctor,
-        "patient":this.patient,
+        "patient": this.patient,
         "price":0,
         "clinic": this.clinic
       }
-      Axios.post("http://localhost:8082/api/examinations", temp);
-      this.getLastAddedExamination();
+      Axios.post("http://localhost:8082/api/examinations", temp).then(response =>{
+        this.examination = response.data;
+        Axios.get(`http://localhost:8082/api/examinations/send/${this.examination.id}`);
+        this.$router.push(`/makeReport/${this.$route.params.idd}/${this.$route.params.idp}`);
+      });
     },
+
     retrieveExaminationTypesForSelect(){
         ExaminationTypeService.retrieveAllExaminationTypes().then(response =>{
             this.examinationTypes = response.data;
@@ -102,28 +106,14 @@ export default {
         this.clinic = response.data;
       });
     },
-    getLastAddedExamination(){
-        var max = 1;
-        this.examinations.forEach(element => {
-          if(element.id > max){
-            max = element.id;
-          }
-        });
-        Axios.get(`http://localhost:8082/api/examinations/send/${max}`);
-    },
-    getAllExaminations(){
-        Axios.get(`http://localhost:8082/api/examinations/all`).then(response => {
-          this.examinations = response.data;
-        });
-    }
     
   },
+
   mounted() {
     this.retrieveExaminationTypesForSelect();
     this.retrieveDoctor();
     this.retrievePatient();
     this.retrieveClinic();
-    this.getAllExaminations();
   }
 
 }
