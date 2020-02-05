@@ -18,7 +18,7 @@ public class PatientService {
 	private PatientRepository patientRepository;
 	
 	public Patient findOne(Long id) {
-		return patientRepository.findById(id).orElseGet(null);
+		return patientRepository.findOneById(id);
 	}
 
 	public List<Patient> findAll() {

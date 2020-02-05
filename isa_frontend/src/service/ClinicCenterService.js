@@ -11,19 +11,19 @@ class ClinicCenterService {
 
   }
   retrieveClinic(id){
-    return axios.get(`http://localhost:8082/api/clinics/${id}`);
+    return axios.get(`http://localhost:8082/api/clinics/${id}`, {withCredentials: true});
   }
   
   updateClinic(id, clinic) {
-    return axios.put(`http://localhost:8082/api/clinics/${id}`, clinic);
+    return axios.put(`http://localhost:8082/api/clinics/${id}`, clinic, {withCredentials: true});
   }
 
   editClinic(clinic){
-    return axios.put("http://localhost:8082/api/clinics", clinic);
+    return axios.put("http://localhost:8082/api/clinics", clinic,{withCredentials: true});
   }
 
   deleteClinic(id){
-    return axios.delete(`http://localhost:8082/api/clinics/${id}`)
+    return axios.delete(`http://localhost:8082/api/clinics/${id}`,{withCredentials: true})
   }
   retrieveDoctorsOfClinic(date,type,id){
     return  axios.get('http://localhost:8082/api/clinics/select/'+date+'/'+type+'/' + id,{withCredentials: true})

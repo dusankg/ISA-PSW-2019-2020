@@ -32,7 +32,7 @@ import axios from "axios";
             <td>{{doctor.city}}</td>
             <td>{{doctor.state}}</td>
             <td>{{doctor.phone}}</td>
-            <td><form @submit.prevent="select()">
+            <td><form @submit.prevent="select(doctor.id)">
                 <button class="btn btn-success" type="submit">Select Doctor</button>
 
               </form></td>
@@ -62,7 +62,8 @@ export default {
         adress: undefined,
         city: undefined, 
         state: undefined,
-        phone: undefined
+        phone: undefined,
+        idDoctor: undefined
     };
   },
   methods: {
@@ -74,8 +75,9 @@ export default {
                 this.doctors = response.data;
         });
     },
-    select(){
-            this.$router.push('/requestPatient') 
+    select(id){
+            this.idDoctor=id;
+            this.$router.push('/requestPatient/?doctorId='+this.idDoctor, {withCredentials: true}); 
 
     }
     

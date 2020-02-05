@@ -47,14 +47,14 @@ public class Patient {
 	
 	@Column(name = "height")
 	private Integer height;
-	@OneToMany(mappedBy = "patient", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	private Set<Examination> examinations = new HashSet<Examination>();
-	
 	@Column(name = "weight")
 	private Integer weight;
 	
 	@Column(name = "bloodType")
 	private String bloodType;
+	@OneToMany(mappedBy = "patient", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private Set<Examination> examinations = new HashSet<Examination>();
+	
 
 	
 	@OneToMany(mappedBy = "patient", fetch = FetchType.LAZY, cascade = {CascadeType.ALL})

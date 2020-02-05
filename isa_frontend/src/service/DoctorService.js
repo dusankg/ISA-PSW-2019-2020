@@ -11,7 +11,7 @@ class DoctorService {
   }
 
   retrieveDoctor(id){
-    return axios.get(`http://localhost:8082/api/doctors/${id}`);
+    return axios.get(`http://localhost:8082/api/doctors/${id}`,{withCredentials: true});
   }
 
   editDoctor(doctor){

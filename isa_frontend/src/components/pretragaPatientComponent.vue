@@ -46,7 +46,7 @@ export default {
     filter(){
         
        
-        this.$router.push('/patientHomePageFiltered/?date='+this.date+'&type='+this.type) ;
+        this.$router.push('/patientHomePageFiltered/?date='+this.date+'&type='+this.type,  {withCredentials: true}) ;
 
         
         

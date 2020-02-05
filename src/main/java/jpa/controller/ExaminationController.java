@@ -158,7 +158,59 @@ public class ExaminationController {
 		examination = examinationService.save(examination);
 		return new ResponseEntity<>(new ExaminationDTO(examination), HttpStatus.CREATED);
 	}
+	
+	@PostMapping(value = "/patientCreate/{id}/{idType}")
+	public ResponseEntity<ExaminationDTO> save2Examination(@PathVariable Long id,@PathVariable Long idType,@RequestBody ExaminationDTO examinationDTO,HttpSession Session) {
+		
+		System.out.println("test ulaz1");
 
+		// a new examination must have examination type defined
+		if(idType == null) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		
+		ExaminationType examinationType = examinationTypeService.findOne(idType);
+		System.out.println(examinationType);
+		if(examinationType == null) {
+			
+			
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		// Examination can't exist without doctor, doctor can be changed
+		if(id == null) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		
+		Doctor doctor = doctorService.findOne(id);
+		
+		if(doctor == null) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		System.out.println(Session.getAttribute("id"));
+		Long idd=(Long)Session.getAttribute("id");
+		Patient patient = patientService.findOne(idd);
+		
+		
+		Examination examination = new Examination();
+		examination.setId(null);
+		examination.setDate((Date) examinationDTO.getDate());
+		examination.setStartTime(examinationDTO.getStartTime());
+		examination.setEndTime(examinationDTO.getEndTime());
+		examination.setPrice(examinationDTO.getPrice());
+		examination.setAccepted(examinationDTO.getAccepted());
+		examination.setOperation(examinationDTO.getOperation());
+		examination.setType(examinationType);
+		examination.setDoctor(doctor);
+		
+		if(patient != null) {
+			examination.setPatient(patient);
+			System.out.println(examination.getPatient().getName());
+		}
+		System.out.println(examination.getPatient().getName());
+		examination = examinationService.save(examination);
+		return new ResponseEntity<>(new ExaminationDTO(examination), HttpStatus.CREATED);
+	}
+	
 	
 	@GetMapping(value = "/sendVerificationMail/{id1}")
 	public ResponseEntity<Void> acceptPatient(@PathVariable Long id1,HttpSession Session){

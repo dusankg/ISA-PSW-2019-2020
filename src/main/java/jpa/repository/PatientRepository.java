@@ -12,6 +12,7 @@ public interface PatientRepository extends JpaRepository<Patient, Long>{
 
 	Patient findOneByName(String name);
 
+	Patient findOneById(Long id);
 	
 	Page<Patient> findAll(Pageable pageable);
 

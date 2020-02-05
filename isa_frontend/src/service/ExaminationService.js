@@ -12,7 +12,7 @@ class ExaminationService {
     return axios.get(`http://localhost:8082/api/examinations/nonReserved`,{withCredentials: true});
   }
   retrieveExamination(id) {
-    return axios.get(`http://localhost:8082/api/examinations/${id}`);
+    return axios.get(`http://localhost:8082/api/examinations/${id}`, {withCredentials: true});
   }
 
 }

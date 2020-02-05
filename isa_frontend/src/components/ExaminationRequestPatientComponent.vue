@@ -11,14 +11,14 @@ import axios from "axios";
       <h3>Add new examination</h3>
         <div class="container">
           <form @submit="validateAndSubmit">
-          <fieldset class="form-group">
+          <fieldset class="form-group" >
               <label>Date</label>
               <input type="date" class="form-control" v-model="date">
             </fieldset>
 
             <fieldset class="form-group">
               <label>Starting time</label>
-              <select class="form-control" required>
+              <select class="form-control"  v-model="startTime" required>
                 <option value="" selected disabled>Choose starting hour</option>
                 <option value="7">7h</option><option value="8">8h</option> <option value="9">9h</option>
                 <option value="10">10h</option><option value="11">11h</option> <option value="12">12h</option>
@@ -28,7 +28,7 @@ import axios from "axios";
             </fieldset>
 
             <fieldset class="form-group">
-              <select class="form-control" required>
+              <select class="form-control" v-model="startTime2" required>
                 <option value="" selected disabled>Choose starting minut</option>
                 <option value="0">0min</option><option value="5">5min</option> <option value="10">10min</option>
                 <option value="15">15min</option><option value="20">20min</option> <option value="25">25min</option>
@@ -40,7 +40,7 @@ import axios from "axios";
 
             <fieldset class="form-group">
               <label>Duration</label>
-              <select class="form-control" required>
+              <select class="form-control" v-model="duration" required>
                 <option value="" selected disabled>Choose duration hour</option>
                 <option value="0">0h</option><option value="1">1h</option> <option value="2">2h</option>
                 <option value="3">3h</option><option value="4">4h</option> <option value="5">5h</option>
@@ -48,7 +48,7 @@ import axios from "axios";
             </fieldset>
 
             <fieldset class="form-group">
-              <select class="form-control" required>
+              <select class="form-control" v-model="duration2" required>
                 <option value="" selected disabled>Choose duration minut</option>
                 <option value="0">0min</option><option value="5">5min</option> <option value="10">10min</option>
                 <option value="15">15min</option><option value="20">20min</option> <option value="25">25min</option>
@@ -58,7 +58,7 @@ import axios from "axios";
             </fieldset>
             <fieldset class="form-group">
               <label>Type of examination</label>
-              <select class="form-control" @change="changedType($event)" required>
+              <select class="form-control" v-model="examinationTypee"  required>
                 <option value="" selected disabled>Choose type</option>
                 <option v-for="examinationType in examinationTypes" :value="examinationType.id" :key="examinationType.id">{{examinationType.typeName}}</option>
               </select>
@@ -89,7 +89,7 @@ export default {
   },
   methods: {
     retrieveExaminationTypesForSelect(){
-        ExaminationTypeService.retrieveAllExaminationTypes().then(response =>{
+        ExaminationTypeService.retrieveAllExaminationTypes({withCredentials: true}).then(response =>{
             this.examinationTypes = response.data;
         });
     },
@@ -97,15 +97,18 @@ export default {
       e.preventDefault()
       var temp={
         "date":this.date,
-        "startTime":this.startTime,
-        "endTime":this.endTime,
-        "price":0,
+        "startTime":(parseInt(this.startTime*60) + parseInt(this.startTime2)),
+        "endTime":parseInt(this.startTime*60) + parseInt(this.startTime2) + parseInt(this.duration *60) + parseInt(this.duration2),
+        "price": null,
         "accepted":false,
-        "operation":this.operation
+        "operation":false,
+        "examinationType": this.examinationTypee
+
 
 
       }
-            Axios.post("http://localhost:8082/api/examinations", temp,{withCredentials: true});
+          alert(temp.examinationType)
+            Axios.post("http://localhost:8082/api/examinations/patientCreate/"+this.$route.query.doctorId+'/'+temp.examinationType, temp,{withCredentials: true});
 
 
 
@@ -113,7 +116,7 @@ export default {
 
   },
   mounted() {
-        this.retrieveExaminationTypesForSelect();
+        this.retrieveExaminationTypesForSelect({withCredentials: true});
   }
 
 };

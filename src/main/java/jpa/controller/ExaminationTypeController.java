@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +26,7 @@ import jpa.modeli.ExaminationType;
 import jpa.service.ExaminationTypeService;
 
 @RestController
-@CrossOrigin(origins = { "http://localhost:3000", "http://localhost:4200", "http://localhost:8080" })
+@CrossOrigin(origins = { "http://localhost:3000", "http://localhost:4200", "http://localhost:8080" }, allowCredentials= "true")
 @RequestMapping(value = "api/examinationtypes")
 public class ExaminationTypeController {
 	
@@ -32,7 +34,7 @@ public class ExaminationTypeController {
 	private ExaminationTypeService examinationTypeService;
 	
 	@GetMapping(value = "/all")
-	public ResponseEntity<List<ExaminationTypeDTO>>getAllExaminationTypes(){
+	public ResponseEntity<List<ExaminationTypeDTO>>getAllExaminationTypes(HttpSession Session){
 		List<ExaminationType> examinationTypes = examinationTypeService.findAll();
 		
 		//convert examination type to DTO
