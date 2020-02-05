@@ -195,6 +195,22 @@ public class OccupationDTO {
 		this.id = id;
 	}
 
+	public Integer getPocetniTrenutak() {
+		return pocetniTrenutak;
+	}
+
+	public void setPocetniTrenutak(Integer pocetniTrenutak) {
+		this.pocetniTrenutak = pocetniTrenutak;
+	}
+
+	public Integer getKrajnjiTrenutak() {
+		return krajnjiTrenutak;
+	}
+
+	public void setKrajnjiTrenutak(Integer krajnjiTrenutak) {
+		this.krajnjiTrenutak = krajnjiTrenutak;
+	}
+
 	
 	
 }

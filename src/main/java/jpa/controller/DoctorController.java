@@ -1,7 +1,9 @@
 package jpa.controller;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.http.HttpSession;
 
@@ -22,12 +24,18 @@ import org.springframework.web.bind.annotation.RestController;
 
 import jpa.dto.AbsenceRequestDTO;
 import jpa.dto.DoctorDTO;
+import jpa.dto.MedicalRoomDTO;
 import jpa.modeli.AbsenceRequest;
 import jpa.modeli.Clinic;
 import jpa.modeli.Doctor;
+import jpa.modeli.Examination;
+import jpa.modeli.MedicalRoom;
+import jpa.modeli.Occupation;
 import jpa.service.ClinicService;
 import jpa.service.DoctorService;
 import jpa.service.EmailService;
+import jpa.service.ExaminationService;
+import jpa.service.OccupationService;
 
 @RestController
 @CrossOrigin(origins = { "http://localhost:3000", "http://localhost:4200", "http://localhost:8080"}, allowCredentials= "true")
@@ -42,7 +50,13 @@ public class DoctorController {
 	private ClinicService clinicService;
 	
 	@Autowired
+	private ExaminationService examinationService;
+	
+	@Autowired
 	private EmailService emailService;
+	
+	@Autowired
+	private OccupationService occupationService;
 	
 	private Logger logger = LoggerFactory.getLogger(DoctorController.class);
 	
@@ -59,7 +73,88 @@ public class DoctorController {
 		return new ResponseEntity<>(doctorsDTO, HttpStatus.OK);
 	}
 	
-	//Pageable check
+	// prima id od examinationa za koji bi trebalo da se vezu sale
+	@GetMapping(value = "/freeDoctors/{idExamination}")
+	public ResponseEntity<List<DoctorDTO>>getFreeOperationRooms(@PathVariable Long idExamination){
+		
+		Examination examination = examinationService.findOne(idExamination);
+		
+		List<Doctor> medicalRooms = doctorService.findAll();
+		
+		//convert medical rooms to DTO
+		List<DoctorDTO> medicalRoomsDTO = new ArrayList<>();
+		
+		for(Doctor room : medicalRooms) {
+			boolean slobodna = true;
+				
+			// izmeni ako treba samo za odredjene klinike
+			//if(room.getOperational()) {
+				Set<Occupation> occupations = room.getOccupations();
+				for(Occupation oc : occupations) { 
+					System.out.println("Usao u occupatione");
+					if( !(!oc.getDate().equals(examination.getDate()) || examination.getEndTime() <= oc.getPocetniTrenutak() ||  examination.getStartTime() >= oc.getKrajnjiTrenutak())) { 
+						
+						slobodna = false;
+					} 
+				}
+			//}
+			
+			if(slobodna) {
+				medicalRoomsDTO.add(new DoctorDTO(room));
+			}
+		}
+			
+		return new ResponseEntity<>(medicalRoomsDTO, HttpStatus.OK);
+	}
+	
+
+	// proveri detaljno da li radi kako treba
+	@GetMapping(value = "/freeDoctorsForOccupation/{date}/{startingSum}/{endingSum}")
+	public ResponseEntity<List<DoctorDTO>>getFreeOperationRoomsForOccupation(@PathVariable Date date,@PathVariable Integer startingSum, @PathVariable Integer endingSum){
+		
+		//Examination examination = examinationService.findOne(idExamination);
+		
+		List<Doctor> medicalRooms = doctorService.findAll();
+		
+		//convert medical rooms to DTO
+		List<DoctorDTO> medicalRoomsDTO = new ArrayList<>();
+		
+		for(Doctor room : medicalRooms) {
+			boolean slobodna = true;
+			// IZMENIIII da bude samo za operacione sale
+			//if(room.getOperational()) {
+				Set<Occupation> occupations = room.getOccupations();
+				for(Occupation oc : occupations) { 
+					
+					if( !(!oc.getDate().equals(date) || endingSum <= oc.getPocetniTrenutak() ||  startingSum >= oc.getKrajnjiTrenutak())) { // 
+						
+						System.out.println("Skontao je da je isto");
+						slobodna = false;
+					} 
+				}
+			//}
+			
+			if(slobodna) {
+				medicalRoomsDTO.add(new DoctorDTO(room));
+			}
+		}
+			
+		return new ResponseEntity<>(medicalRoomsDTO, HttpStatus.OK);
+	}
+	
+	@PostMapping(value = "/bookDoctor/{id}", consumes = "application/json")
+	public void bookDoctor(@PathVariable Long id, @RequestBody Occupation occupationDTO){
+		
+		Doctor operationRoom = doctorService.findOne(id);
+		
+		Occupation oc = new Occupation(occupationDTO.getDate(), occupationDTO.getPocetniTrenutak(), occupationDTO.getKrajnjiTrenutak());
+
+		oc.setDoctor(operationRoom);
+		oc = occupationService.save(oc);
+				
+			
+		return ;
+	}
 	
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<DoctorDTO> getDoctor(@PathVariable Long id) {

@@ -225,4 +225,13 @@ public class Doctor {
 	public void setAbsenceRequest(AbsenceRequest absenceRequest) {
 		this.absenceRequest = absenceRequest;
 	}
+
+	public Set<Occupation> getOccupations() {
+		return occupations;
+	}
+
+	public void setOccupations(Set<Occupation> occupations) {
+		this.occupations = occupations;
+	}
+	
 }

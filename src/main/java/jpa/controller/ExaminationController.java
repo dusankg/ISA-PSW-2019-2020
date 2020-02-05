@@ -290,4 +290,32 @@ public class ExaminationController {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 	}
+	
+	// Sending email notification to clinic administrator when doctor wants to schedule request
+	@GetMapping(value = "/acceptRequestForOperation/{id}")
+	public ResponseEntity<Void> acceptOperation(@PathVariable Long id){
+		Examination examination = examinationService.findOne(id);
+		
+		if(examination != null) {
+			examination.setAccepted(true);
+			return new ResponseEntity<>(HttpStatus.OK);
+		}else{
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+	}
+	
+	@GetMapping(value = "/changeDateAndTime/{id}/{date}/{startingSum}/{endingSum}")
+	public ResponseEntity<Void> changeDateAndTime(@PathVariable Long id, @PathVariable Date date,@PathVariable Integer startingSum, @PathVariable Integer endingSum){
+		Examination examination = examinationService.findOne(id);
+		
+		examination.setDate(date);
+		examination.setStartTime(startingSum);
+		examination.setEndTime(endingSum);
+		
+		examination = examinationService.save(examination);
+		
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
+	
+	
 }
