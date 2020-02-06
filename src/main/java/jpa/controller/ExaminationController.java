@@ -24,11 +24,13 @@ import jpa.dto.ExaminationDTO;
 import jpa.modeli.Doctor;
 import jpa.modeli.Examination;
 import jpa.modeli.ExaminationType;
+import jpa.modeli.MedicalRoom;
 import jpa.modeli.Patient;
 import jpa.service.DoctorService;
 import jpa.service.EmailService;
 import jpa.service.ExaminationService;
 import jpa.service.ExaminationTypeService;
+import jpa.service.MedicalRoomService;
 import jpa.service.PatientService;
 
 @RestController
@@ -47,6 +49,9 @@ public class ExaminationController {
 	
 	@Autowired
 	private DoctorService doctorService;
+	
+	@Autowired
+	private MedicalRoomService medicalRoomService;
 	
 	@GetMapping(value = "/all")
 	public ResponseEntity<List<ExaminationDTO>> getAllExaminations(HttpSession Session){
@@ -139,6 +144,7 @@ public class ExaminationController {
 		
 		Patient patient = patientService.findOne(examinationDTO.getPatient().getId());
 		
+		MedicalRoom room = medicalRoomService.findOne(examinationDTO.getRoom().getId());
 		
 		Examination examination = new Examination();
 		examination.setId(null);
@@ -153,6 +159,10 @@ public class ExaminationController {
 		
 		if(patient != null) {
 			examination.setPatient(patient);
+		}
+		
+		if(room != null) {
+			examination.setRoom(room);
 		}
 		
 		examination = examinationService.save(examination);
@@ -304,6 +314,22 @@ public class ExaminationController {
 		}
 	}
 	
+	// Changing parameters of examination when it is confirmed by administrator
+	@GetMapping(value = "/acceptRequestForExamination/{id}/{roomId}")
+	public ResponseEntity<Void> acceptExamination(@PathVariable Long id, @PathVariable Long roomId){
+		Examination examination = examinationService.findOne(id);
+		
+		if(examination != null) {
+			examination.setAccepted(true);
+			MedicalRoom room  = medicalRoomService.findOne(roomId);
+			examination.setRoom(room);
+			examination = examinationService.save(examination);
+			return new ResponseEntity<>(HttpStatus.OK);
+		}else{
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+	}
+	
 	@GetMapping(value = "/changeDateAndTime/{id}/{date}/{startingSum}/{endingSum}")
 	public ResponseEntity<Void> changeDateAndTime(@PathVariable Long id, @PathVariable Date date,@PathVariable Integer startingSum, @PathVariable Integer endingSum){
 		Examination examination = examinationService.findOne(id);
@@ -317,5 +343,26 @@ public class ExaminationController {
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
+	// Sending e-mail to doctor and patient when examination is accepted
+	@GetMapping(value = "/examinationAccepted/{id}")
+	public ResponseEntity<Void> examinationAccepted(@PathVariable Long id){
+		Examination examination = examinationService.findOne(id);
+		
+		if(examination != null) {
+			try {
+				emailService.sendNotificationExaminationDoctor(examination);
+			} catch(Exception e) {
+				logger.info("Error while sending email!");
+			}
+			try {
+				emailService.sendNotificationExaminationPatient(examination);
+			} catch(Exception e) {
+				logger.info("Error while sending email!");
+			}
+			return new ResponseEntity<>(HttpStatus.OK);
+		}else{
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+	}
 	
 }

@@ -17,9 +17,8 @@ public class ExaminationDTO {
 	private ClinicDTO clinic;
 	private ExaminationTypeDTO type;
 	private DoctorDTO doctor;
-	/*
-	private MedicalRoom room;
-	*/
+	private MedicalRoomDTO room;
+	
 	
 	public ExaminationDTO() {}
 	
@@ -36,6 +35,9 @@ public class ExaminationDTO {
 			this.clinic=new ClinicDTO();
 			this.type = new ExaminationTypeDTO(examination.getType());
 			this.doctor = new DoctorDTO(examination.getDoctor());
+			if(examination.getRoom() != null) {
+				this.room = new MedicalRoomDTO(examination.getRoom());
+			}
 			
 		}
 		else{
@@ -50,6 +52,9 @@ public class ExaminationDTO {
 			this.clinic=new ClinicDTO();
 			this.type = new ExaminationTypeDTO(examination.getType());
 			this.doctor = new DoctorDTO(examination.getDoctor());
+			if(examination.getRoom() != null) {
+				this.room = new MedicalRoomDTO(examination.getRoom());
+			}
 		}
 	}
 	
@@ -66,9 +71,8 @@ public class ExaminationDTO {
 		this.clinic = new ClinicDTO();
 		this.type = new ExaminationTypeDTO();
 		this.doctor = new DoctorDTO();
-		/*
-		this.room = room;
-		*/
+		this.room = new MedicalRoomDTO();
+
 	}
 	
 	
@@ -169,6 +173,14 @@ public class ExaminationDTO {
 
 	public void setDoctor(DoctorDTO doctor) {
 		this.doctor = doctor;
+	}
+
+	public MedicalRoomDTO getRoom() {
+		return room;
+	}
+
+	public void setRoom(MedicalRoomDTO room) {
+		this.room = room;
 	}
 	
 	
