@@ -217,17 +217,51 @@ public class EmailService {
 		mail.setTo("isapswgrupa11@gmail.com");
 		mail.setFrom(env.getProperty("spring.mail.username"));
 		mail.setSubject("Molim vas potvrdite zakazivanje pregleda");
-		mail.setText("Pozdrav dragi administratore klinike, želeo bih da zakazem pregled za pacijenta.\n\n Na sledećem linku se nalaze informacije "
-				+ "o pregledu koji želim zakazati:\n" + "http://localhost:8080/respondexamination/"+ examination.getId());
+		if(examination.getOperation() == true) {
+			mail.setText("Pozdrav dragi administratore klinike, želeo bih da zakazem operaciju za pacijenta.\n\n Na sledećem linku se nalaze informacije "
+					+ "o operaciji koju želim zakazati:\n" + "http://localhost:8080/bookOperationRoom/"+ examination.getId());
+		} else {
+			mail.setText("Pozdrav dragi administratore klinike, želeo bih da zakazem pregled za pacijenta.\n\n Na sledećem linku se nalaze informacije "
+					+ "o pregledu koji želim zakazati:\n" + "http://localhost:8080/bookExaminationRoom/"+ examination.getId());
+		}
+	
 		javaMailSender.send(mail);
 		
 		System.out.println("Email je poslat!");
 	}
 	
+	// E-mails sent to doctor and patient when doctors request for examination is confirmed by clinic administrator
+	@Async 
+	public void sendNotificationExaminationDoctor(Examination examination) throws MailException, InterruptedException {
+		System.out.println("Slanje emaila... ");
+		
+		SimpleMailMessage mail = new SimpleMailMessage();
+		mail.setTo("isapswgrupa11@gmail.com");
+		mail.setFrom(env.getProperty("spring.mail.username"));
+		mail.setSubject("Vaš zahtev za pregled je potvrđen");
+		mail.setText("Pozdrav " + examination.getDoctor().getName() + ",\nVaš zahtev za zakazivanje pregleda je prihvaćen.\n\n "
+				+ "Pregled za pacijenta " + examination.getPatient().getName() + " " + examination.getPatient().getSurname() + " je zakazan za " + examination.getDate() + 
+				" u " + examination.getStartTime()/60 + "h i " + examination.getStartTime()%60 + "min u sali " + examination.getRoom().getRoomCodeName() + ".");
+		javaMailSender.send(mail);
+		
+		System.out.println("Email je poslat!");
+	}
 	
-	
-	
-	
+	@Async
+	public void sendNotificationExaminationPatient(Examination examination) throws MailException, InterruptedException{
+		System.out.println("Slanje emaila... ");
+		
+		SimpleMailMessage mail = new SimpleMailMessage();
+		mail.setTo("isapswgrupa11@gmail.com");
+		mail.setFrom(env.getProperty("spring.mail.username"));
+		mail.setSubject("Vaš doktor je zakazao novi pregled za vas");
+		mail.setText("Pozdrav " + examination.getPatient().getName() + ",\nZakazan vam je novi pregled kod lekara " + 
+				 examination.getDoctor().getName() + " " + examination.getDoctor().getSurname() + " za " + examination.getDate() + 
+				" u " + examination.getStartTime()/60 + "h i " + examination.getStartTime()%60 + "min u sali " + examination.getRoom().getRoomCodeName() + ".");
+		javaMailSender.send(mail);
+		
+		System.out.println("Email je poslat!");
+	}
 	
 
 }

@@ -24,12 +24,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import jpa.dto.AbsenceRequestDTO;
 import jpa.dto.DoctorDTO;
-import jpa.dto.MedicalRoomDTO;
 import jpa.modeli.AbsenceRequest;
 import jpa.modeli.Clinic;
 import jpa.modeli.Doctor;
 import jpa.modeli.Examination;
-import jpa.modeli.MedicalRoom;
 import jpa.modeli.Occupation;
 import jpa.service.ClinicService;
 import jpa.service.DoctorService;
@@ -79,17 +77,17 @@ public class DoctorController {
 		
 		Examination examination = examinationService.findOne(idExamination);
 		
-		List<Doctor> medicalRooms = doctorService.findAll();
+		List<Doctor> doctors = doctorService.findAll();
 		
 		//convert medical rooms to DTO
-		List<DoctorDTO> medicalRoomsDTO = new ArrayList<>();
+		List<DoctorDTO> doctorsDTO = new ArrayList<>();
 		
-		for(Doctor room : medicalRooms) {
+		for(Doctor doctor : doctors) {
 			boolean slobodna = true;
 				
 			// izmeni ako treba samo za odredjene klinike
 			//if(room.getOperational()) {
-				Set<Occupation> occupations = room.getOccupations();
+				Set<Occupation> occupations = doctor.getOccupations();
 				for(Occupation oc : occupations) { 
 					System.out.println("Usao u occupatione");
 					if( !(!oc.getDate().equals(examination.getDate()) || examination.getEndTime() <= oc.getPocetniTrenutak() ||  examination.getStartTime() >= oc.getKrajnjiTrenutak())) { 
@@ -100,11 +98,11 @@ public class DoctorController {
 			//}
 			
 			if(slobodna) {
-				medicalRoomsDTO.add(new DoctorDTO(room));
+				doctorsDTO.add(new DoctorDTO(doctor));
 			}
 		}
 			
-		return new ResponseEntity<>(medicalRoomsDTO, HttpStatus.OK);
+		return new ResponseEntity<>(doctorsDTO, HttpStatus.OK);
 	}
 	
 

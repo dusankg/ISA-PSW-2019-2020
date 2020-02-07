@@ -36,10 +36,12 @@ public class MedicalRoom {
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private Clinic clinic;
 	
-	@OneToMany(mappedBy = "medicalRoom", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	// Had to change fetchType to eager because scheduling
+	@OneToMany(mappedBy = "medicalRoom", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private Set<Occupation> occupations = new HashSet<Occupation>();
 	
-
+	@OneToMany(mappedBy = "room", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private Set<Examination> examinations = new HashSet<Examination>();
 	
 	public MedicalRoom() {}
 	
@@ -123,12 +125,14 @@ public class MedicalRoom {
 	public void setId(Long id) {
 		this.id = id;
 	}
-	
-	
-	
-	/*
-	 * Need to add mapping for Examination when it is created*/
-	
+
+	public Set<Examination> getExaminations() {
+		return examinations;
+	}
+
+	public void setExaminations(Set<Examination> examinations) {
+		this.examinations = examinations;
+	}
 	
 	
 }

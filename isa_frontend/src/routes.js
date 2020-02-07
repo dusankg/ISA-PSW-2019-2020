@@ -207,9 +207,9 @@ const router = new Router({
     },
     // This component sees clinic admin when doctor send him a request for examination
     {
-      path: "/respondexamination/:id",
-      name: "respondexamination",
-      component: () => import("./components/RespondExamination")                     
+      path: '/bookExaminationRoom/:examinationId',
+      name: 'bookExaminationRoom',
+      component: () => import("./components/BookExaminationRoomComponent")
     } 
   ]
 });

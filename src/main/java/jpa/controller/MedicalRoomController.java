@@ -219,4 +219,71 @@ public class MedicalRoomController {
 		}
 	}
 
+	
+	// Booking rooms for examinations
+	
+	@GetMapping(value = "/freeExaminationRoomForExamination/{idExamination}")
+	public ResponseEntity<List<MedicalRoomDTO>>getFreeExaminationRooms(@PathVariable Long idExamination){
+		
+		Examination examination = examinationService.findOne(idExamination);
+		
+		List<MedicalRoom> medicalRooms = medicalRoomService.findAll();
+		
+		//convert medical rooms to DTO
+		List<MedicalRoomDTO> medicalRoomsDTO = new ArrayList<>();
+		
+		for(MedicalRoom room : medicalRooms) {
+			boolean free = true;
+			// We look only for rooms that are not operational
+			if(!room.getOperational()) {
+				Set<Occupation> occupations = room.getOccupations();
+				for(Occupation oc : occupations) { 
+					
+					if( !(!oc.getDate().equals(examination.getDate()) || examination.getEndTime() <= oc.getPocetniTrenutak() ||  examination.getStartTime() >= oc.getKrajnjiTrenutak())) { 
+						
+						free = false;
+					} 
+				}
+				if(free) {
+					medicalRoomsDTO.add(new MedicalRoomDTO(room));
+				}
+			}
+			
+		}
+			
+		return new ResponseEntity<>(medicalRoomsDTO, HttpStatus.OK);
+	}
+	
+
+	@GetMapping(value = "/freeExaminationRoomForOccupation/{date}/{startingSum}/{endingSum}")
+	public ResponseEntity<List<MedicalRoomDTO>>getFreeExaminationRoomsForOccupation(@PathVariable Date date, @PathVariable Integer startingSum, @PathVariable Integer endingSum){
+		
+		List<MedicalRoom> medicalRooms = medicalRoomService.findAll();
+		
+		//convert medical rooms to DTO
+		List<MedicalRoomDTO> medicalRoomsDTO = new ArrayList<>();
+		
+		for(MedicalRoom room : medicalRooms) {
+			boolean free = true;
+			// Only if room is for ordinary examination consider it
+			if(!room.getOperational()) {
+				Set<Occupation> occupations = room.getOccupations();
+				for(Occupation oc : occupations) { 
+					
+					if( !(!oc.getDate().equals(date) || endingSum <= oc.getPocetniTrenutak() ||  startingSum >= oc.getKrajnjiTrenutak())) {  
+						
+						free = false;
+					} 
+				}
+				
+				if(free) {
+					medicalRoomsDTO.add(new MedicalRoomDTO(room));
+				}
+			}
+			
+		}
+			
+		return new ResponseEntity<>(medicalRoomsDTO, HttpStatus.OK);
+	}
+	
 }

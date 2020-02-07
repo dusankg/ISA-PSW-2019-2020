@@ -62,8 +62,8 @@ export default {
 
       var temp={
         "date":this.date,
-        "startTime":this.startTime,
-        "endTime":this.endTime,
+        "startTime":this.startTime*60,
+        "endTime":this.endTime*60,
         "type": this.selectedType,
         "accepted": false,
         "operation": this.operation,
