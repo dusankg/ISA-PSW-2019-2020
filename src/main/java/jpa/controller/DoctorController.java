@@ -1,7 +1,9 @@
 package jpa.controller;
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Set;
 
@@ -12,6 +14,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,17 +28,22 @@ import org.springframework.web.bind.annotation.RestController;
 
 import jpa.dto.AbsenceRequestDTO;
 import jpa.dto.DoctorDTO;
+import jpa.dto.MedicalRoomDTO;
+import jpa.dto.OccupationDTO;
 import jpa.modeli.AbsenceRequest;
 import jpa.modeli.Clinic;
 import jpa.modeli.Doctor;
 import jpa.modeli.Examination;
+import jpa.modeli.MedicalRoom;
 import jpa.modeli.Occupation;
 import jpa.service.ClinicService;
 import jpa.service.DoctorService;
 import jpa.service.EmailService;
 import jpa.service.ExaminationService;
+import jpa.service.MedicalRoomService;
 import jpa.service.OccupationService;
 
+@EnableScheduling
 @RestController
 @CrossOrigin(origins = { "http://localhost:3000", "http://localhost:4200", "http://localhost:8080"}, allowCredentials= "true")
 @RequestMapping(value = "api/doctors")
@@ -49,6 +58,9 @@ public class DoctorController {
 	
 	@Autowired
 	private ExaminationService examinationService;
+	
+	@Autowired
+	private MedicalRoomService medicalRoomService;
 	
 	@Autowired
 	private EmailService emailService;
@@ -73,7 +85,7 @@ public class DoctorController {
 	
 	// prima id od examinationa za koji bi trebalo da se vezu sale
 	@GetMapping(value = "/freeDoctors/{idExamination}")
-	public ResponseEntity<List<DoctorDTO>>getFreeOperationRooms(@PathVariable Long idExamination){
+	public ResponseEntity<List<DoctorDTO>>getFreeDoctors(@PathVariable Long idExamination){
 		
 		Examination examination = examinationService.findOne(idExamination);
 		
@@ -108,7 +120,7 @@ public class DoctorController {
 
 	// proveri detaljno da li radi kako treba
 	@GetMapping(value = "/freeDoctorsForOccupation/{date}/{startingSum}/{endingSum}")
-	public ResponseEntity<List<DoctorDTO>>getFreeOperationRoomsForOccupation(@PathVariable Date date,@PathVariable Integer startingSum, @PathVariable Integer endingSum){
+	public ResponseEntity<List<DoctorDTO>>getDoctorsForOccupation(@PathVariable Date date,@PathVariable Integer startingSum, @PathVariable Integer endingSum){
 		
 		//Examination examination = examinationService.findOne(idExamination);
 		
@@ -140,19 +152,171 @@ public class DoctorController {
 		return new ResponseEntity<>(medicalRoomsDTO, HttpStatus.OK);
 	}
 	
-	@PostMapping(value = "/bookDoctor/{id}", consumes = "application/json")
-	public void bookDoctor(@PathVariable Long id, @RequestBody Occupation occupationDTO){
+
+	@GetMapping(value = "/freeDoctorsForOccupation/{doctorsId}/{date}")
+	public ResponseEntity<List<OccupationDTO>>getDoctorsOccupationForDate(@PathVariable Long doctorsId, @PathVariable Date date){
 		
-		Doctor operationRoom = doctorService.findOne(id);
+		List<Occupation> occupations = occupationService.findAll();
+		List<OccupationDTO> occupationsDTO = new ArrayList<>();
+		
+		if(occupations == null) {
+			System.out.println("Nema ni jednog occupationa");
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			
+		}
+		
+		
+		for(Occupation oc : occupations) {
+			if(oc.getDoctor() != null) {
+				if(oc.getDoctor().getId() == doctorsId && oc.getDate().equals(date)) {
+					occupationsDTO.add(new OccupationDTO(oc));
+				}
+			}
+		}
+			
+		return new ResponseEntity<>(occupationsDTO, HttpStatus.OK);
+	}
+	
+	@PostMapping(value = "/bookDoctor/{id}/{medicalRoomId}/{examinationId}", consumes = "application/json")
+	public void bookDoctor(@PathVariable Long id,@PathVariable Long medicalRoomId, @PathVariable Long examinationId, @RequestBody Occupation occupationDTO){
+		
+		Doctor doctor = doctorService.findOne(id);
+		MedicalRoom medRoom = medicalRoomService.findOne(medicalRoomId);
+		Examination examination = examinationService.findOne(examinationId);
 		
 		Occupation oc = new Occupation(occupationDTO.getDate(), occupationDTO.getPocetniTrenutak(), occupationDTO.getKrajnjiTrenutak());
-
-		oc.setDoctor(operationRoom);
+		oc.setMedicalRoom(medRoom);
+		oc.setExamination(examination);
+		oc.setDoctor(doctor);
 		oc = occupationService.save(oc);
 				
 			
 		return ;
 	}
+	
+		// stavljen da se aktivira svaki dan u 19h
+		@Scheduled(cron = "0 13 0 * * ?")
+		@GetMapping(value = "/bookDoctorAndRoomForTime")
+		public void bookAllExaminations() {
+			List<Examination> examinations = examinationService.findAll();
+			for(Examination e : examinations) {
+				bookDoctorAndMedicalRoomByTime(e);
+			}
+		}
+	
+
+		public void bookDoctorAndMedicalRoomByTime(Examination e) {
+
+					if(e.getOccupations().isEmpty()) {
+						// trazim slobodnog doktora
+						List<Doctor> doctors = doctorService.findAll();
+						Doctor freeDoctor = null;
+						for(Doctor doc : doctors) {
+			
+								if(freeDoctor == null) {
+									Set<Occupation> occupations = doc.getOccupations();
+									if(occupations.isEmpty()) {
+										freeDoctor = doc;
+									}else { 
+										Boolean slobodan = true;
+										for(Occupation oc : occupations) { 
+											System.out.println("Usao u occupatione");
+											if( !(!oc.getDate().equals(e.getDate()) || e.getEndTime() <= oc.getPocetniTrenutak() ||  e.getStartTime() >= oc.getKrajnjiTrenutak())) { 
+												
+												slobodan = false;
+											} 
+										}
+										if(slobodan) {
+											freeDoctor = doc;
+										}
+									}
+								}
+						}
+						
+						// trazim slobodnu sobu
+						List<MedicalRoom> medRooms = medicalRoomService.findAll();
+						MedicalRoom freeMedRoom = null;
+						for(MedicalRoom medRoom : medRooms) {
+			
+								if(freeMedRoom == null) {
+									Set<Occupation> occupations = medRoom.getOccupations();
+									if(occupations.isEmpty()) {
+										freeMedRoom = medRoom;
+									} else {
+										Boolean slobodna = true;
+										for(Occupation oc : occupations) { 
+											System.out.println("Usao u occupatione");
+											if( !(!oc.getDate().equals(e.getDate()) || e.getEndTime() <= oc.getPocetniTrenutak() ||  e.getStartTime() >= oc.getKrajnjiTrenutak())) { 
+												
+												slobodna = false;
+											} 
+										}
+										if(slobodna) {
+											freeMedRoom = medRoom;
+										}
+									}
+								}
+						}
+						
+						if(freeDoctor != null && freeMedRoom != null) {
+							// znam da imam jednog slobodnog doktora i jednu slobodnu sobu
+							Occupation oc = new Occupation(e.getDate(), e.getStartTime(), e.getEndTime());
+							oc.setMedicalRoom(freeMedRoom);
+							oc.setExamination(e);
+							oc.setDoctor(freeDoctor);
+							oc = occupationService.save(oc);
+						} else{
+							int examinationStartTime = e.getStartTime();
+							int examinationEndTime = e.getEndTime();
+							examinationEndTime += 60; // probam da ga pomerim za sat vremena
+							
+							// pokusam da pomerim za kasnije vreme tog istog dana
+							if(examinationEndTime < 1140) {
+								examinationStartTime += 60; // pomeram i pocetno vreme da bude pomereno za jedan sat
+								e.setStartTime(examinationStartTime);
+								e.setEndTime(examinationEndTime);
+								e = examinationService.save(e);
+								// rekurzivno pozivam da vidim da li cu za izmenjeno vreme da nadjem nesto slobodno
+								bookDoctorAndMedicalRoomByTime(e);
+							} else {
+								// moram da promenim datum na sutradan u 7 ujutru
+								Date examinationDate = e.getDate();
+								
+								//Calendar calendar = Calendar.getInstance();
+								//calendar.setTime(examinationDate);
+								//calendar.add(Calendar.DAY_OF_YEAR, 1);
+								
+								//java.util.Date datum = calendar.getTime();
+								Date dat = e.getDate();
+								dat.setDate(dat.getDate()+1);
+								//e.setDate(e.getDate().setDate(e.getDate().getDate()+1));
+								//Date newDate = Date.valueOf(datum.toString());
+								int duration = e.getEndTime() - e.getStartTime();
+								
+								e.setDate(dat);
+								e.setStartTime(420);
+								e.setEndTime(420 + duration);
+								e = examinationService.save(e);
+								
+								bookDoctorAndMedicalRoomByTime(e);
+							}
+						}
+					}
+				
+			}	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<DoctorDTO> getDoctor(@PathVariable Long id) {

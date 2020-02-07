@@ -24,6 +24,10 @@ public class OccupationDTO {
 	Boolean h16;
 	Boolean h17;
 	
+	DoctorDTO doctor;
+	ExaminationDTO examination;
+	MedicalRoomDTO medicalRoom;
+	
 	public OccupationDTO() {
 		super();
 	}
@@ -32,25 +36,19 @@ public class OccupationDTO {
 		super();
 		pocetniTrenutak = oc.getPocetniTrenutak();
 		krajnjiTrenutak = oc.getKrajnjiTrenutak();
-		h7 = oc.getH7();
-		h8 = oc.getH8();
-		h9 = oc.getH9();
-		h10 = oc.getH10();
-		h11 = oc.getH11();
-		h12 = oc.getH12();
-		h13 = oc.getH13();
-		h14 = oc.getH14();
-		h15 = oc.getH15();
-		h16 = oc.getH16();
-		h17 = oc.getH17();
 		date = (Date) oc.getDate();
+		doctor = new DoctorDTO(oc.getDoctor());
+		// examination = new ExaminationDTO(); // dodaj da ima i examination
+		medicalRoom = new MedicalRoomDTO(oc.getMedicalRoom());
 		
+		if(oc.getExamination() != null) {
+			examination = new ExaminationDTO(oc.getExamination());
+		} else {
+			examination = new ExaminationDTO();
+		}
 	}
 
 	
-	public Date getDate() {
-		return date;
-	}
 
 
 	public OccupationDTO(Date date, Integer pocetniTrenutak, Integer krajnjiTrenutak) {
@@ -211,6 +209,34 @@ public class OccupationDTO {
 		this.krajnjiTrenutak = krajnjiTrenutak;
 	}
 
+	public Date getDate() {
+		return date;
+	}
+
+
+	public DoctorDTO getDoctor() {
+		return doctor;
+	}
+
+	public void setDoctor(DoctorDTO doctor) {
+		this.doctor = doctor;
+	}
+
+	public ExaminationDTO getExamination() {
+		return examination;
+	}
+
+	public void setExamination(ExaminationDTO examination) {
+		this.examination = examination;
+	}
+
+	public MedicalRoomDTO getMedicalRoom() {
+		return medicalRoom;
+	}
+
+	public void setMedicalRoom(MedicalRoomDTO medicalRoom) {
+		this.medicalRoom = medicalRoom;
+	}
 	
 	
 }

@@ -1,5 +1,8 @@
 package jpa.modeli;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -7,6 +10,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 @Entity
@@ -35,6 +39,9 @@ public class Nurse {
 	
 	@OneToOne(mappedBy = "nurse", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private AbsenceRequest absenceRequest;
+	
+	@OneToMany(mappedBy = "nurse", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private Set<Prescription> prescriptions = new HashSet<Prescription>();
 	
 	public Nurse(String name, String surname, String email, String password, String adress, String city, String state,
 			int phone) {
@@ -113,6 +120,14 @@ public class Nurse {
 
 	public void setAbsenceRequest(AbsenceRequest absenceRequest) {
 		this.absenceRequest = absenceRequest;
+	}
+
+	public Set<Prescription> getPrescriptions() {
+		return prescriptions;
+	}
+
+	public void setPrescriptions(Set<Prescription> prescriptions) {
+		this.prescriptions = prescriptions;
 	}
 	
 }

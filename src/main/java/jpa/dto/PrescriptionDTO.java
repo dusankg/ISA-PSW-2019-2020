@@ -7,7 +7,7 @@ public class PrescriptionDTO {
 	
 	private String name;
 	private boolean validated;
-	
+	private NurseDTO nurse;
 	
 	
 	public PrescriptionDTO(Long id, String name, boolean validated) {
@@ -29,6 +29,13 @@ public class PrescriptionDTO {
 		this.id = p.getId();;
 		this.name = p.getName();
 		this.validated = p.isValidated();
+		
+		if(p.getNurse() != null) {
+			this.nurse = new NurseDTO(p.getNurse());
+		} else {
+			this.nurse = new NurseDTO();
+		}
+		
 	}
 
 	public Long getId() {
@@ -48,6 +55,14 @@ public class PrescriptionDTO {
 	}
 	public void setValidated(boolean validated) {
 		this.validated = validated;
+	}
+
+	public NurseDTO getNurse() {
+		return nurse;
+	}
+
+	public void setNurse(NurseDTO nurse) {
+		this.nurse = nurse;
 	}
 
 }

@@ -39,6 +39,7 @@ public class ClinicalCenterAdministrator {
 	
 	@Column(name="validated", nullable = false)
 	private boolean validated;
+
 	
 	public ClinicalCenterAdministrator(String name, String surname, String email, String password, String adress,
 			String city, String state, int phone) {

@@ -9,12 +9,15 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 import java.sql.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 
 import javax.persistence.FetchType;
 
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 @Entity
 public class Examination {
@@ -53,6 +56,9 @@ public class Examination {
 	
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private Doctor doctor;
+	
+	@OneToMany(mappedBy = "examination", fetch = FetchType.EAGER)
+	private Set<Occupation> occupations = new HashSet<Occupation>();
 	
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private MedicalRoom room;
@@ -162,6 +168,14 @@ public class Examination {
 
 	public void setDoctor(Doctor doctor) {
 		this.doctor = doctor;
+	}
+
+	public Set<Occupation> getOccupations() {
+		return occupations;
+	}
+
+	public void setOccupations(Set<Occupation> occupations) {
+		this.occupations = occupations;
 	}
 
 	public MedicalRoom getRoom() {

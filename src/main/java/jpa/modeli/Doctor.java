@@ -61,7 +61,7 @@ public class Doctor {
 	@OneToMany(mappedBy="doctor", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<Examination> examinations=new HashSet<Examination>();
 	
-	@OneToMany(mappedBy = "doctor", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "doctor", fetch = FetchType.EAGER)
 	private Set<Occupation> occupations = new HashSet<Occupation>();
 	
 	@OneToOne(mappedBy = "doctor", fetch = FetchType.EAGER)
