@@ -2,7 +2,7 @@ package jpa.modeli;
 
 import java.util.HashSet;
 import java.util.Set;
-
+import javax.persistence.JoinColumn;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,6 +10,9 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
@@ -57,6 +60,11 @@ public class Clinic {
 	//private Set<MedicalRoom> rooms=new HashSet<MedicalRoom>();
 	@OneToMany(mappedBy = "clinic", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private Set<MedicalRoom> rooms = new HashSet<MedicalRoom>();
+	
+	@ManyToMany
+	@JoinTable(name = "rated", joinColumns = @JoinColumn(name = "clinic_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "patient_id", referencedColumnName = "id"))
+	private Set<Patient> patients = new HashSet<Patient>();
+	
 	
 	//@OneToMany(mappedBy = "clinic", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	//private Set<Examination> examinations =new HashSet<Examination>();
@@ -205,6 +213,15 @@ public class Clinic {
 	public void setPrescriptions(Set<Prescription> prescriptions) {
 		this.prescriptions = prescriptions;*/
 	//}
+
+	public Set<Patient> getPatients() {
+		return patients;
+	}
+
+	public void setPatients(Set<Patient> patients) {
+		this.patients = patients;
+	}
+
 	
 	
 }

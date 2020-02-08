@@ -23,6 +23,12 @@ const router = new Router({
       
     },
     {
+      path: "/patientExaminations",
+      name: "requestPatientt",
+      component: () => import("./components/listPatientExaminations")                 
+      
+    },
+    {
       path: "/patientHomePage",
       name: "HomePagePatient",
       component: () => import("./components/HomePagePatientComponent")
@@ -46,6 +52,23 @@ const router = new Router({
       path: "/ClinicExaminationsPatient",
       name: "Examinations23",
       component: () => import("./components/ListDoctorsPatientComponent")
+    },
+    {
+      path: "/rateClinic",
+      name: "rateC",
+      component: () => import("./components/rateClinicComponent")                 
+      
+    },
+    {
+      path: "/PatientHistory",
+      name: "History",
+      component: () => import("./components/listPatientExaminations")
+    },
+    {
+      path: "/rateDoctor",
+      name: "rateD",
+      component: () => import("./components/rateDoctorComponent")                 
+      
     },
 
     {

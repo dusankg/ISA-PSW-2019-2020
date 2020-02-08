@@ -14,7 +14,9 @@ class ExaminationService {
   retrieveExamination(id) {
     return axios.get(`http://localhost:8082/api/examinations/${id}`, {withCredentials: true});
   }
-
+  retrieveAllPatientExaminations() {
+    return axios.get(`http://localhost:8082/api/examinations/allByPatient`,{withCredentials: true});
+  }
 }
 
 export default new ExaminationService();

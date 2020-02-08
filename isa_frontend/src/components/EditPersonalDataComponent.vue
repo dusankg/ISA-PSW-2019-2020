@@ -16,7 +16,7 @@ import axios from "axios"
         </fieldset>
         <fieldset class="form-group">
           <label>Email</label>
-          <input type="text" class="form-control" v-model="email">
+          <input type="text" class="form-control" v-model="email" disabled>
         </fieldset>
          <fieldset class="form-group">
           <label>Password</label>
@@ -44,7 +44,7 @@ import axios from "axios"
         </fieldset>
          <fieldset class="form-group">
           <label>Lbo</label>
-          <input type="text" class="form-control" v-model="lbo">
+          <input type="text" class="form-control" v-model="lbo" disabled>
         </fieldset>
         <button class="btn btn-success" type="submit">Save</button>
       </form>

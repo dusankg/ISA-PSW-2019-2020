@@ -52,11 +52,15 @@ public class Patient {
 	
 	@Column(name = "bloodType")
 	private String bloodType;
-	@OneToMany(mappedBy = "patient", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@ManyToMany(mappedBy = "patient", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<Examination> examinations = new HashSet<Examination>();
 	
-
 	
+
+	@ManyToMany(mappedBy = "patients", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private Set<Clinic> clinics = new HashSet<Clinic>();
+	@ManyToMany(mappedBy = "patients", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private Set<Doctor> doctors = new HashSet<Doctor>();
 	@OneToMany(mappedBy = "patient", fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
 	private Set<ExaminationReport> examinationReport = new HashSet<ExaminationReport>();
 	
@@ -232,6 +236,22 @@ public class Patient {
 
 	public void setExaminationReport(Set<ExaminationReport> examinationReport) {
 		this.examinationReport = examinationReport;
+	}
+
+	public Set<Clinic> getClinics() {
+		return clinics;
+	}
+
+	public void setClinics(Set<Clinic> clinics) {
+		this.clinics = clinics;
+	}
+
+	public Set<Doctor> getDoctors() {
+		return doctors;
+	}
+
+	public void setDoctors(Set<Doctor> doctors) {
+		this.doctors = doctors;
 	}
 
 	

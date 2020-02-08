@@ -71,7 +71,6 @@ export default {
         
         ClinicCenterService.retrieveDoctorsOfClinic(this.$route.query.date,this.$route.query.type,this.$route.query.id,{withCredentials: true}) 
             .then(response => {
-                alert(response.data);
                 this.doctors = response.data;
         });
     },

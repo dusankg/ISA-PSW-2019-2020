@@ -13,6 +13,8 @@ public class DoctorDTO {
 	private String city;
 	private String state;
 	private int phone;
+	private double gradeSum;
+	private int gradeNumber;
 	private Integer workHourStart;
 	private Integer workHourFinish;
 	private ClinicDTO clinic;
@@ -36,10 +38,12 @@ public class DoctorDTO {
 		this.workHourStart = doctor.getWorkHourStart();
 		this.workHourFinish = doctor.getWorkHourFinish();
 		this.clinic = new ClinicDTO(doctor.getClinic());
+		this.gradeSum = doctor.getGradeSum();
+		this.gradeNumber = doctor.getGradeNumber();
 	}
 	
 	public DoctorDTO(Long id,String name, String surname, String email, String password, String adress, String city, String state,
-		int phone, Integer workHourStart, Integer workHourFinish) {
+		int phone, Integer workHourStart, Integer workHourFinish ,double gradeSum,int gradeNumber) {
 		super();
 		this.id=id;
 		this.name = name;
@@ -53,6 +57,8 @@ public class DoctorDTO {
 		this.workHourStart = workHourStart;
 		this.workHourFinish = workHourFinish;
 		this.clinic = new ClinicDTO();
+		this.gradeSum = gradeSum;
+		this.gradeNumber = gradeNumber;
 	}
 
 

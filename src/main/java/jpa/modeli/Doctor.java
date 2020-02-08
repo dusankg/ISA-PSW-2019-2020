@@ -10,6 +10,9 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -48,6 +51,12 @@ public class Doctor {
 	@Column(name = "workHourFinish")
 	private Integer workHourFinish;
 	
+	@Column( name = "gradeSum" ,nullable = true)
+	private double gradeSum; 
+	
+	@Column (name="gradeNumber",nullable = true)
+	private int gradeNumber;
+	
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Clinic clinic;
 	
@@ -64,13 +73,17 @@ public class Doctor {
 	@OneToMany(mappedBy = "doctor", fetch = FetchType.EAGER)
 	private Set<Occupation> occupations = new HashSet<Occupation>();
 	
+	@ManyToMany
+	@JoinTable(name = "ratedDoctor", joinColumns = @JoinColumn(name = "doctor_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "patient_id", referencedColumnName = "id"))
+	private Set<Patient> patients = new HashSet<Patient>();
+	
 	@OneToOne(mappedBy = "doctor", fetch = FetchType.EAGER)
 	private AbsenceRequest absenceRequest;
 	
 	public Doctor() {}
 	
 	public Doctor(String name, String surname, String email, String password, String adress, String city, String state,
-			int phone, Integer workHourStart, Integer workHourFinish) {
+			int phone, Integer workHourStart, Integer workHourFinish, double gradeSum,int gradeNumber) {
 		super();
 		this.name = name;
 		this.surname = surname;
@@ -82,6 +95,8 @@ public class Doctor {
 		this.phone = phone;
 		this.workHourStart = workHourStart;
 		this.workHourFinish = workHourFinish;
+		this.gradeSum = gradeSum;
+		this.gradeNumber = gradeNumber;
 	}
 
 
@@ -233,5 +248,30 @@ public class Doctor {
 	public void setOccupations(Set<Occupation> occupations) {
 		this.occupations = occupations;
 	}
+
+	public double getGradeSum() {
+		return gradeSum;
+	}
+
+	public void setGradeSum(double gradeSum) {
+		this.gradeSum = gradeSum;
+	}
+
+	public int getGradeNumber() {
+		return gradeNumber;
+	}
+
+	public void setGradeNumber(int gradeNumber) {
+		this.gradeNumber = gradeNumber;
+	}
+
+	public Set<Patient> getPatients() {
+		return patients;
+	}
+
+	public void setPatients(Set<Patient> patients) {
+		this.patients = patients;
+	}
+	
 	
 }

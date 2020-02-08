@@ -20,6 +20,10 @@ class DoctorService {
   retrieveDoctorsOfClinic(id){
       return  axios.get('http://localhost:8082/api/clinics/getDoctors/' + id,{withCredentials: true})
   }
+  retrieveAllDoctorsWherePatientWas() {
+    return axios.get("http://localhost:8082/api/doctors/allDoctorsOfPatient", {withCredentials: true});
+  }
+
 }
 
 export default new DoctorService();

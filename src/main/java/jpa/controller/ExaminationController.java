@@ -80,6 +80,25 @@ public class ExaminationController {
 		}
 	}
 	
+	
+	@GetMapping(value = "/allByPatient")
+	public ResponseEntity<List<ExaminationDTO>> getAllExaminationssPatient(HttpSession Session){
+		List<Examination> examinations = examinationService.findAll();
+		
+		//convert examinations to DTOs
+		List<ExaminationDTO> examinationsDTO = new ArrayList<>();
+	
+		for (Examination e : examinations) {
+			if(Session.getAttribute("id")==e.getPatient().getId()){
+				
+				examinationsDTO.add(new ExaminationDTO(e));
+				
+			}
+		}
+		
+		return new ResponseEntity<>(examinationsDTO, HttpStatus.OK);
+	}
+	
 	@GetMapping(value = "/allByClinic")
 	public ResponseEntity<List<ExaminationDTO>> getAllExaminationss(HttpSession Session){
 		List<Examination> examinations = examinationService.findAll();
