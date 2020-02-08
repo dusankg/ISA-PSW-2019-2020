@@ -195,12 +195,13 @@ public class DoctorController {
 	}
 	
 		// stavljen da se aktivira svaki dan u 19h
-		@Scheduled(cron = "0 13 0 * * ?")
+		@Scheduled(cron = "0 47 0 * * ?")
 		@GetMapping(value = "/bookDoctorAndRoomForTime")
 		public void bookAllExaminations() {
 			List<Examination> examinations = examinationService.findAll();
 			for(Examination e : examinations) {
-				bookDoctorAndMedicalRoomByTime(e);
+				if(e.getOperation())
+					bookDoctorAndMedicalRoomByTime(e);
 			}
 		}
 	
@@ -282,15 +283,8 @@ public class DoctorController {
 								// moram da promenim datum na sutradan u 7 ujutru
 								Date examinationDate = e.getDate();
 								
-								//Calendar calendar = Calendar.getInstance();
-								//calendar.setTime(examinationDate);
-								//calendar.add(Calendar.DAY_OF_YEAR, 1);
-								
-								//java.util.Date datum = calendar.getTime();
 								Date dat = e.getDate();
 								dat.setDate(dat.getDate()+1);
-								//e.setDate(e.getDate().setDate(e.getDate().getDate()+1));
-								//Date newDate = Date.valueOf(datum.toString());
 								int duration = e.getEndTime() - e.getStartTime();
 								
 								e.setDate(dat);
