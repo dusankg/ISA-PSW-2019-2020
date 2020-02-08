@@ -34,7 +34,11 @@ Vue.use(Vuelidate);
 
       </form>
       <form @submit.prevent="pretraga">
-                <button class="btn btn-success" type="submit">Pretraga klinika</button>
+                <button class="btn btn-success" type="submit">Clinic Search</button>
+
+      </form>
+      <form @submit.prevent="history">
+                <button class="btn btn-success" type="submit">History of appointments and operations</button>
 
       </form>
     </div>
@@ -67,7 +71,6 @@ export default {
   },
   methods: {
     refreshClinics() {
-        alert(this.$route.query.type);
         ClinicCenterService.retrieveAllClinicsFiltered(this.$route.query.date,this.$route.query.type,{withCredentials: true}) 
             .then(response => {
                 this.clinics = response.data;
@@ -115,6 +118,9 @@ export default {
            
             this.$router.push('/pretragaPatient') 
 
+      },history(e){
+        e.preventDefault();
+        this.$router.push('/PatientHistory') 
       }
 
   

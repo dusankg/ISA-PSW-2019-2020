@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import jpa.dto.AbsenceRequestDTO;
+import jpa.dto.ClinicDTO;
 import jpa.dto.DoctorDTO;
 import jpa.dto.MedicalRoomDTO;
 import jpa.modeli.AbsenceRequest;
@@ -31,11 +32,13 @@ import jpa.modeli.Doctor;
 import jpa.modeli.Examination;
 import jpa.modeli.MedicalRoom;
 import jpa.modeli.Occupation;
+import jpa.modeli.Patient;
 import jpa.service.ClinicService;
 import jpa.service.DoctorService;
 import jpa.service.EmailService;
 import jpa.service.ExaminationService;
 import jpa.service.OccupationService;
+import jpa.service.PatientService;
 
 @RestController
 @CrossOrigin(origins = { "http://localhost:3000", "http://localhost:4200", "http://localhost:8080"}, allowCredentials= "true")
@@ -45,6 +48,8 @@ public class DoctorController {
 	
 	@Autowired
 	private DoctorService doctorService;
+	@Autowired
+	private PatientService patientService;
 	
 	@Autowired
 	private ClinicService clinicService;
@@ -107,6 +112,44 @@ public class DoctorController {
 		return new ResponseEntity<>(medicalRoomsDTO, HttpStatus.OK);
 	}
 	
+	
+	@GetMapping(value = "/allDoctorsOfPatient")
+	public ResponseEntity<List<DoctorDTO>> getAllDoctorsPatientHasBeen(HttpSession Session) {
+		System.out.println("DOKTORIIIII");
+		if(Session.getAttribute("role").equals("PATIENT")){ //izmeni da mogu da doprem i kada sam administrator
+		List<Examination> examinations = examinationService.findAll();
+		Patient p = patientService.findOne((Long)Session.getAttribute("id"));
+	
+		// convert clinics to DTOs
+		List<DoctorDTO> doctorDTO = new ArrayList<>();
+		
+		for (Examination e : examinations) {
+			if(e.getPatient()!=null){
+			if(e.getPatient().getId()==((Long)Session.getAttribute("id"))){
+				boolean vecPostoji = false;
+				for(DoctorDTO dDTO : doctorDTO){
+					if(dDTO.getId() == e.getClinic().getId()){
+						vecPostoji = true;
+					}	}
+					for(Doctor dd : p.getDoctors()){
+						System.out.println("udjes ovde?");
+						if(e.getClinic().getId() == dd.getId()){
+							vecPostoji = true;
+						}
+					}
+				
+				if(vecPostoji == false){
+					doctorDTO.add(new DoctorDTO(e.getDoctor()));
+					p.getDoctors().add(e.getDoctor());
+				}
+			}}
+		}
+	
+		return new ResponseEntity<>(doctorDTO, HttpStatus.OK);
+		}else{
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+	}
 
 	// proveri detaljno da li radi kako treba
 	@GetMapping(value = "/freeDoctorsForOccupation/{date}/{startingSum}/{endingSum}")
@@ -248,6 +291,31 @@ public class DoctorController {
 		
 		return new ResponseEntity<>(absenceRequestDTO, HttpStatus.OK);
 	}
+	
+	
+	@GetMapping(value = "rate/{id1}/{rating}")
+	public ResponseEntity<DoctorDTO> rateClicinc(@PathVariable Long id1,@PathVariable double rating,HttpSession Session) {
+		System.out.println("cek jel ulazis ovde???");
+		
+		Doctor doctor= doctorService.findOne(id1);
+
+		//if(clinic.getGradeSum()!=0){
+			doctor.setGradeNumber(doctor.getGradeNumber() + 1);
+		//}
+		
+			doctor.setGradeSum(doctor.getGradeSum() + rating);
+		Patient patient = patientService.findOne((Long)Session.getAttribute("id"));
+		patient.getDoctors().add(doctor);
+		doctor.getPatients().add(patient);
+		System.out.println(patient.getClinics().size());
+		patient= patientService.save(patient);
+		System.out.println(patient.getClinics().size());
+		doctor = doctorService.save(doctor);
+		
+		
+		return new ResponseEntity<>(new DoctorDTO(doctor), HttpStatus.OK);
+	}
+	
 	
 	@GetMapping(value = "/accept/{id}")
 	public ResponseEntity<Void> acceptRequest(@PathVariable Long id){

@@ -26,11 +26,15 @@ import org.springframework.web.bind.annotation.RestController;
 import jpa.dto.ClinicDTO;
 import jpa.dto.DoctorDTO;
 import jpa.dto.MedicalRoomDTO;
+import jpa.dto.PatientDTO;
 import jpa.modeli.Clinic;
 import jpa.modeli.Doctor;
 import jpa.modeli.Examination;
 import jpa.modeli.MedicalRoom;
+import jpa.modeli.Patient;
 import jpa.service.ClinicService;
+import jpa.service.ExaminationService;
+import jpa.service.PatientService;
 
 @RestController
 @CrossOrigin(origins = { "http://localhost:3000", "http://localhost:4200", "http://localhost:8080" }, allowCredentials = "true")
@@ -39,7 +43,10 @@ public class ClinicController {
 
 	@Autowired
 	private ClinicService clinicService;
-	
+	@Autowired
+	private ExaminationService examinationService;
+	@Autowired
+	private PatientService patientService;
 	@GetMapping(value = "/all")
 	public ResponseEntity<List<ClinicDTO>> getAllClinics(HttpSession Session) {
 		System.out.println(Session.getAttribute("role"));
@@ -59,7 +66,43 @@ public class ClinicController {
 		}
 	}
 	
+	@GetMapping(value = "/allClinicsOfPatient")
+	public ResponseEntity<List<ClinicDTO>> getAllClinicsPatientHasBeen(HttpSession Session) {
+		
+		if(Session.getAttribute("role").equals("PATIENT")){ //izmeni da mogu da doprem i kada sam administrator
+		List<Examination> examinations = examinationService.findAll();
+		Patient p = patientService.findOne((Long)Session.getAttribute("id"));
+		System.out.println(examinations.size()+ " WTFFFFFFFFFFF");
+		// convert clinics to DTOs
+		List<ClinicDTO> clinicDTO = new ArrayList<>();
+		
+		for (Examination e : examinations) {
+			if(e.getPatient()!=null){
+			if(e.getPatient().getId()==((Long)Session.getAttribute("id"))){
+				boolean vecPostoji = false;
+				for(ClinicDTO cDTO : clinicDTO){
+					if(cDTO.getId() == e.getClinic().getId()){
+						vecPostoji = true;
+					}	}
+					for(Clinic cc : p.getClinics()){
+						System.out.println("udjes ovde?");
+						if(e.getClinic().getId() == cc.getId()){
+							vecPostoji = true;
+						}
+					}
+				
+				if(vecPostoji == false){
+					clinicDTO.add(new ClinicDTO(e.getClinic()));
+					p.getClinics().add(e.getClinic());
+				}
+			}}
+		}
 	
+		return new ResponseEntity<>(clinicDTO, HttpStatus.OK);
+		}else{
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+	}
 	
 	
 	@GetMapping(value = "/allFiltered/{date}/{type}")
@@ -173,6 +216,28 @@ public class ClinicController {
 		}
 
 		return new ResponseEntity<>(clinicsDTO, HttpStatus.OK);
+	}
+	@GetMapping(value = "rate/{id1}/{rating}")
+	public ResponseEntity<ClinicDTO> rateClicinc(@PathVariable Long id1,@PathVariable double rating,HttpSession Session) {
+		System.out.println("cek jel ulazis ovde???");
+		
+		Clinic clinic= clinicService.findOne(id1);
+
+		//if(clinic.getGradeSum()!=0){
+			clinic.setGradeNumber(clinic.getGradeNumber() + 1);
+		//}
+		
+		clinic.setGradeSum(clinic.getGradeSum() + rating);
+		Patient patient = patientService.findOne((Long)Session.getAttribute("id"));
+		patient.getClinics().add(clinic);
+		clinic.getPatients().add(patient);
+		System.out.println(patient.getClinics().size());
+		patient= patientService.save(patient);
+		System.out.println(patient.getClinics().size());
+		clinic = clinicService.save(clinic);
+		
+		
+		return new ResponseEntity<>(new ClinicDTO(clinic), HttpStatus.OK);
 	}
 	
 	@GetMapping(value = "/{id}")

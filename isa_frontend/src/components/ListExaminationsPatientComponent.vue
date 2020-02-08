@@ -53,7 +53,6 @@ export default {
   },
   methods: {
     refreshExaminations() {
-      alert('NESTOOOO');
         ExaminationService.retrieveAllNonReservedExaminations({withCredentials: true})
             .then(response => {
                 this.examinations = response.data;

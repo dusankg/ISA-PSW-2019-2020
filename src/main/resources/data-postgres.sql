@@ -2,8 +2,8 @@
 insert into clinic (name, adress, description, grade_sum, grade_number, longitude, latitude) values ('Urologija','blabla', 'opis', 0.0, 0, 19.821, 45.014);
 insert into clinic (name, adress, description, grade_sum, grade_number, longitude, latitude) values ('Infektivna klinika','JNA', 'klinika za infektivne i tropske bolesti', 0.0, 0, 19.823, 45.25);
 
-insert into doctor(name, surname, email, password, adress, city, state, phone, work_hour_start, work_hour_finish, clinic_id) values ('DrMr', 'MrDr','drmd.com', '123', 'NTP', 'Nju Nau', 'Makedonija', 333, 7, 15, 1);
-insert into doctor(name, surname, email, password, adress, city, state, phone, work_hour_start, work_hour_finish, clinic_id) values ('Doctor', 'House','house.com', '123', 'plainsborough', 'make', 'USA', 988, 7, 15, 2);
+insert into doctor(name, surname, email, password, adress, city, state, phone, work_hour_start, work_hour_finish,grade_sum, grade_number ,clinic_id) values ('DrMr', 'MrDr','drmd.com', '123', 'NTP', 'Nju Nau', 'Makedonija', 333, 7, 15,0,0, 1);
+insert into doctor(name, surname, email, password, adress, city, state, phone, work_hour_start, work_hour_finish, clinic_id,grade_sum, grade_number) values ('Doctor', 'House','house.com', '123', 'plainsborough', 'make', 'USA', 988, 7, 15, 2,0,0);
 
 insert into diagnosis(name) values ('Sifilis');
 
@@ -31,6 +31,7 @@ insert into examination_type(typename) values ('Ocni pregled');
 insert into examination_type(typename) values ('Ginekoloski pregled');
 
 insert into examination (date, price, type_id, clinic_id, doctor_id, start_time, end_time, operation, accepted) values ('2020-02-01', 1500, 1, 1, 1, 420, 480, true, true);
+insert into examination (date, price, type_id, clinic_id, doctor_id, start_time, end_time, operation, accepted) values ('2020-02-03', 1500, 1, 1, 1, 420, 480, true, true);
 
 insert into absence_request(startingdate, endingdate, doctor_id) values ('2019-05-05', '2019-09-09', 1);
 insert into absence_request(startingdate, endingdate, doctor_id) values ('2000-05-05', '2010-09-09', 2);

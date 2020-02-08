@@ -109,7 +109,7 @@ export default {
       }
           alert(temp.examinationType)
             Axios.post("http://localhost:8082/api/examinations/patientCreate/"+this.$route.query.doctorId+'/'+temp.examinationType, temp,{withCredentials: true});
-
+            this.$router.push('/patientHomePage') 
 
 
     }

@@ -28,6 +28,10 @@ class ClinicCenterService {
   retrieveDoctorsOfClinic(date,type,id){
     return  axios.get('http://localhost:8082/api/clinics/select/'+date+'/'+type+'/' + id,{withCredentials: true})
 }
+retrieveAllClinicsWherePatientWas() {
+  return axios.get("http://localhost:8082/api/clinics/allClinicsOfPatient", {withCredentials: true});
+}
+
 }
 
 

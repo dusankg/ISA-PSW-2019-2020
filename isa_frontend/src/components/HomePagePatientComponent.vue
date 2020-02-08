@@ -2,12 +2,9 @@ import axios from "axios";
 Vue.use(Vuelidate);
 <template>
   <div class="container">
-    <h3>Clinic List</h3>
+    <h3>Rate Clinic</h3>
     <div class="container">
-        
-
-
-      <table class="table">
+        <table class="table">
         <thead>
           <tr>
             <th>Id</th>
@@ -29,6 +26,32 @@ Vue.use(Vuelidate);
           </tr>
         </tbody>
       </table>
+
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Surname</th>
+            <th>Email</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="doctor in doctors" v-bind:key="doctor.id">
+            <td>{{doctor.id}}</td>
+            <td>{{doctor.name}}</td>
+            <td>{{doctor.surname}}</td>
+            <td>{{doctor.email}}</td>
+            <td><form @submit.prevent="select2(doctor.id)">
+                <button class="btn btn-success" type="submit">Select Doctor</button>
+
+              </form></td>
+          </tr>
+        </tbody>
+      </table>
+
+
+      
         <form @submit="instant">
                 <button class="btn btn-success" type="submit">Reserve an existing appointment </button>
 
@@ -39,7 +62,11 @@ Vue.use(Vuelidate);
 
       </form>
       <form @submit.prevent="pretraga">
-                <button class="btn btn-success" type="submit">Pretraga klinika</button>
+                <button class="btn btn-success" type="submit">Clinic Search</button>
+
+      </form>
+      <form @submit.prevent="history">
+                <button class="btn btn-success" type="submit">History of appointments</button>
 
       </form>
     </div>
@@ -55,7 +82,8 @@ Vue.use(Vuelidate);
 <script>
 import ClinicCenterService from '../service/ClinicCenterService';
 import ExaminationService from '../service/ExaminationService';
-import Axios from 'axios';
+import DoctorService from '../service/DoctorService';
+//import Axios from 'axios';
 export default {
   name: "ListClinics",
   data() {
@@ -72,9 +100,16 @@ export default {
   },
   methods: {
     refreshClinics() {
-        ClinicCenterService.retrieveAllClinics() 
+        ClinicCenterService.retrieveAllClinicsWherePatientWas() 
             .then(response => {
                 this.clinics = response.data;
+        });
+        
+    },
+    refreshDoctors() {
+        DoctorService.retrieveAllDoctorsWherePatientWas() 
+            .then(response => {
+                this.doctors = response.data;
         });
         
     },
@@ -102,10 +137,15 @@ export default {
       },  */
       select(id1){
         /* eslint-disable no-console */
-        Axios.get('http://localhost:8082/api/clinics/select/' + id1,{withCredentials: true})
-        this.$router.push('/ClinicExaminationsPatient',{withCredentials: true}) ;
+       // Axios.get('http://localhost:8082/api/clinics/select/' + id1,{withCredentials: true})
+        this.$router.push('/rateClinic/?idClinic='+id1,{withCredentials: true}) ;
       },
-
+      select2(id1){
+        /* eslint-disable no-console */
+       // Axios.get('http://localhost:8082/api/clinics/select/' + id1,{withCredentials: true})
+        this.$router.push('/rateDoctor/?idDoctor='+id1,{withCredentials: true}) ;
+      },
+      
 
 
       val(e){
@@ -123,7 +163,11 @@ export default {
       instant(e){
         e.preventDefault();
         this.$router.push('/examinationsPatient') 
+      },history(e){
+        e.preventDefault();
+        this.$router.push('/patientExaminations') 
       }
+
 
   
   },
@@ -131,7 +175,7 @@ export default {
   created() {
  
     this.refreshClinics();
-    this.refreshExainations();
+    this.refreshDoctors();
     
 
   }
