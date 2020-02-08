@@ -50,6 +50,10 @@ public class ExaminationController {
 	private EmailService emailService;
 	@Autowired
 	private ExaminationTypeService examinationTypeService;
+	@Autowired
+	private MedicalRoomService medicalRoomService;
+	@Autowired
+	private OccupationService occupationService;
 	
 	@Autowired
 	private MedicalRoomService medicalRoomService;
@@ -101,12 +105,11 @@ public class ExaminationController {
 		List<ExaminationDTO> examinationsDTO = new ArrayList<>();
 	
 		for (Examination e : examinations) {
-			if(e.getPatient() != null ) {
-				if(Session.getAttribute("id")==e.getPatient().getId()){
-					
-					examinationsDTO.add(new ExaminationDTO(e));
-					
-				}
+			if(e.getPatient() != null)
+			if(Session.getAttribute("id")==e.getPatient().getId()){
+				
+				examinationsDTO.add(new ExaminationDTO(e));
+				
 			}
 
 		}
