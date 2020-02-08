@@ -3,6 +3,7 @@ package jpa.controller;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.http.HttpSession;
 
@@ -11,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,11 +26,15 @@ import jpa.dto.ExaminationDTO;
 import jpa.modeli.Doctor;
 import jpa.modeli.Examination;
 import jpa.modeli.ExaminationType;
+import jpa.modeli.MedicalRoom;
+import jpa.modeli.Occupation;
 import jpa.modeli.Patient;
 import jpa.service.DoctorService;
 import jpa.service.EmailService;
 import jpa.service.ExaminationService;
 import jpa.service.ExaminationTypeService;
+import jpa.service.MedicalRoomService;
+import jpa.service.OccupationService;
 import jpa.service.PatientService;
 
 @RestController
@@ -46,7 +52,13 @@ public class ExaminationController {
 	private ExaminationTypeService examinationTypeService;
 	
 	@Autowired
+	private MedicalRoomService medicalRoomService;
+	
+	@Autowired
 	private DoctorService doctorService;
+	
+	@Autowired
+	private OccupationService occupationService;
 	
 	@GetMapping(value = "/all")
 	public ResponseEntity<List<ExaminationDTO>> getAllExaminations(HttpSession Session){
@@ -84,16 +96,19 @@ public class ExaminationController {
 	@GetMapping(value = "/allByPatient")
 	public ResponseEntity<List<ExaminationDTO>> getAllExaminationssPatient(HttpSession Session){
 		List<Examination> examinations = examinationService.findAll();
-		
+		System.out.println("Atribut sesije: " + Session.getAttribute("id"));
 		//convert examinations to DTOs
 		List<ExaminationDTO> examinationsDTO = new ArrayList<>();
 	
 		for (Examination e : examinations) {
-			if(Session.getAttribute("id")==e.getPatient().getId()){
-				
-				examinationsDTO.add(new ExaminationDTO(e));
-				
+			if(e.getPatient() != null ) {
+				if(Session.getAttribute("id")==e.getPatient().getId()){
+					
+					examinationsDTO.add(new ExaminationDTO(e));
+					
+				}
 			}
+
 		}
 		
 		return new ResponseEntity<>(examinationsDTO, HttpStatus.OK);
