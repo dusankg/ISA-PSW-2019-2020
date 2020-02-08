@@ -50,10 +50,7 @@ public class ExaminationController {
 	private EmailService emailService;
 	@Autowired
 	private ExaminationTypeService examinationTypeService;
-	@Autowired
-	private MedicalRoomService medicalRoomService;
-	@Autowired
-	private OccupationService occupationService;
+	
 	
 	@Autowired
 	private MedicalRoomService medicalRoomService;

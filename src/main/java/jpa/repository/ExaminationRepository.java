@@ -13,7 +13,7 @@ import jpa.modeli.Examination;
 
 public interface ExaminationRepository extends JpaRepository<Examination, Long>{
 
-	Examination findOneById(Long id);
+	Examination findOne(Long id);
 	
 	Examination findOneByDate(Date d);
 	

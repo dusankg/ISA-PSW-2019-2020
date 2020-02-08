@@ -34,6 +34,7 @@ import jpa.modeli.MedicalRoom;
 import jpa.modeli.Patient;
 import jpa.service.ClinicService;
 import jpa.service.ExaminationService;
+
 import jpa.service.PatientService;
 
 @RestController
