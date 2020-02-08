@@ -97,7 +97,7 @@ export default {
     this.$forceUpdate();
   },
   validatePrescription(index){
-    Axios.get('http://localhost:8082/api/prescriptions/validate/' + index)
+    Axios.get('http://localhost:8082/api/prescriptions/validate/' + index +'/'+ this.$route.params.id)
     this.refreshPrescriptions
     this.$forceUpdate();
   },

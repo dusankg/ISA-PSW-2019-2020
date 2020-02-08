@@ -23,13 +23,23 @@ import axios from "axios";
                 <option v-for="diagnose in diagnosis" :value="diagnose.id" :key="diagnose.id">{{diagnose.name}}</option>
               </select>
             </fieldset>
+            <br/>
             <fieldset class="form-group">
               <label>Prescription</label>
               <input type="text" class="form-control" v-model="prescriptionText" >   
             </fieldset>
+            <fieldset class="form-group" >
+              <label>Previously entered prescriptons</label>
+              <select class="form-control" @change="changedPrescriptionName($event)">
+                <option value="" selected disabled>Choose prescription</option>
+                <option v-for="room in prescriptionNames" :value="room" :key="room.id">{{room}}</option>
+              </select>
+            </fieldset>
+
             <button class="btn btn-success" type="submit">Save</button>
           </form>
           <br/>
+          
           <!--First id in route is doctors id and second is patient's id-->
           <button @click="()=>$router.push(`/addexamination/${this.$route.params.idd}/${this.$route.params.idp}`)">Schedule new examination or operation</button>
       </div>
@@ -77,6 +87,7 @@ export default {
   name: "makeReport",
   data() {
     return {
+        prescriptionText: "",
         name: "",
         surnaname: "",
         email: "",
@@ -88,6 +99,7 @@ export default {
         selectedDiagnosis: undefined,
         selectedDiagnosisName: "",
         enteredPrescription: undefined,
+        prescriptionNames:[],
         patient: undefined
     };
   },
@@ -97,6 +109,9 @@ export default {
     },
     refreshInformation() {
       this.surname = this.patient.surname;
+    },
+    changedPrescriptionName(event) {
+      this.prescriptionText = event.target.options[event.target.options.selectedIndex].value;
     },
     editPatientsInfo(e){
       e.preventDefault();
@@ -161,6 +176,9 @@ export default {
       this.height = response.data.height,
       this.bloodType = response.data.bloodType
       ));
+
+    Axios.get(`http://localhost:8082/api/prescriptions/uniquePrescriptionNames`).then(response => (this.prescriptionNames = response.data))
+
 
     this.refreshInformation();
   }

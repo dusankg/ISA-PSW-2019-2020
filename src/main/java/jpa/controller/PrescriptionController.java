@@ -1,6 +1,9 @@
 package jpa.controller;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,8 +24,10 @@ import jpa.dto.PrescriptionDTO;
 import jpa.modeli.Examination;
 import jpa.modeli.ExaminationReport;
 import jpa.modeli.ExaminationType;
+import jpa.modeli.Nurse;
 import jpa.modeli.Patient;
 import jpa.modeli.Prescription;
+import jpa.service.NurseService;
 import jpa.service.PrescriptionService;
 
 
@@ -34,8 +39,12 @@ public class PrescriptionController {
 	@Autowired
 	private PrescriptionService service;
 	
+	@Autowired
+	NurseService nurseService;
+	
+	
 	@GetMapping(value = "/all")
-	public ResponseEntity<List<PrescriptionDTO>> getAllDoctors(){
+	public ResponseEntity<List<PrescriptionDTO>> getAllPrescriptions(){
 		List<Prescription> prescriptions = service.findAll();
 		
 		
@@ -46,6 +55,26 @@ public class PrescriptionController {
 		}
 		// dobro iscitava i ispisuje sve lekove iz prescriptionsDTO
 		return new ResponseEntity<>(prescriptionsDTO, HttpStatus.OK);
+	}
+	
+	@GetMapping(value = "/uniquePrescriptionNames")
+	public ResponseEntity<List<String>> getUniquePrescriptions(){
+		List<Prescription> prescriptions = service.findAll();
+		Set<String> prescriptionNames = new HashSet<String>();
+		
+		List<PrescriptionDTO> prescriptionsDTO = new ArrayList<>();
+		for (Prescription n : prescriptions) {
+			System.out.println("Naziv leka: " + n.getName());
+
+			prescriptionNames.add(n.getName());
+			prescriptionsDTO.add(new PrescriptionDTO(n));
+		}
+		
+		List<String> sortedNames = new ArrayList<String>(prescriptionNames);
+		Collections.sort(sortedNames);
+		
+		// dobro iscitava i ispisuje sve lekove iz prescriptionsDTO
+		return new ResponseEntity<>(sortedNames, HttpStatus.OK);
 	}
 	
 	@GetMapping(value = "/{id}")
@@ -74,16 +103,18 @@ public class PrescriptionController {
 		}
 	}
 	
-	@GetMapping(value = "/validate/{id}")
-	public ResponseEntity<Void> validatePrescription(@PathVariable Long id){
+	@GetMapping(value = "/validate/{id}/{nurseId}")
+	public ResponseEntity<Void> validatePrescription(@PathVariable Long id, @PathVariable Long nurseId){
 	
 		Prescription p = service.findOne(id);
+		Nurse n = nurseService.findOne(nurseId);
 		
 		if(p!=null){
-			System.out.println("da li si ovde");
 			p.setValidated(true);
+			if(n != null) {
+				p.setNurse(n);
+			}
 			p = service.save(p);
-			System.out.println("Stanje sada: "+ p.isValidated());
 			return new ResponseEntity<>(HttpStatus.OK);
 		}else{
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -92,7 +123,7 @@ public class PrescriptionController {
 	}
 	
 	@GetMapping(value = "/nonAccepted")
-	public ResponseEntity<List<PrescriptionDTO>> getNonAcceptedPatients() {
+	public ResponseEntity<List<PrescriptionDTO>> getNonAcceptedPrescriptions() {
 
 		List<Prescription> prescriptions = service.findAll();
 

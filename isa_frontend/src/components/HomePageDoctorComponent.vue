@@ -8,12 +8,72 @@
         <li><router-link :to="{name: 'editdoctor', params: { id: this.id }}">See personal profile</router-link></li>
         <li><router-link to="/addexamination">Schedule new examination</router-link></li>
       </ul>
+    <div class="container">
+      <br/>
+      <h3>Occupations for selected date</h3>
+
+      <fieldset class="form-group">
+              <label>Date</label>
+              <input type="date" class="form-control" v-model="date" required @change="changedDate($event)">
+      </fieldset>
+
+
+    <!--<router-link to = "/doctors"> Neki link </router-link>-->
+    <div class="container">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Starts at</th>
+            <th>Ends at</th>
+            <th>Medical room</th>
+            <th>Patient</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="occupation in doctorsOccupationsForDate" v-bind:key="occupation.id">
+            <td>{{convertToHoursAndMinutes(occupation.pocetniTrenutak)}}</td>
+            <td>{{convertToHoursAndMinutes(occupation.krajnjiTrenutak)}}</td>
+            <td>{{occupation.medicalRoom.roomCodeName}}</td>
+            <td>{{occupation.examination.patient.name}} {{occupation.examination.patient.surname}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    </div>
   </div>
 </template>
 
 <script>
+import Axios from 'axios';
 export default {
-    computed: {
+  data() {
+    return {
+        doctorsOccupationsForDate: [],
+        date: undefined
+    };
+  },
+  methods: {
+    changedDate(){
+        Axios.get(`http://localhost:8082/api/doctors/freeDoctorsForOccupation/${this.$route.params.id}/${this.date}`).then(response => (
+            this.doctorsOccupationsForDate = response.data
+        ));
+    },
+    convertToHoursAndMinutes(timeInMinutes){
+      var satCeo = 0;
+      var sat = 0;
+      var minuti = 0;
+      sat = timeInMinutes / 60;
+      satCeo = Math.round(timeInMinutes / 60);
+
+      if(satCeo > sat){
+        satCeo = satCeo - 1;
+      }
+
+      minuti = Math.round((sat - satCeo)*60);
+      return satCeo + "h " + minuti + "min";
+    }
+  },
+  computed: {
       id() {
         return this.$route.params.id;
       }

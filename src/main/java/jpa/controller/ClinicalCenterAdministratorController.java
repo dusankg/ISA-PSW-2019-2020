@@ -88,6 +88,23 @@ public class ClinicalCenterAdministratorController {
 		return new ResponseEntity<ClinicalCenterAdministratorDTO>(new ClinicalCenterAdministratorDTO(admin), HttpStatus.OK);
 	}
 	
+	
+	
+	@GetMapping(value = "/changePassword/{id}/{newPassword}")
+	public ResponseEntity<ClinicalCenterAdministratorDTO> changePasswordClinicalCenterAdministrator(@PathVariable Long id, @PathVariable String newPassword) {
+
+
+		ClinicalCenterAdministrator admin = service.findOne(id);
+		
+		if (admin == null) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+		
+		admin.setPassword(newPassword);
+		admin = service.save(admin);
+		return new ResponseEntity<ClinicalCenterAdministratorDTO>(new ClinicalCenterAdministratorDTO(admin), HttpStatus.OK);
+	}
+	
 	@PostMapping(consumes = "application/json")
 	public ResponseEntity<ClinicalCenterAdministratorDTO> saveAdministrator(@RequestBody ClinicalCenterAdministratorDTO clinicDTO) {
 

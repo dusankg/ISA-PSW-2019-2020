@@ -42,7 +42,7 @@
 
             <fieldset class="form-group">
               <label>Starting time</label>
-              <select class="form-control" required @change="changedStartingHour($event)" :disabled="this.zaIzmenu == false">
+              <select class="form-control" v-model="startingHour" required @change="changedStartingHour($event)" :disabled="this.zaIzmenu == false">
                 <option value=this.startingHour selected disabled>{{this.startingHour}}h</option>
                 <option value="7">7h</option><option value="8">8h</option> <option value="9">9h</option>
                 <option value="10">10h</option><option value="11">11h</option> <option value="12">12h</option>
@@ -52,7 +52,7 @@
             </fieldset>
 
             <fieldset class="form-group">
-              <select class="form-control" required @change="changedStartingMinute($event)" :disabled="this.zaIzmenu == false">
+              <select class="form-control" v-model="startingMinute" required @change="changedStartingMinute($event)" :disabled="this.zaIzmenu == false">
                 <option value=this.startingMinute selected disabled>{{this.startingMinute}}min</option>
                 <option value="0">0min</option><option value="5">5min</option> <option value="10">10min</option>
                 <option value="15">15min</option><option value="20">20min</option> <option value="25">25min</option>
@@ -64,7 +64,7 @@
 
             <fieldset class="form-group">
               <label>Duration</label>
-              <select class="form-control" required @change="changedDurationHour($event)" :disabled="this.zaIzmenu == false">
+              <select class="form-control" v-model="durationHour" required @change="changedDurationHour($event)" :disabled="this.zaIzmenu == false">
                 <option value=this.durationHour selected disabled>{{this.durationHour}}h</option>
                 <option value="0">0h</option><option value="1">1h</option> <option value="2">2h</option>
                 <option value="3">3h</option><option value="4">4h</option> <option value="5">5h</option>
@@ -72,7 +72,7 @@
             </fieldset>
 
             <fieldset class="form-group">
-              <select class="form-control" required @change="changedDurationMinute($event)" :disabled="this.zaIzmenu == false">
+              <select class="form-control" v-model="durationMinute" required @change="changedDurationMinute($event)" :disabled="this.zaIzmenu == false">
                 <option value=this.durationMinute selected disabled>{{this.durationMinute}}min</option>
                 <option value="0">0min</option><option value="5">5min</option> <option value="10">10min</option>
                 <option value="15">15min</option><option value="20">20min</option> <option value="25">25min</option>
@@ -93,18 +93,15 @@
             </fieldset>
 
             <fieldset class="form-group" >
-              <label>Available doctors for the examination date and time</label>
-              <select class="form-control" required @change="changedDoctor($event)">
+              <label>Available addional doctors for the examination date and time</label>
+              <select class="form-control" @change="changedDoctor($event)">
                 <option value="" selected disabled>Choose doctor</option>
                 <option v-for="doc in freeDoctors" :value="doc.id" :key="doc.id">{{doc.name}}</option>
               </select>
             </fieldset>
 
-            
             <button class="btn btn-success" type="submit">Book</button>
           </form>
-
-          
 
       </div>
     </div>
@@ -142,7 +139,7 @@ export default {
     changedDate(){
         //this.date = event.target.options[event.target.options.selectedIndex].text;
         this.retriveFreeRoomsForOccupation();
-        //this.retriveFreeDoctorsForOccupation();
+        this.retriveFreeDoctorsForOccupation();
     },
     changedStartingHour(event){
         this.startingHour = event.target.options[event.target.options.selectedIndex].value;
@@ -168,7 +165,6 @@ export default {
         Axios.get(`http://localhost:8082/api/medicalrooms/freeOperationRoomForExamination/${this.$route.params.examinationId}`).then(response => (
             this.freeOperationRooms = response.data
         ));
-        //return this.freeOperationRooms;
     },
     retriveFreeRoomsForOccupation(){
         
@@ -176,7 +172,6 @@ export default {
         this.freeOperationRooms = response.data
       ));
 
-      //return this.freeOperationRooms;
     },
     retriveFreeDoctorsFromExamination(){
         Axios.get(`http://localhost:8082/api/doctors/freeDoctors/${this.$route.params.examinationId}`).then(response => (
@@ -215,7 +210,7 @@ export default {
           pocSat = pocSat - 1;
         } 
         this.startingMinute = Math.round((this.startingHour - pocSat) * 60);
-        this.startingHour = pocSat;
+        this.startingHour = pocSat*1;
 
         if(durationSat > this.durationHour ){
           durationSat = durationSat - 1;
@@ -238,7 +233,13 @@ export default {
         
         //Axios.post(`http://localhost:8082/api/medicalrooms/bookOperationRoom/${this.selectedRoom.id}/${this.date}/${this.startingSum}/${this.durationSum}`);
         Axios.post(`http://localhost:8082/api/medicalrooms/bookOperationRoom/${this.selectedRoom.id}`, temp);
-        Axios.post(`http://localhost:8082/api/doctors/bookDoctor/${this.selectedDoctor.id}`, temp);
+        
+        if(this.selectedDoctor != null){
+          Axios.post(`http://localhost:8082/api/doctors/bookDoctor/${this.selectedDoctor.id}/${this.selectedRoom.id}`, temp);
+        }
+
+        Axios.post(`http://localhost:8082/api/doctors/bookDoctor/${this.examination.doctor.id}/${this.selectedRoom.id}/${this.examination.id}`, temp);
+
         Axios.get(`http://localhost:8082/api/examinations/acceptRequestForOperation/${this.$route.params.examinationId}`);
         
         if(this.zaIzmenu){

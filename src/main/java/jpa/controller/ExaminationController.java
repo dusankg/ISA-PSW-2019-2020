@@ -3,7 +3,6 @@ package jpa.controller;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import javax.servlet.http.HttpSession;
 
@@ -12,8 +11,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,21 +24,16 @@ import jpa.dto.ExaminationDTO;
 import jpa.modeli.Doctor;
 import jpa.modeli.Examination;
 import jpa.modeli.ExaminationType;
-import jpa.modeli.MedicalRoom;
-import jpa.modeli.Occupation;
 import jpa.modeli.Patient;
 import jpa.service.DoctorService;
 import jpa.service.EmailService;
 import jpa.service.ExaminationService;
 import jpa.service.ExaminationTypeService;
-import jpa.service.MedicalRoomService;
-import jpa.service.OccupationService;
 import jpa.service.PatientService;
 
 @RestController
 @CrossOrigin(origins = {"http://localhost:3000", "http://localhost:4200", "http://localhost:8080"},allowCredentials= "true")
 @RequestMapping(value = "api/examinations")
-@EnableScheduling
 public class ExaminationController {
 	private Logger logger = LoggerFactory.getLogger(ExaminationController.class);
 	@Autowired
@@ -55,12 +47,6 @@ public class ExaminationController {
 	
 	@Autowired
 	private DoctorService doctorService;
-	
-	@Autowired
-	private MedicalRoomService medicalRoomService;
-	
-	@Autowired
-	private OccupationService occupationService;
 	
 	@GetMapping(value = "/all")
 	public ResponseEntity<List<ExaminationDTO>> getAllExaminations(HttpSession Session){
@@ -153,7 +139,6 @@ public class ExaminationController {
 		
 		Patient patient = patientService.findOne(examinationDTO.getPatient().getId());
 		
-		MedicalRoom room = medicalRoomService.findOne(examinationDTO.getRoom().getId());
 		
 		Examination examination = new Examination();
 		examination.setId(null);
@@ -168,10 +153,6 @@ public class ExaminationController {
 		
 		if(patient != null) {
 			examination.setPatient(patient);
-		}
-		
-		if(room != null) {
-			examination.setRoom(room);
 		}
 		
 		examination = examinationService.save(examination);
@@ -261,9 +242,6 @@ public class ExaminationController {
 	
 	@GetMapping(value = "reserve/{id1}")
 	public ResponseEntity<ExaminationDTO> updateExamination(@PathVariable Long id1,HttpSession Session ) {
-		System.out.println("ARE YOU HEREEEEE???");
-		// an examination must exist
-		System.out.println(id1);
 
 		Examination examination = examinationService.findOne(id1);
 		Patient patient = patientService.findOne((Long)Session.getAttribute("id"));
@@ -323,22 +301,6 @@ public class ExaminationController {
 		}
 	}
 	
-	// Changing parameters of examination when it is confirmed by administrator
-	@GetMapping(value = "/acceptRequestForExamination/{id}/{roomId}")
-	public ResponseEntity<Void> acceptExamination(@PathVariable Long id, @PathVariable Long roomId){
-		Examination examination = examinationService.findOne(id);
-		
-		if(examination != null) {
-			examination.setAccepted(true);
-			MedicalRoom room  = medicalRoomService.findOne(roomId);
-			examination.setRoom(room);
-			examination = examinationService.save(examination);
-			return new ResponseEntity<>(HttpStatus.OK);
-		}else{
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		}
-	}
-	
 	@GetMapping(value = "/changeDateAndTime/{id}/{date}/{startingSum}/{endingSum}")
 	public ResponseEntity<Void> changeDateAndTime(@PathVariable Long id, @PathVariable Date date,@PathVariable Integer startingSum, @PathVariable Integer endingSum){
 		Examination examination = examinationService.findOne(id);
@@ -352,77 +314,5 @@ public class ExaminationController {
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
-	// Sending e-mail to doctor and patient when examination is accepted
-	@GetMapping(value = "/examinationAccepted/{id}")
-	public ResponseEntity<Void> examinationAccepted(@PathVariable Long id){
-		Examination examination = examinationService.findOne(id);
-		
-		if(examination != null) {
-			try {
-				emailService.sendNotificationExaminationDoctor(examination);
-			} catch(Exception e) {
-				logger.info("Error while sending email!");
-			}
-			try {
-				emailService.sendNotificationExaminationPatient(examination);
-			} catch(Exception e) {
-				logger.info("Error while sending email!");
-			}
-			return new ResponseEntity<>(HttpStatus.OK);
-		}else{
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		}
-	}
-	
-	// Automatic assign rooms for pending examination requests
-	//Currently this method is called on every half hour - consider changing that if necessary
-	@Scheduled(initialDelayString = "${schedule.initialdelay}", fixedDelayString = "${schedule.fixeddelay}")
-	public void scheduledAccept() {
-		System.out.println("Scheduled task started.");
-		List<Examination> examinations = examinationService.findAll();
-		for(Examination e : examinations) {
-			if(e.getPatient() != null && !e.getOperation()) {
-				// If there are pending requests
-				if(!e.getAccepted()) {
-					Date date = e.getDate();
-					Integer startingSum = e.getStartTime();
-					Integer endingSum = e.getEndTime();
-					List<MedicalRoom> medicalRooms = medicalRoomService.findAll();
-					for(MedicalRoom room : medicalRooms) {
-						boolean free = true;
-						Set<Occupation> occupations = room.getOccupations();
-						for(Occupation oc : occupations) {
-							System.out.println(!(!oc.getDate().equals(date) || endingSum <= oc.getPocetniTrenutak() ||  startingSum >= oc.getKrajnjiTrenutak()));
-							if( !(!oc.getDate().equals(date) || endingSum <= oc.getPocetniTrenutak() ||  startingSum >= oc.getKrajnjiTrenutak())) {  
-								free = false;
-							}
-						}
-						if(free) {
-							System.out.println("Dodeljena je soba za pregled automatski");
-							e.setAccepted(true);
-							e.setRoom(room);
-							e = examinationService.save(e);
-							// Evident examination in doctors work calendar and book a room
-							Doctor d = e.getDoctor();
-							Occupation oc1 = new Occupation(date, startingSum, endingSum);
-							oc1.setDoctor(d);
-							oc1 = occupationService.save(oc1);
-							Occupation oc2 = new Occupation(date, startingSum, endingSum);
-							oc2.setMedicalRoom(room);
-							oc2 = occupationService.save(oc2);
-							// Sending e-mail
-							try {
-								emailService.sendNotificationExaminationDoctor(e);
-								emailService.sendNotificationExaminationPatient(e);
-							} catch(Exception ex) {
-								logger.info("Error while sending email!");
-							}
-							break;	
-						}
-					}
-				}
-			}
-		}
-	}
 	
 }

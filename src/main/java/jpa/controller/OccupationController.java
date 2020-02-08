@@ -48,7 +48,7 @@ public class OccupationController {
 	}
 	
 	@PostMapping(consumes = "application/json")
-	public ResponseEntity<OccupationDTO> saveDiagnosis(@RequestBody OccupationDTO oc) {
+	public ResponseEntity<OccupationDTO> saveOccupation(@RequestBody OccupationDTO oc) {
 
 		Occupation occupation = new Occupation();
 		occupation.setH7(oc.getH7());

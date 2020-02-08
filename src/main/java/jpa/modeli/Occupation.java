@@ -63,11 +63,14 @@ public class Occupation {
 	
 
 	// morace da ima i doktore i examinatione
-	@ManyToOne( fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.EAGER)
 	private MedicalRoom medicalRoom;
-	// Had to delete cascade type to make scheduling work and be able to add occupation to room and doctor
-	@ManyToOne( fetch = FetchType.EAGER)
+	
+	@ManyToOne(fetch = FetchType.EAGER)
 	private Doctor doctor;
+	
+	@ManyToOne(fetch = FetchType.EAGER)
+	private Examination examination;
 	
 	public Occupation() {
 		
@@ -203,6 +206,12 @@ public class Occupation {
 	}
 	public void setDoctor(Doctor doctor) {
 		this.doctor = doctor;
+	}
+	public Examination getExamination() {
+		return examination;
+	}
+	public void setExamination(Examination examination) {
+		this.examination = examination;
 	}
 
 	

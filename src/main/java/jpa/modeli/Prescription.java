@@ -31,6 +31,8 @@ public class Prescription {
 	@OneToMany(mappedBy = "prescription", fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
 	private Set<ExaminationReport> examinationReports = new HashSet<ExaminationReport>();
 	
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	private Nurse nurse;
 
 	public Prescription(String naziv, boolean validated) {
 		super();
@@ -69,6 +71,18 @@ public class Prescription {
 	}
 	public void setExaminationReport(Set<ExaminationReport> examinationReports) {
 		this.examinationReports = examinationReports;
+	}
+	public Set<ExaminationReport> getExaminationReports() {
+		return examinationReports;
+	}
+	public void setExaminationReports(Set<ExaminationReport> examinationReports) {
+		this.examinationReports = examinationReports;
+	}
+	public Nurse getNurse() {
+		return nurse;
+	}
+	public void setNurse(Nurse nurse) {
+		this.nurse = nurse;
 	}
 	
 	

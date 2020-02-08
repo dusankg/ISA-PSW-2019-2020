@@ -36,8 +36,7 @@ public class MedicalRoom {
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private Clinic clinic;
 	
-	// Had to change fetchType to eager because scheduling
-	@OneToMany(mappedBy = "medicalRoom", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "medicalRoom", fetch = FetchType.EAGER)
 	private Set<Occupation> occupations = new HashSet<Occupation>();
 	
 	@OneToMany(mappedBy = "room", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
