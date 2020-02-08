@@ -334,4 +334,54 @@ public class ExaminationController {
 	}
 	
 	
+	// Automatic assign rooms for pending examination requests
+	//Currently this method is called on every hour - consider changing that if necessary
+	@Scheduled(initialDelayString = "${schedule.initialdelay}", fixedDelayString = "${schedule.fixeddelay}")
+	public void scheduledAccept() {
+		System.out.println("Scheduled task started.");
+		List<Examination> examinations = examinationService.findAll();
+		for(Examination e : examinations) {
+			if(e.getPatient() != null && !e.getOperation()) {
+				// If there are pending requests
+				if(!e.getAccepted()) {
+					Date date = e.getDate();
+					Integer startingSum = e.getStartTime();
+					Integer endingSum = e.getEndTime();
+					List<MedicalRoom> medicalRooms = medicalRoomService.findAll();
+					for(MedicalRoom room : medicalRooms) {
+						boolean free = true;
+						Set<Occupation> occupations = room.getOccupations();
+						for(Occupation oc : occupations) {
+							if( !(!oc.getDate().equals(date) || endingSum <= oc.getPocetniTrenutak() ||  startingSum >= oc.getKrajnjiTrenutak())) {  
+								free = false;
+							}
+						}
+						if(free) {
+							System.out.println("Dodeljena je soba za pregled automatski");
+							e.setAccepted(true);
+							e.setRoom(room);
+							e = examinationService.save(e);
+							// Evident examination in doctors work calendar and book a room
+							Doctor d = e.getDoctor();
+							Occupation oc1 = new Occupation(date, startingSum, endingSum);
+							oc1.setDoctor(d);
+							oc1 = occupationService.save(oc1);
+							Occupation oc2 = new Occupation(date, startingSum, endingSum);
+							oc2.setMedicalRoom(room);
+							oc2 = occupationService.save(oc2);
+							// Sending e-mail
+							try {
+								emailService.sendNotificationExaminationDoctor(e);
+								emailService.sendNotificationExaminationPatient(e);
+							} catch(Exception ex) {
+								logger.info("Error while sending email!");
+							}
+							break;	
+						}
+					}
+				}
+			}
+		}
+	}
+	
 }

@@ -7,6 +7,9 @@ import axios from "axios";
         {{message}} 
     </div>
     <div class="container">
+      <input type="text" class="form-control" v-model="searchName" placeholder="Search doctor by name"/>
+      <input type="text" class="form-control" v-model="searchSurname" placeholder="Search doctor by surname"/>
+      <input type="text" class="form-control" v-model="searchClinic" placeholder="Search doctor by clinic"/>
       <table class="table">
         <thead>
           <tr>
@@ -22,7 +25,7 @@ import axios from "axios";
           </tr>
         </thead>
         <tbody>
-          <tr v-for="doctor in doctors" v-bind:key="doctor.id">
+          <tr v-for="doctor in filteredDoctors" v-bind:key="doctor.id">
             <td>{{doctor.id}}</td>
             <td>{{doctor.name}}</td>
             <td>{{doctor.surname}}</td>
@@ -111,8 +114,8 @@ export default {
     return {
         doctors: [],
         message: null,
-        name: undefined,
-        surname: undefined,
+        name: "",
+        surname: "",
         password: undefined,
         email: undefined,
         adress: undefined,
@@ -124,6 +127,9 @@ export default {
         clinics: [],
         selectedClinic: undefined,
         selectedClinicName: "",
+        searchName: "",
+        searchSurname: "",
+        searchClinic: ""
     };
   },
   methods: {
@@ -181,9 +187,28 @@ export default {
       });
     }
   },
+
+  computed: {
+    filteredDoctors: function(){
+      return this.doctors.filter((doctor) => {
+        if(doctor.name.toLowerCase().match(this.searchName.toLowerCase()) &&
+        doctor.surname.toLowerCase().match(this.searchSurname.toLowerCase()) &&
+        doctor.clinic.name.toLowerCase().match(this.searchClinic.toLowerCase())){
+          return true;
+        } else {
+          return false;
+        }
+      });
+    }
+  },
+
   created() {
     this.refreshDoctors();
     this.retrieveClinicsForSelect();
+  },
+
+  mounted() {
+    this.refreshDoctors();
   }
 
 };
