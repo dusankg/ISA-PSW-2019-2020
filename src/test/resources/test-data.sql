@@ -1,0 +1,1 @@
+insert into patient (name, surname, email, password, adress, city, state, phone, lbo, validated, accepted) values ('1', '32131313', 'novi.com', '123', '1232131321', '3213123123', '1231231231', 111222333, 111, false, false);
