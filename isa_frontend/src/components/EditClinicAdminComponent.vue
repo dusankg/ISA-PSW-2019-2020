@@ -52,7 +52,6 @@
 
 <script>
 import Axios from 'axios';
-import clinicAdministratorService from '../service/ClinicAdministratorService';
 export default {
   name: "EnterClinicalCenterAdministrator",
   data() {
@@ -90,13 +89,16 @@ export default {
         }
 
         if(this.password==this.password2){
-            Axios.put("http://localhost:8082/api/clinicalCenterAdministrators", temp);
-            this.$router.push(`/ClinicAdministratorHomePage/${this.id}`);
+            Axios.put("http://localhost:8082/api/clinicalAdministrators", temp).then(res => {
+                this.$router.push(`/ClinicAdministratorHomePage/${this.id}`);
+                res.message;
+            });
+            
         }
     
     },
     refreshInformation(){
-        clinicAdministratorService.retrieveAdministratorInformation(this.id).then(response =>{
+        Axios.get(`http://localhost:8082/api/clinicalAdministrators/${this.id}`).then(response =>{
             this.name = response.data.name;
             this.surname = response.data.surname;
             this.email = response.data.email;

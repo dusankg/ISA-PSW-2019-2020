@@ -58,9 +58,6 @@ public class ExaminationController {
 	
 	
 	@Autowired
-	private MedicalRoomService medicalRoomService;
-	
-	@Autowired
 	private DoctorService doctorService;
 	
 	@GetMapping(value = "/all")

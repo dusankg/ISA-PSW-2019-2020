@@ -1,0 +1,90 @@
+<template>
+
+
+  <div class="container">
+
+    <ul>
+        <li><router-link to="/clinics">Clinics</router-link></li>
+        <li><router-link to="/doctors">Doctors</router-link></li>
+        <li><router-link to="/medicalRooms">Medical Rooms</router-link></li> 
+        <li><router-link to="/examinationtypes">Examination Types</router-link></li>
+        <li><router-link :to="{name: 'businessreport', params: { id: this.clinic_id}}">Business Report</router-link></li>  
+        <li><router-link to="/absencerequests">Absence Requests</router-link></li>       
+        <li><router-link :to="{name: 'editclinicadmin', params: { id: this.$route.params.id }}">Edit personal profile</router-link></li>                
+    </ul>
+    </div>
+</template>
+
+<script>
+import Axios from 'axios';
+export default {
+  name: "ClinicAdministratorHomePage",
+  data() {
+    return {
+        administrator: {
+          id: 0,
+          name: '',
+          surname:'',
+          email:'',
+          password:'',
+          adress:'',
+          city: '',
+          state: '',
+          phone: 0,
+          validated: true,
+          clinic: undefined,
+        },
+        message: null,
+        clinic_id: undefined
+    };
+  },
+  methods: {
+    refreshAdministrator(){
+        Axios.get('http://localhost:8082/api/clinicalAdministrators/'+ this.$route.params.id).then(response => (this.administrator = response.data, this.clinic_id = response.data.clinic.id))
+        /* eslint-disable no-console */
+        console.log("**************************")
+        if(this.administrator.id == 1){
+            console.log("Ima samo nece da ispise");
+        } else{
+          console.log("Nije ni preuzeo podatke");
+        }
+
+    }
+  },
+  created() {
+    this.refreshAdministrator();
+    this.retrieveClinic();
+  }
+  
+}
+</script>
+
+<style>
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: rgb(29, 168, 64);
+}
+
+li {
+  float: left;
+}
+
+li a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+li a:hover {
+  background-color: rgb(10, 78, 14);
+  text-decoration: none;
+  color: white;
+}
+
+
+</style>
