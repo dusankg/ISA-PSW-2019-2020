@@ -30,6 +30,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
 import jpa.TestUtil;
+import jpa.constants.ExaminationConstants;
 import jpa.modeli.Examination;
 
 @RunWith(SpringRunner.class)
@@ -40,6 +41,8 @@ public class ExaminationControllerTest {
 	public static final String DB_TYPE = "Ocni pregled";
 	public static final String DB_D_NAME = "DrMr";
 	public java.sql.Date date = new java.sql.Date(2020, 02, 01);
+	public static final Integer DB_START_TIME = 420;
+	public static final Integer DB_END_TIME = 480;
 	private MediaType contentType = new MediaType(MediaType.APPLICATION_JSON.getType(),
 			MediaType.APPLICATION_JSON.getSubtype());
 
@@ -110,7 +113,16 @@ public class ExaminationControllerTest {
 
 	}
 	
-	
+	@Test
+	public void testGettingExaminations() throws Exception{
+		mockMvc.perform(get(URL_PREFIX + "/all")).andExpect(status().isOk())
+		.andExpect(content().contentType(contentType))
+		.andExpect(jsonPath("$", hasSize(2)))
+		.andExpect(jsonPath("$.[*].id").value(hasItem(ExaminationConstants.DB_ID.intValue())))
+		//.andExpect(jsonPath("$.[*].date").value(hasItem(new java.sql.Date(dateCalendarNew.getTimeInMillis()))))
+		.andExpect(jsonPath("$.[*].startTime").value(hasItem(DB_START_TIME)))
+		.andExpect(jsonPath("$.[*].endTime").value(hasItem(DB_END_TIME)));
+	}
 	
 	
 	
