@@ -21,6 +21,7 @@ Vue.use(Vuelidate);
             <option>doctor</option>
             <option>ClinicalCenterAdministrator</option>
             <option>Nurse</option>
+            <option>ClinicAdministrator</option>
           </select>
         </fieldset>
         <button class="btn btn-success" type="submit">Login</button>
@@ -47,7 +48,7 @@ export default {
   name: "Login",
   data() {
     return {
-        
+        clinicAdministrators: []
     };
   },
   methods: {
@@ -70,11 +71,14 @@ export default {
     Axios.get('http://localhost:8082/api/nurses/all').then(response => (this.nurses = response.data))
      
     },
+    refreshClinicAdministrator(){
+      Axios.get('http://localhost:8082/api/clinicalAdministrators/all').then(response => (this.clinicAdministrators = response.data));
+    },
     validateAndSubmit(e) {
     e.preventDefault();
     this.refreshPatients
     this.refreshDoctors
-    this.re
+   
    
     var temp={
       "email": this.email,
@@ -141,12 +145,24 @@ export default {
             }
         }
     }
+
+    else if (temp.role == 'ClinicAdministrator'){
+           console.log(this.clinicAdministrators.length)
+        for(i = 0; i<this.clinicAdministrators.length; i++){
+          /* eslint-disable no-console */
+            if(temp.email == this.clinicAdministrators[i].email && temp.password == this.clinicAdministrators[i].password){
+              ispravno = true;
+              indexNadjenog = this.clinicAdministrators[i].id;
+              uloga = temp.role;
+            }
+        }
+    }
      
 
     if(ispravno == true){
         //Axios.get("http://localhost:8082/api/patients/all")
         console.log("Nasao")
-        if (temp.role == 'ClinicalCenterAdministrator' || temp.role == "Nurse" || temp.role == 'doctor'){
+        if (temp.role == 'ClinicalCenterAdministrator' || temp.role == "Nurse" || temp.role == 'doctor' || temp.role == 'ClinicAdministrator'){
           this.$router.push('/'+uloga+'HomePage/'+ indexNadjenog) 
         }else {
            Axios.get('http://localhost:8082/api/patients/'+indexNadjenog, {withCredentials: true}).then(response =>{
@@ -175,6 +191,7 @@ export default {
     this.refreshDoctors();
     this.refreshClinicCenterAdministrator();
     this.refreshNurse();
+    this.refreshClinicAdministrator();
   }
 };
 </script>

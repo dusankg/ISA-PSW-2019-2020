@@ -233,7 +233,22 @@ const router = new Router({
       path: '/bookExaminationRoom/:examinationId',
       name: 'bookExaminationRoom',
       component: () => import("./components/BookExaminationRoomComponent")
-    } 
+    },
+    {
+      path: "/ClinicAdministratorHomePage/:id",
+      name: "ClinicAdministratorHomePage",
+      component: () => import("./components/ClinicAdministratorHomePageComponent")
+    },
+    {
+      path: "/editclinicadmin/:id",
+      name: "editclinicadmin",
+      component: () => import("./components/EditClinicAdminComponent")
+    },
+    {
+      path: "/businessreport/:id",
+      name: "businessreport",
+      component: () => import("./components/BusinessReportComponent")
+    }  
   ]
 });
 
