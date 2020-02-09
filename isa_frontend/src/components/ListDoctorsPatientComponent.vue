@@ -14,7 +14,7 @@ import axios from "axios";
             <th>Name</th>
             <th>Surname</th>
             <th>Email</th>
-            <th>Password</th>
+            
             <th>Adress</th>
             <th>City</th>
             <th>State</th>
@@ -27,7 +27,7 @@ import axios from "axios";
             <td>{{doctor.name}}</td>
             <td>{{doctor.surname}}</td>
             <td>{{doctor.email}}</td>
-            <td>{{doctor.password}}</td>
+            
             <td>{{doctor.adress}}</td>
             <td>{{doctor.city}}</td>
             <td>{{doctor.state}}</td>
@@ -57,7 +57,7 @@ export default {
         message: null,
         name: undefined,
         surname: undefined,
-        password: undefined,
+       
         email: undefined,
         adress: undefined,
         city: undefined, 

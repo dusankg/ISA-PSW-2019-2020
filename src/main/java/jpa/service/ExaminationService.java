@@ -18,7 +18,7 @@ public class ExaminationService {
 	private ExaminationRepository examinationRepository;
 
 	public Examination findOne(Long id) {
-		return examinationRepository.findById(id).orElseGet(null);
+		return examinationRepository.findOneById(id);
 	}
 	
 	public Examination findOneByDate(Date date) {
