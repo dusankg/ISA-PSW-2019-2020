@@ -7,7 +7,7 @@ import axios from "axios"
     <div class="container">
       <form @submit.prevent="filter()">
         <fieldset class="form-group">
-              <label>Duration</label>
+              <label>Rating</label>
               <select class="form-control" v-model="rating" required>
                 <option value="" selected disabled>Choose Rating</option>
                 <option value="0">0</option><option value="1">1</option> <option value="2">2</option>

@@ -27,6 +27,7 @@ Vue.use(Vuelidate);
         </tbody>
       </table>
 
+      <h3> Rate doctors </h3>
       <table class="table">
         <thead>
           <tr>

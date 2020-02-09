@@ -224,7 +224,7 @@ export default {
         }
         
         Axios.post(`http://localhost:8082/api/medicalrooms/bookOperationRoom/${this.selectedRoom.id}`, temp);
-        Axios.post(`http://localhost:8082/api/doctors/bookDoctor/${this.selectedDoctor.id}`, temp);
+        Axios.post(`http://localhost:8082/api/doctors/bookDoctor/${this.selectedDoctor.id}/${this.selectedRoom.id}/${this.$route.params.examinationId}`, temp);
         Axios.get(`http://localhost:8082/api/examinations/acceptRequestForExamination/${this.$route.params.examinationId}/${this.selectedRoom.id}`).then(response => {
           Axios.get(`http://localhost:8082/api/examinations/examinationAccepted/${this.$route.params.examinationId}`);
           response.message;

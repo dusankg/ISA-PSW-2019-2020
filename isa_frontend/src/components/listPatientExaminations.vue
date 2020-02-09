@@ -20,8 +20,8 @@ Vue.use(Vuelidate);
           <tr v-for="examination in examinations" v-bind:key="examination.id">
             <td>{{examination.id}}</td>
             <td>{{examination.date}}</td>
-            <td>{{examination.startTime}}</td>
-            <td>{{examination.endTime}}</td>
+            <td>{{examination.startTime / 60}} : {{examination.startTime % 60 * 60}}</td>
+            <td>{{examination.endTime / 60}} : {{examination.endTime % 60 * 60}} </td>
             <td>{{examination.price}}</td>
             <td>{{examination.type.typeName}}</td>
             <td>{{examination.doctor.name}}</td>

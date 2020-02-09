@@ -235,7 +235,7 @@ export default {
         Axios.post(`http://localhost:8082/api/medicalrooms/bookOperationRoom/${this.selectedRoom.id}`, temp);
         
         if(this.selectedDoctor != null){
-          Axios.post(`http://localhost:8082/api/doctors/bookDoctor/${this.selectedDoctor.id}/${this.selectedRoom.id}`, temp);
+          Axios.post(`http://localhost:8082/api/doctors/bookDoctor/${this.selectedDoctor.id}/${this.selectedRoom.id}/${this.examination.id}`, temp);
         }
 
         Axios.post(`http://localhost:8082/api/doctors/bookDoctor/${this.examination.doctor.id}/${this.selectedRoom.id}/${this.examination.id}`, temp);

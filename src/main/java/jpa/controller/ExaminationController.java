@@ -103,11 +103,11 @@ public class ExaminationController {
 		List<ExaminationDTO> examinationsDTO = new ArrayList<>();
 	
 		for (Examination e : examinations) {
-			if(e.getPatient() != null){
-			if(Session.getAttribute("id")==e.getPatient().getId()){
-
-				examinationsDTO.add(new ExaminationDTO(e));
-			}
+			if(e.getPatient() != null && e.getAccepted()){
+				if(Session.getAttribute("id")==e.getPatient().getId() ){
+	
+					examinationsDTO.add(new ExaminationDTO(e));
+				}
 			}
 
 		}
@@ -132,6 +132,44 @@ public class ExaminationController {
 		
 		return new ResponseEntity<>(examinationsDTO, HttpStatus.OK);
 	}
+	
+	// Changing parameters of examination when it is confirmed by administrator 
+	@GetMapping(value = "/acceptRequestForExamination/{id}/{roomId}") 
+	public ResponseEntity<Void> acceptExamination(@PathVariable Long id, @PathVariable Long roomId){ 
+		Examination examination = examinationService.findOne(id); 
+		 
+		if(examination != null) { 
+			examination.setAccepted(true); 
+			MedicalRoom room  = medicalRoomService.findOne(roomId); 
+			examination.setRoom(room); 
+			examination = examinationService.save(examination); 
+			return new ResponseEntity<>(HttpStatus.OK); 
+		}else{ 
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND); 
+		} 
+	}
+	
+	// Sending e-mail to doctor and patient when examination is accepted 
+		@GetMapping(value = "/examinationAccepted/{id}") 
+		public ResponseEntity<Void> examinationAccepted(@PathVariable Long id){ 
+			Examination examination = examinationService.findOne(id); 
+			 
+			if(examination != null) { 
+				try { 
+					emailService.sendNotificationExaminationDoctor(examination); 
+				} catch(Exception e) { 
+					logger.info("Error while sending email!"); 
+				} 
+				try { 
+					emailService.sendNotificationExaminationPatient(examination); 
+				} catch(Exception e) { 
+					logger.info("Error while sending email!"); 
+				} 
+				return new ResponseEntity<>(HttpStatus.OK); 
+			}else{ 
+				return new ResponseEntity<>(HttpStatus.NOT_FOUND); 
+			} 
+		}
 	
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<ExaminationDTO> getExamination(@PathVariable Long id) {

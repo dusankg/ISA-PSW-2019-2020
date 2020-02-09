@@ -77,7 +77,7 @@ public class DoctorController {
 	private Logger logger = LoggerFactory.getLogger(DoctorController.class);
 	
 	@GetMapping(value = "/all")
-	public ResponseEntity<List<DoctorDTO>> getAllDoctors(HttpSession Session){
+	public ResponseEntity<List<DoctorDTO>> getAllDoctors(){
 		List<Doctor> doctors = doctorService.findAll();
 		
 		//convert doctors to DTOs
@@ -356,15 +356,6 @@ public class DoctorController {
 					}
 				
 			}	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	
 	
