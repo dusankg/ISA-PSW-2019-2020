@@ -24,7 +24,7 @@ import jpa.modeli.Occupation;
 import jpa.service.OccupationService;
 
 @RestController
-@CrossOrigin(origins = { "http://localhost:3000", "http://localhost:4200", "http://localhost:8080" })
+@CrossOrigin(origins = { "http://localhost:3000", "http://localhost:4200", "http://localhost:8080" },allowCredentials= "true")
 @RequestMapping(value = "api/occupations")
 public class OccupationController {
 

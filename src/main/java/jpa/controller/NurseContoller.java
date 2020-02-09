@@ -3,6 +3,8 @@ package jpa.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,14 +21,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import jpa.dto.AbsenceRequestDTO;
+import jpa.dto.ClinicalAdministratorDTO;
 import jpa.dto.NurseDTO;
 import jpa.modeli.AbsenceRequest;
+import jpa.modeli.ClinicalAdministrator;
 import jpa.modeli.Nurse;
 import jpa.service.EmailService;
 import jpa.service.NurseService;
 
 @RestController
-@CrossOrigin(origins = { "http://localhost:3000", "http://localhost:4200", "http://localhost:8080" })
+@CrossOrigin(origins = { "http://localhost:3000", "http://localhost:4200", "http://localhost:8080" }, allowCredentials= "true")
 @RequestMapping(value = "api/nurses")
 public class NurseContoller {
 
@@ -40,6 +44,7 @@ public class NurseContoller {
 	
 	@GetMapping(value = "/all")
 	public ResponseEntity<List<NurseDTO>> getAllNurses(){
+		
 		List<Nurse> nurses = nurseService.findAll();
 		
 		
@@ -51,10 +56,32 @@ public class NurseContoller {
 		return new ResponseEntity<>(nursesDTO, HttpStatus.OK);
 	}
 	
+	@GetMapping(value="/login/{id}")
+	public ResponseEntity<NurseDTO> loginNurse(@PathVariable Long id, HttpSession session){
+
+		System.out.println("Loginovao sam se kao nurse id: " + id);
+		Nurse nurse = nurseService.findOne(id);
+		if(nurse == null) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+		
+		session.setAttribute("role", "NURSE");
+		session.setAttribute("id", id);
+		
+		return new ResponseEntity<>(new NurseDTO(nurse),HttpStatus.OK);
+	}
+	
 	
 	@GetMapping(value = "/{id}")
-	public ResponseEntity<NurseDTO> getNurse(@PathVariable Long id) {
+	public ResponseEntity<NurseDTO> getNurse(@PathVariable Long id, HttpSession session) {
 
+		if( !(session.getAttribute("role").equals("NURSE") || session.getAttribute("role").equals("DOCTOR") 
+				|| session.getAttribute("role").equals("PATIENT") || session.getAttribute("role").equals("CLINICALADMINISTRATOR") 
+				|| session.getAttribute("role").equals("CLINICALCENTERADMINISTRATOR") )) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+		
+		
 		Nurse nurse = nurseService.findOne(id);
 
 		// doctor must exist
@@ -86,8 +113,12 @@ public class NurseContoller {
 	}
 	
 	@PutMapping(consumes = "application/json")
-	public ResponseEntity<NurseDTO> updateNurse(@RequestBody NurseDTO nurseDTO){
-		
+	public ResponseEntity<NurseDTO> updateNurse(@RequestBody NurseDTO nurseDTO, HttpSession session){
+		if( !(session.getAttribute("role").equals("NURSE") || session.getAttribute("role").equals("DOCTOR") 
+				|| session.getAttribute("role").equals("PATIENT") || session.getAttribute("role").equals("CLINICALADMINISTRATOR") 
+				|| session.getAttribute("role").equals("CLINICALCENTERADMINISTRATOR") )) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
 		Nurse nurse = nurseService.findOne(nurseDTO.getId());
 		
 		if(nurse == null) {
@@ -121,8 +152,12 @@ public class NurseContoller {
 	}
 	
 	@GetMapping(value = "/{nurseId}/absencerequest")	
-	public ResponseEntity<AbsenceRequestDTO> getNersesAbsenceRequest(@PathVariable Long nurseId){
-		
+	public ResponseEntity<AbsenceRequestDTO> getNersesAbsenceRequest(@PathVariable Long nurseId, HttpSession session){
+		if( !(session.getAttribute("role").equals("NURSE") || session.getAttribute("role").equals("DOCTOR") 
+				|| session.getAttribute("role").equals("PATIENT") || session.getAttribute("role").equals("CLINICALADMINISTRATOR") 
+				|| session.getAttribute("role").equals("CLINICALCENTERADMINISTRATOR") )) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
 		Nurse nurse = nurseService.findOne(nurseId);
 		
 		AbsenceRequest absenceRequest = nurse.getAbsenceRequest();
@@ -131,10 +166,15 @@ public class NurseContoller {
 		return new ResponseEntity<>(absenceRequestDTO, HttpStatus.OK);
 	}
 
+	// abence request
 	@GetMapping(value = "/accept/{id}")
-	public ResponseEntity<Void> acceptRequest(@PathVariable Long id){
+	public ResponseEntity<Void> acceptRequest(@PathVariable Long id, HttpSession session){
 		Nurse nurse = nurseService.findOne(id);
-		
+		if( !(session.getAttribute("role").equals("NURSE") || session.getAttribute("role").equals("DOCTOR") 
+				|| session.getAttribute("role").equals("PATIENT") || session.getAttribute("role").equals("CLINICALADMINISTRATOR") 
+				|| session.getAttribute("role").equals("CLINICALCENTERADMINISTRATOR") )) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
 		if(nurse != null) {
 			try {
 				emailService.sendNotificationAcceptNurse(nurse);
@@ -148,9 +188,13 @@ public class NurseContoller {
 	}
 	
 	@GetMapping(value = "/decline/{id}/{message}")
-	public ResponseEntity<Void> declineRequest(@PathVariable Long id, @PathVariable String message){
+	public ResponseEntity<Void> declineRequest(@PathVariable Long id, @PathVariable String message, HttpSession session){
 		Nurse nurse = nurseService.findOne(id);
-		
+		if( !(session.getAttribute("role").equals("NURSE") || session.getAttribute("role").equals("DOCTOR") 
+				|| session.getAttribute("role").equals("PATIENT") || session.getAttribute("role").equals("CLINICALADMINISTRATOR") 
+				|| session.getAttribute("role").equals("CLINICALCENTERADMINISTRATOR") )) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
 		if(nurse != null) {
 			try {
 				emailService.sendNotificationDeclineNurse(nurse, message);

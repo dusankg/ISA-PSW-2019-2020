@@ -91,7 +91,7 @@ export default {
 
         if(this.password==this.password2){
             Axios.put("http://localhost:8082/api/clinicalCenterAdministrators", temp);
-            this.$router.push(`/ClinicAdministratorHomePage/${this.id}`);
+            this.$router.push(`/ClinicalCenterAdministratorHomePage/${this.id}`);
         }
     
     },

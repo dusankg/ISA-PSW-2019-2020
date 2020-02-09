@@ -22,9 +22,9 @@ public class Patient {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	@Column(name = "name", unique = true, nullable = false)
+	@Column(name = "name", nullable = false)
 	private String name;
-	@Column(name = "surname", nullable = false)
+	@Column(name = "surname")
 	private String surname;
 	@Column(name = "email", nullable = false)
 	private String email;
@@ -32,15 +32,15 @@ public class Patient {
 	private String password;
 	@Column(name = "adress", nullable = false)
 	private String adress;
-	@Column(name = "city", nullable = false)
+	@Column(name = "city")
 	private String city;
-	@Column(name = "state", nullable = false)
+	@Column(name = "state")
 	private String state;
-	@Column(name = "phone", nullable = false)
+	@Column(name = "phone")
 	private int phone;
-	@Column(name = "lbo", nullable = false)
+	@Column(name = "lbo")
 	private int lbo; // licni broj osiguranika
-	@Column(name="validated", nullable = false)
+	@Column(name="validated")
 	private boolean validated;
 	@Column(name="accepted", nullable = false)
 	private boolean accepted;
@@ -52,6 +52,7 @@ public class Patient {
 	
 	@Column(name = "bloodType")
 	private String bloodType;
+	
 	@ManyToMany(mappedBy = "patient", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<Examination> examinations = new HashSet<Examination>();
 	

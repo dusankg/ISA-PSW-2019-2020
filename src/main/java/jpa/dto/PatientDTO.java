@@ -34,6 +34,10 @@ public class PatientDTO {
 	
 	public PatientDTO(Long id2, String name2, String surname2, String email2, String password2, String adress2,
 			String city2,String state2, int phone2,int lbo2) {
+		
+		
+
+		
 		this.id=id2;
 		this.name=name2;
 		this.surname=surname2;
@@ -52,6 +56,9 @@ public class PatientDTO {
 			String state, int phone, int lbo, boolean validated, boolean accepted, Integer height, Integer weight,
 			String bloodType) {
 		super();
+		
+		System.out.println("Usao je u ovaj konstrruktokwsotwrkrg");
+		
 		this.id = id;
 		this.name = name;
 		this.surname = surname;
@@ -71,6 +78,9 @@ public class PatientDTO {
 	
 	
 	public PatientDTO(Patient patient) {
+		
+		System.out.println("Kontruktor od pacijenta kao modela");
+		
 		this.id=patient.getId();
 		this.name=patient.getName();
 		this.surname=patient.getSurname();

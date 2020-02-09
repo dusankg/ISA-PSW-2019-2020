@@ -73,6 +73,7 @@ export default {
         name: undefined,
         surname: undefined,
         password: undefined,
+        password2: undefined,
         email: undefined,
         adress: undefined,
         city: undefined, 
@@ -111,8 +112,9 @@ export default {
     validateAndSubmit(e) {
     e.preventDefault();
    
-    var temp={
-      "id":this.id,
+    
+     var temp={
+      "id": this.id,
       "name":this.name,
       "surname":this.surname,
       "email":this.email,
@@ -121,18 +123,18 @@ export default {
       "city":this.city,
       "state":this.state,
       "phone":this.phone,
-      "lbo": this.lbo
+      "lbo": this.lbo,
+      "height": 0,
+      "weight": 0,
+      "bloodType": "x"
     }
     
-    
-    
 
-
-    if(this.password==this.password2 ){
-    Axios.put("http://localhost:8082/api/patients", temp);
+    if(this.password == this.password2 ){
+      Axios.post(`http://localhost:8082/api/patients/updatePatient`, temp, {withCredentials: true});
             this.$router.push('/patientHomePage') 
 
-    }this.refreshPatients();
+    }
   },
   getPatient(){
     PatientService.retrievePatient( {withCredentials: true}).then(response => {

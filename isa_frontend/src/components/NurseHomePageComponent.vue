@@ -86,7 +86,7 @@ export default {
   },
   methods: {
   refreshNurse(){
-    Axios.get('http://localhost:8082/api/nurses/' + this.$route.params.id).then(response => (this.sestra = response.data))
+    Axios.get('http://localhost:8082/api/nurses/' + this.$route.params.id, {withCredentials: true}).then(response => (this.sestra = response.data))
   },
    refreshPrescriptions(){
     Axios.get('http://localhost:8082/api/prescriptions/nonAccepted').then(response => (this.nonValidated = response.data))
@@ -102,7 +102,7 @@ export default {
     this.$forceUpdate();
   },
   editNurseClicked(){
-    this.$router.push(`/editnurse/${this.$route.params.id}`);
+    this.$router.push(`/editnurse/${this.$route.params.id}`, {withCredentials: true});
   },
   createAbsenceRequestClicked(){
     this.$router.push(`/addabsencerequestnurse/${this.$route.params.id}`);

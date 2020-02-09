@@ -162,6 +162,8 @@ public class PatientController {
 		public ResponseEntity<PatientDTO> savePatient(@RequestBody PatientDTO patientDTO) {
 
 			Patient Patient = new Patient();
+			
+			System.out.println("Novi pacijent: " + patientDTO.getName());
 			Patient.setId(111L);
 			Patient.setName(patientDTO.getName());
 			Patient.setSurname(patientDTO.getSurname());
@@ -172,9 +174,9 @@ public class PatientController {
 			Patient.setState(patientDTO.getState());
 			Patient.setPhone(patientDTO.getPhone());
 			Patient.setLbo(patientDTO.getLbo());
-			Patient.setWeight(patientDTO.getWeight());
-			Patient.setHeight(patientDTO.getHeight());
-			Patient.setBloodType(patientDTO.getBloodType());
+			//Patient.setWeight(patientDTO.getWeight());
+			//Patient.setHeight(patientDTO.getHeight());
+			//Patient.setBloodType(patientDTO.getBloodType());
 			// for registration
 	/*		try{    
 				BufferedWriter out = new BufferedWriter( 
@@ -194,10 +196,9 @@ public class PatientController {
 			return new ResponseEntity<>(new PatientDTO(Patient), HttpStatus.CREATED);
 		}
 
-		@PutMapping(consumes = "application/json")
-		public ResponseEntity<PatientDTO> updatePatient(@RequestBody PatientDTO patientDTO) {
-			System.out.println(patientDTO.getEmail());
-			System.out.println(patientDTO.getId());
+		@PostMapping(value = "/updatePatient", consumes = "application/json")
+		public ResponseEntity<PatientDTO> updatePatient(@RequestBody PatientDTO patientDTO, HttpSession Session) {
+			System.out.println(patientDTO.getPassword());
 			// a Patient must exist
 			Patient Patient = patientService.findOne(patientDTO.getId());
 

@@ -2,43 +2,8 @@ import axios from "axios"
 
 <template>
   <div class="container">
-    <h3>All Patients</h3>
-    <div class="container">
-      <input type="text" class="form-control" v-model="searchName" placeholder="Search patient by name"/>
-      <input type="text" class="form-control" v-model="searchSurname" placeholder="Search patient by surname"/>
-      <input type="text" class="form-control" v-model="searchLBO" placeholder="Search patient by LBO"/>
-      <table class="table">
-        <thead>
-          <tr>
-            <th @click="sortById()">Id</th>
-            <th @click="sortByName()">Name</th>
-            <th @click="sortBySurname()">Surname</th>
-            <th @click="sortByLBO()">LBO</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="patient in filteredPatients" v-bind:key="patient.id">
-            <td>{{patient.id}}</td>
-            <td>{{patient.name}}</td>
-            <td>{{patient.surname}}</td>
-            <td>{{patient.lbo}}</td>
-            <td>
-              <button class="btn btn-success" v-on:click="patientProfileClicked(patient.id)">
-                Profile
-              </button>
-            </td>
-            <td>
-              <button class="btn btn-success" v-on:click="makeReportClicked(patient.id)">
-                Make examination report
-              </button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <div>
-
-    <h3>Add new Patient</h3>
+    
+    <h3>Register as new Patient</h3>
     <div class="container">
       <form @submit="validateAndSubmit">
         <fieldset class="form-group">
@@ -88,11 +53,6 @@ import axios from "axios"
 
   </div>
 
-  </div>
-
-
-
-
 
   
 </template>
@@ -137,7 +97,7 @@ export default {
       "lbo": this.lbo,
       "height": 0,
       "weight": 0,
-      "bloodType": "NekiTamo"
+      "bloodType": "x"
     }
     //var patientPom
     var ispravno = true

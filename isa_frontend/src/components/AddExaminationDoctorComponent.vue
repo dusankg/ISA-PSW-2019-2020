@@ -74,7 +74,7 @@ export default {
       }
       Axios.post("http://localhost:8082/api/examinations", temp).then(response =>{
         this.examination = response.data;
-        Axios.get(`http://localhost:8082/api/examinations/send/${this.examination.id}`);
+        Axios.get(`http://localhost:8082/api/examinations/send/${this.examination.id}`, {withCredentials:true});
         this.$router.push(`/makeReport/${this.$route.params.idd}/${this.$route.params.idp}`);
       });
     },

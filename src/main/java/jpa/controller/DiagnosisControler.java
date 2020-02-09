@@ -30,7 +30,7 @@ import jpa.modeli.Diagnosis;
 import jpa.service.DiagnosisService;
 
 @RestController
-@CrossOrigin(origins = { "http://localhost:3000", "http://localhost:4200", "http://localhost:8080" })
+@CrossOrigin(origins = { "http://localhost:3000", "http://localhost:4200", "http://localhost:8080" },allowCredentials= "true")
 @RequestMapping(value = "api/diagnosis")
 public class DiagnosisControler {
 	@Autowired

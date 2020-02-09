@@ -31,6 +31,7 @@ import jpa.dto.ClinicDTO;
 import jpa.dto.DoctorDTO;
 import jpa.dto.MedicalRoomDTO;
 import jpa.dto.OccupationDTO;
+import jpa.dto.PatientDTO;
 import jpa.modeli.AbsenceRequest;
 import jpa.modeli.Clinic;
 import jpa.modeli.Doctor;
@@ -86,6 +87,20 @@ public class DoctorController {
 		}
 		
 		return new ResponseEntity<>(doctorsDTO, HttpStatus.OK);
+	}
+	
+	@GetMapping(value="/login/{id}")
+	public ResponseEntity<DoctorDTO> loginDoctor(@PathVariable Long id, HttpSession Session){
+		Doctor doctor = doctorService.findOne(id);
+		
+		if(doctor == null) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+		
+		Session.setAttribute("role", "DOCTOR");
+		Session.setAttribute("id", id);
+		
+		return new ResponseEntity<>(new DoctorDTO(doctor),HttpStatus.OK);
 	}
 	
 	// prima id od examinationa za koji bi trebalo da se vezu sale

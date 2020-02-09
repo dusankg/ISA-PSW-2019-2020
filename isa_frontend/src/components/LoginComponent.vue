@@ -163,6 +163,22 @@ export default {
         //Axios.get("http://localhost:8082/api/patients/all")
         console.log("Nasao")
         if (temp.role == 'ClinicalCenterAdministrator' || temp.role == "Nurse" || temp.role == 'doctor' || temp.role == 'ClinicAdministrator'){
+          
+
+          if(temp.role == 'doctor'){
+            Axios.get('http://localhost:8082/api/doctors/login/'+indexNadjenog, {withCredentials: true})
+          } 
+          if(temp.role == 'Nurse'){
+            Axios.get('http://localhost:8082/api/nurses/login/'+indexNadjenog, {withCredentials: true})
+          } 
+          if(temp.role == 'ClinicalCenterAdministrator'){
+            Axios.get('http://localhost:8082/api/clinicalCenterAdministrator/login/'+indexNadjenog, {withCredentials: true})
+          } 
+          if(temp.role == 'ClinicAdministrator'){
+            Axios.get('http://localhost:8082/api/ClinicalAdministrator/login/'+indexNadjenog, {withCredentials: true})
+          } 
+      
+          
           this.$router.push('/'+uloga+'HomePage/'+ indexNadjenog) 
         }else {
            Axios.get('http://localhost:8082/api/patients/'+indexNadjenog, {withCredentials: true}).then(response =>{
@@ -182,7 +198,7 @@ export default {
   },
   val(e) {
     e.preventDefault();
-        this.$router.push('/patients') 
+        this.$router.push('/registerPatient') 
 
   }
   },

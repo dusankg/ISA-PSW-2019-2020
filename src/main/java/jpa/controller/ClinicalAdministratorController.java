@@ -3,6 +3,8 @@ package jpa.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import jpa.dto.ClinicalAdministratorDTO;
+import jpa.dto.ClinicalCenterAdministratorDTO;
 import jpa.modeli.Clinic;
 import jpa.modeli.ClinicalAdministrator;
 import jpa.modeli.ClinicalCenterAdministrator;
@@ -27,7 +30,7 @@ import jpa.service.ClinicalAdministratorService;
 import jpa.service.EmailService;
 
 @RestController
-@CrossOrigin(origins = { "http://localhost:3000", "http://localhost:4200", "http://localhost:8080" })
+@CrossOrigin(origins = { "http://localhost:3000", "http://localhost:4200", "http://localhost:8080" },allowCredentials= "true")
 @RequestMapping(value = "api/clinicalAdministrators")
 public class ClinicalAdministratorController {
 
@@ -54,6 +57,21 @@ public class ClinicalAdministratorController {
 		}
 
 		return new ResponseEntity<>(clinicDTO, HttpStatus.OK);
+	}
+	
+
+	@GetMapping(value="/login/{id}")
+	public ResponseEntity<ClinicalAdministratorDTO> loginDoctor(@PathVariable Long id, HttpSession Session){
+
+		ClinicalAdministrator admin = service.findOne(id);
+		if(admin == null) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+		
+		Session.setAttribute("role", "CLINICALADMINISTRATOR");
+		Session.setAttribute("id", id);
+		
+		return new ResponseEntity<>(new ClinicalAdministratorDTO(admin),HttpStatus.OK);
 	}
 	
 	@GetMapping(value = "/{id}")

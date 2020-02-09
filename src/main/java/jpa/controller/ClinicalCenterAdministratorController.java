@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -28,13 +30,15 @@ import org.slf4j.LoggerFactory;
 
 import jpa.dto.ClinicDTO;
 import jpa.dto.ClinicalCenterAdministratorDTO;
+import jpa.dto.DoctorDTO;
 import jpa.modeli.Clinic;
 import jpa.modeli.ClinicalCenterAdministrator;
+import jpa.modeli.Doctor;
 import jpa.service.ClinicalCenterAdministratorService;
 import jpa.service.EmailService;
 
 @RestController
-@CrossOrigin(origins = { "http://localhost:3000", "http://localhost:4200", "http://localhost:8080" })
+@CrossOrigin(origins = { "http://localhost:3000", "http://localhost:4200", "http://localhost:8080" },allowCredentials= "true")
 @RequestMapping(value = "api/clinicalCenterAdministrators")
 public class ClinicalCenterAdministratorController {
 	private Logger logger = LoggerFactory.getLogger(PatientController.class);
@@ -58,6 +62,19 @@ public class ClinicalCenterAdministratorController {
 		return new ResponseEntity<>(clinicDTO, HttpStatus.OK);
 	}
 	
+	@GetMapping(value="/login/{id}")
+	public ResponseEntity<ClinicalCenterAdministratorDTO> loginDoctor(@PathVariable Long id, HttpSession Session){
+
+		ClinicalCenterAdministrator admin = service.findOne(id);
+		if(admin == null) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+		
+		Session.setAttribute("role", "CLINICALCENTERADMINISTRATOR");
+		Session.setAttribute("id", id);
+		
+		return new ResponseEntity<>(new ClinicalCenterAdministratorDTO(admin),HttpStatus.OK);
+	}
 	
 	// Da li ovo mora da se pise?
 	@GetMapping

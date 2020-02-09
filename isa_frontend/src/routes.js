@@ -248,6 +248,11 @@ const router = new Router({
       path: "/businessreport/:id",
       name: "businessreport",
       component: () => import("./components/BusinessReportComponent")
+    },
+    {
+      path: "/registerPatient",
+      name: "businessreport",
+      component: () => import("./components/RegisterPatient")
     }  
   ]
 });

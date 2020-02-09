@@ -56,7 +56,8 @@ public class ExaminationController {
 	@Autowired
 	private OccupationService occupationService;
 	
-	
+	@Autowired
+	private MedicalRoomService medicalRoomService;
 	@Autowired
 	private DoctorService doctorService;
 	

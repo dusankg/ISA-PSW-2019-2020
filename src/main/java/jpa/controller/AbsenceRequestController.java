@@ -27,7 +27,7 @@ import jpa.service.DoctorService;
 import jpa.service.NurseService;
 
 @RestController
-@CrossOrigin(origins = { "http://localhost:3000", "http://localhost:4200", "http://localhost:8080" })
+@CrossOrigin(origins = { "http://localhost:3000", "http://localhost:4200", "http://localhost:8080" },allowCredentials= "true")
 @RequestMapping(value = "api/absencerequests")
 public class AbsenceRequestController {
 

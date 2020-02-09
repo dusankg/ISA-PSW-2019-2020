@@ -45,12 +45,12 @@ export default {
 
             if (this.id == -1){
                 //Ading new type
-                Axios.post("http://localhost:8082/api/examinationtypes", t);
+                Axios.post("http://localhost:8082/api/examinationtypes", t, {withCredentials:true});
                 this.$router.push('/examinationtypes');
                 
             } else {
                 //Modifying exising type
-                Axios.put("http://localhost:8082/api/examinationtypes", temp);
+                Axios.put("http://localhost:8082/api/examinationtypes", temp, {withCredentials:true});
                 this.$router.push('/examinationtypes');
             }
         },
