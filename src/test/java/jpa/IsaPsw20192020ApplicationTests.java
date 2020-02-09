@@ -9,8 +9,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 @SpringBootTest
 public class IsaPsw20192020ApplicationTests {
 
-	
 	@Test
 	public void contextLoads() {
 	}
+
 }

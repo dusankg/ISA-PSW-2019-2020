@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -40,6 +41,7 @@ import jpa.service.PatientService;
 @RestController
 @CrossOrigin(origins = {"http://localhost:3000", "http://localhost:4200", "http://localhost:8080"},allowCredentials= "true")
 @RequestMapping(value = "api/examinations")
+@EnableScheduling
 public class ExaminationController {
 	private Logger logger = LoggerFactory.getLogger(ExaminationController.class);
 	@Autowired
@@ -50,6 +52,9 @@ public class ExaminationController {
 	private EmailService emailService;
 	@Autowired
 	private ExaminationTypeService examinationTypeService;
+
+	@Autowired
+	private OccupationService occupationService;
 	
 	
 	@Autowired
@@ -57,9 +62,6 @@ public class ExaminationController {
 	
 	@Autowired
 	private DoctorService doctorService;
-	
-	@Autowired
-	private OccupationService occupationService;
 	
 	@GetMapping(value = "/all")
 	public ResponseEntity<List<ExaminationDTO>> getAllExaminations(HttpSession Session){
@@ -102,11 +104,11 @@ public class ExaminationController {
 		List<ExaminationDTO> examinationsDTO = new ArrayList<>();
 	
 		for (Examination e : examinations) {
-			if(e.getPatient() != null)
+			if(e.getPatient() != null){
 			if(Session.getAttribute("id")==e.getPatient().getId()){
-				
+
 				examinationsDTO.add(new ExaminationDTO(e));
-				
+			}
 			}
 
 		}

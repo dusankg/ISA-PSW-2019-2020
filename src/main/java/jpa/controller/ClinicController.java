@@ -73,7 +73,6 @@ public class ClinicController {
 		if(Session.getAttribute("role").equals("PATIENT")){ //izmeni da mogu da doprem i kada sam administrator
 		List<Examination> examinations = examinationService.findAll();
 		Patient p = patientService.findOne((Long)Session.getAttribute("id"));
-		System.out.println(examinations.size()+ " WTFFFFFFFFFFF");
 		// convert clinics to DTOs
 		List<ClinicDTO> clinicDTO = new ArrayList<>();
 		
@@ -86,7 +85,6 @@ public class ClinicController {
 						vecPostoji = true;
 					}	}
 					for(Clinic cc : p.getClinics()){
-						System.out.println("udjes ovde?");
 						if(e.getClinic().getId() == cc.getId()){
 							vecPostoji = true;
 						}
